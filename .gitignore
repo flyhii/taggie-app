@@ -1,0 +1,5 @@
+_*
+config/secrets.yml
+spec/fixtures
+_snippets
+request_for_access.rb
