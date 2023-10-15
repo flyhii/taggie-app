@@ -1,5 +1,7 @@
 _*
 config/secrets.yml
+config/secrets_example.yml
+config/secrets_amadeus.yml
 spec/fixtures
 _snippets
 request_for_access.rb
