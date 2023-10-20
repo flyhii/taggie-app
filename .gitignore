@@ -1,6 +1,5 @@
 _*
+_snippets/
 config/secrets.yml
-config/secrets_example.yml
 _snippets
-request_for_access.rb
 lib/test.rb

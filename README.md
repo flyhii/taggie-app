@@ -1,4 +1,4 @@
-# Amadeus API client
+# Instagram API client
 
 Project to gather account and post information from Instagram API
 
