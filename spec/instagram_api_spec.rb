@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'minitest/unit'
+require 'minitest/autorun'
+require 'minitest/rg'
 require_relative 'spec_helper'
 
 describe 'Tests Instagram API library' do
@@ -21,49 +24,38 @@ describe 'Tests Instagram API library' do
     VCR.eject_cassette
   end
 
-  describe 'Account information' do
-    it 'HAPPY: should provide correct account information' do
-      project = CodePraise::GithubApi.new(INSTAGRAM_TOKEN)
-                                     .project(USERNAME, PROJECT_NAME)
-      _(project.size).must_equal CORRECT['size']
-      _(project.git_url).must_equal CORRECT['git_url']
+  describe 'Media information' do
+    it 'HAPPY: should provide correct media information' do
+      mediainfo = FlyHii::InstagramApi.new(INSTAGRAM_TOKEN, ACCOUNT_ID)
+                                      .media(HASHTAG_ID)
+      _(mediainfo.id).must_equal CORRECT['id']
+      _(mediainfo.caption).must_equal CORRECT['caption']
+      _(mediainfo.comments_count).must_equal CORRECT['comments_count']
+      _(mediainfo.like_count).must_equal CORRECT['like_count']
+      _(mediainfo.timestamp).must_equal CORRECT['timestamp']
     end
 
-    it 'SAD: should raise exception on account information' do
+    it 'SAD: should raise exception on media information' do
       _(proc do
-        CodePraise::GithubApi.new(INSTAGRAM_TOKEN).project('soumyaray', 'foobar')
-      end).must_raise CodePraise::GithubApi::Response::NotFound
+        FlyHii::InstagramApi.new(INSTAGRAM_TOKEN, ACCOUNT_ID).media('wronghashtagID')
+      end).must_raise FlyHii::InstagramApi::Response::NotFound
     end
 
     it 'SAD: should raise exception when unauthorized' do
       _(proc do
-        CodePraise::GithubApi.new('BAD_TOKEN').project('soumyaray', 'foobar')
-      end).must_raise CodePraise::GithubApi::Response::Unauthorized
+        FlyHii::InstagramApi.new('BAD_TOKEN', 'BAD_ACCOUNT_ID').media('wronghashtagID')
+      end).must_raise FlyHii::InstagramApi::Response::Unauthorized
     end
   end
 
-  describe 'Contributor information' do
+  describe 'Hashtag information' do
     before do
-      @project = CodePraise::GithubApi.new(INSTAGRAM_TOKEN)
-                                      .project(USERNAME, PROJECT_NAME)
+      @media = FlyHii::InstagramApi.new(INSTAGRAM_TOKEN, ACCOUNT_ID)
+                                      .media(HASHTAG_ID)
     end
 
-    it 'HAPPY: should recognize owner' do
-      _(@project.owner).must_be_kind_of CodePraise::Contributor
-    end
-
-    it 'HAPPY: should identify owner' do
-      _(@project.owner.username).wont_be_nil
-      _(@project.owner.username).must_equal CORRECT['owner']['login']
-    end
-
-    it 'HAPPY: should identify contributors' do
-      contributors = @project.contributors
-      _(contributors.count).must_equal CORRECT['contributors'].count
-
-      usernames = contributors.map(&:username)
-      correct_usernames = CORRECT['contributors'].map { |c| c['login'] }
-      _(usernames).must_equal correct_usernames
+    it 'HAPPY: should recognize hashtag' do
+      _(@hashtag).must_equal CORRECT_HS
     end
   end
 end

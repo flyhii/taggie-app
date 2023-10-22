@@ -1,5 +1,6 @@
 _*
 _snippets/
 config/secrets.yml
-_snippets
+coverage/*
+!coverage/.resultset.json
 lib/test.rb

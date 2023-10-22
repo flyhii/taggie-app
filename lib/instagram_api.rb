@@ -31,6 +31,7 @@ module FlyHii
       hashtag_req_url = ig_api_path_hashtag(hashtag_name)
       hashtag_id = call_ig_url(hashtag_req_url).parsed_response
       hashtag = Hashtag.new(hashtag_id) # create Hashtag
+      hashtag.store_data_hashtag
       hashtag.hashtag
     end
 
@@ -42,6 +43,10 @@ module FlyHii
         media = Media.new(data)
         media.store_data
       end
+    end
+
+    def successful?(result)
+      !HTTP_ERROR.keys.include?(result.code)
     end
 
     private
@@ -58,16 +63,24 @@ module FlyHii
       result = HTTParty.get(url)
       successful?(result) ? result : raise(HTTP_ERROR[result.code])
     end
+  end
 
-    def successful?(result)
-      !HTTP_ERROR.keys.include?(result.code)
+  # Decorates HTTP responses from Instagram with success/error reporting
+  class Response < SimpleDelegator
+    Unauthorized = Class.new(StandardError)
+    NotFound = Class.new(StandardError)
+
+    HTTP_ERROR = {
+      401 => Unauthorized,
+      404 => NotFound
+    }.freeze
+
+    def successful?
+      HTTP_ERROR.keys.none?(code)
+    end
+
+    def error
+      HTTP_ERROR[code]
     end
   end
 end
-
-# config = YAML.safe_load_file('../config/secrets.yml')
-# user_id = config['ACCOUNT_ID']
-# access_token = config['INSTAGRAM_TOKEN']
-
-# ig_api = InstagramApi.new(access_token, user_id)
-# puts ig_api.hashtag('new')

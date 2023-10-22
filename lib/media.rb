@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlyHii
-  # Provides access to contributor data
+  # Provides access to media data
   class Media
     attr_reader :media
 
