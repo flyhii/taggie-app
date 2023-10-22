@@ -5,8 +5,16 @@ source 'https://rubygems.org'
 # Test
 gem 'minitest'
 gem 'minitest-rg'
+gem 'simplecov', '~> 0'
+gem 'vcr', '~> 6'
+gem 'webmock', '~> 3'
 
-# Development
+# Utilities
+gem 'rake'
+
+# Code Quality
+gem 'flog'
+gem 'reek'
 gem 'rubocop'
 
 # Networking
