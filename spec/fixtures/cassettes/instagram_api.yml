@@ -267,4 +267,66 @@ http_interactions:
         #followme #photooftheday #instamood #instagram #photography #actor #dizi #film
         #explore #new #rell#songs","comments_count":2,"like_count":13,"timestamp":"2023-10-22T17:34:11+0000"}],"paging":{"cursors":{"after":"NWZAiNTI1MWNhNDMyNDMzZADgxMTljMTI4NjEzNDhkZATYZD"},"next":"https:\/\/graph.facebook.com\/v18.0\/17842307719068454\/top_media?user_id=17841462175987660&fields=id,caption,comments_count,like_count,timestamp&access_token=<INSTAGRAM_TOKEN>&limit=25&after=NWZAiNTI1MWNhNDMyNDMzZADgxMTljMTI4NjEzNDhkZATYZD"}}'
   recorded_at: Sun, 22 Oct 2023 17:45:55 GMT
+- request:
+    method: get
+    uri: https://graph.facebook.com/v18.0/17842307719068454/top_media?access_token=<INSTAGRAM_TOKEN>&fields=id,caption,comments_count,like_count,timestamp,owner&user_id=17841462175987660
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 400
+      message: Bad Request
+    headers:
+      Vary:
+      - Origin
+      Cross-Origin-Resource-Policy:
+      - cross-origin
+      X-App-Usage:
+      - '{"call_count":0,"total_cputime":0,"total_time":0}'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Www-Authenticate:
+      - OAuth "Facebook Platform" "invalid_request" "(#100) Please read documentation
+        for supported fields."
+      Access-Control-Allow-Origin:
+      - "*"
+      Facebook-Api-Version:
+      - v18.0
+      Strict-Transport-Security:
+      - max-age=15552000; preload
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-store
+      Expires:
+      - Sat, 01 Jan 2000 00:00:00 GMT
+      X-Fb-Request-Id:
+      - AxZa2BMMwSnmnqThyWNG-dR
+      X-Fb-Trace-Id:
+      - AxkeCCottj+
+      X-Fb-Rev:
+      - '1009468759'
+      X-Fb-Debug:
+      - AN+loQR/6bLTjrTQFsYSFqOzwscrmUOZrPLlD8s022r2SJl8GICRDwYHX0Sz4c5o12pMWIAWnBDB5U633+HSeA==
+      Date:
+      - Wed, 25 Oct 2023 13:11:31 GMT
+      Alt-Svc:
+      - h3=":443"; ma=86400
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '152'
+    body:
+      encoding: UTF-8
+      string: '{"error":{"message":"(#100) Please read documentation for supported
+        fields.","type":"OAuthException","code":100,"fbtrace_id":"AxZa2BMMwSnmnqThyWNG-dR"}}'
+  recorded_at: Wed, 25 Oct 2023 13:11:31 GMT
 recorded_with: VCR 6.2.0

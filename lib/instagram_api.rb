@@ -11,76 +11,100 @@ module FlyHii
   class InstagramApi
     API_PROJECT_ROOT = 'https://graph.facebook.com/v18.0'
     FIELDS = 'id,caption,comments_count,like_count,timestamp'
-
-    module Errors
-      class NotFound < StandardError; end
-      class Unauthorized < StandardError; end
-    end
-
-    HTTP_ERROR = {
-      401 => Errors::Unauthorized,
-      404 => Errors::NotFound
-    }.freeze
-
+    
+    # test.rb裡面的 ig_api = FlyHii::InstagramApi.new(access_token, user_id)過來
     def initialize(token, user_id)
       @ig_token = token
       @ig_user_id = user_id
+      #puts "#{@ig_token} #{@ig_user_id}" 可正確追蹤到ID以及TOKEN
     end
 
     def hashtag(hashtag_name)
-      hashtag_req_url = ig_api_path_hashtag(hashtag_name)
-      hashtag_id = call_ig_url(hashtag_req_url).parsed_response
-      hashtag = Hashtag.new(hashtag_id) # create Hashtag
-      hashtag.store_data_hashtag
-      hashtag.hashtag
+      #puts "#{@ig_token} #{@ig_user_id}"
+      hashtag_response = Request.new(API_PROJECT_ROOT, @ig_user_id, @ig_token)
+                                .hashtag_url(hashtag_name) #.parse #HTTParty::Response 对象没有 parse 方法
+      #puts hashtag_response # 輸出{"data":[{"id":"17842307719068454"}]}                       
+      hashtag = Hashtag.new(hashtag_response) 
+      #puts hashtag.hashtag_id #ask為甚麼不行
+      #puts hashtag # 輸出 <FlyHii::Hashtag:0x00007f34d922dfc0>
+      hashtag.store_data_hashtag #是寫在這裡嗎?
     end
 
     # need hashtag_id from Hashtag
     def media(hashtag_id)
-      media_req_url = ig_api_path_media(hashtag_id)
-      media_data = call_ig_url(media_req_url).parsed_response
-      media_data['data'].map do |data|
+      media_response = Request.new(API_PROJECT_ROOT, @ig_user_id, @ig_token)
+                          .media_url(hashtag_id).parsed_response 
+      media_response['data'].each do |data|
         media = Media.new(data)
         media.store_data
       end
+      # if media_response.nil?
+      #   puts "No media data found."
+      # else
+      #   #puts media_response
+      #   #puts "there are media_response" #這裡media_response是有抓到的
+      #   media_response['data'].each do |data|
+      #     media = Media.new(data)
+      #     media.store_data
+      #   end
+      # end
+    end
+    
+    # def successful?(result)
+    #   !HTTP_ERROR.keys.include?(result.code)
+    # end
+
+    # def call_ig_url(url)
+    #   result = HTTParty.get(url)
+    #   successful?(result) ? result : raise(HTTP_ERROR[result.code])
+    # end
+
+    # Sends out HTTP requests to Github
+    class Request
+      def initialize(resource_root, ig_user_id, token)
+        @resource_root = resource_root
+        @user_id = ig_user_id
+        @token = token
+      end
+
+      def hashtag_url(hashtag_name)
+        url = "#{@resource_root}/ig_hashtag_search?user_id=#{@user_id}&q=#{hashtag_name}&access_token=#{@token}"
+        #puts url
+        get(url) #将响应数据解析为 HTTParty::Response 对象
+      end
+
+      def media_url(hashtag_id)
+        url = "#{@resource_root}/#{hashtag_id}/top_media?user_id=#{@user_id}&fields=#{FIELDS}&access_token=#{@token}"
+        get(url) #将响应数据解析为 HTTParty::Response 对象
+      end
+
+      def get(url)
+        http_response = HTTParty.get(url) 
+        #發送一個HTTP GET請求 #參數url是所要求的url地址 會返回響應的數據
+        Response.new(http_response).tap do |response|
+          raise(response.error) unless response.successful?
+        end
+      end
+
     end
 
-    def successful?(result)
-      !HTTP_ERROR.keys.include?(result.code)
-    end
+    # Decorates HTTP responses from Instagram with success/error reporting
+    class Response < SimpleDelegator
+      Unauthorized = Class.new(StandardError)
+      NotFound = Class.new(StandardError)
 
-    private
+      HTTP_ERROR = {
+        401 => Unauthorized,
+        404 => NotFound
+      }.freeze
 
-    def ig_api_path_hashtag(hashtag_name)
-      "#{API_PROJECT_ROOT}/ig_hashtag_search?user_id=#{@ig_user_id}&q=#{hashtag_name}&access_token=#{@ig_token}"
-    end
+      def successful?
+        HTTP_ERROR.keys.none?(code)
+      end
 
-    def ig_api_path_media(hashtag_id)
-      "#{API_PROJECT_ROOT}/#{hashtag_id}/top_media?user_id=#{@ig_user_id}&fields=#{FIELDS}&access_token=#{@ig_token}"
-    end
-
-    def call_ig_url(url)
-      result = HTTParty.get(url)
-      successful?(result) ? result : raise(HTTP_ERROR[result.code])
-    end
-  end
-
-  # Decorates HTTP responses from Instagram with success/error reporting
-  class Response < SimpleDelegator
-    Unauthorized = Class.new(StandardError)
-    NotFound = Class.new(StandardError)
-
-    HTTP_ERROR = {
-      401 => Unauthorized,
-      404 => NotFound
-    }.freeze
-
-    def successful?
-      HTTP_ERROR.keys.none?(code)
-    end
-
-    def error
-      HTTP_ERROR[code]
+      def error
+        HTTP_ERROR[code]
+      end
     end
   end
 end
