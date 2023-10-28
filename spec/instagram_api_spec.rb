@@ -26,23 +26,23 @@ describe 'Tests Instagram API library' do
 
   describe 'Media information' do
     it 'HAPPY: should provide correct media information' do
-      mediainfo = FlyHii::InstagramApi.new(INSTAGRAM_TOKEN, ACCOUNT_ID)
+      media = FlyHii::InstagramApi.new(INSTAGRAM_TOKEN, ACCOUNT_ID)
                                       .media(HASHTAG_ID)
-      _(mediainfo.id).must_equal CORRECT['id']
-      _(mediainfo.caption).must_equal CORRECT['caption']
-      _(mediainfo.comments_count).must_equal CORRECT['comments_count']
-      _(mediainfo.like_count).must_equal CORRECT['like_count']
-      _(mediainfo.timestamp).must_equal CORRECT['timestamp']
+      _(media.id).must_equal CORRECT['id']
+      _(media.caption).must_equal CORRECT['caption']
+      _(media.comments_count).must_equal CORRECT['comments_count']
+      _(media.like_count).must_equal CORRECT['like_count']
+      _(media.timestamp).must_equal CORRECT['timestamp']
     end
 
     it 'SAD: should raise exception on media information' do
-      _(proc do
+      _(info do
         FlyHii::InstagramApi.new(INSTAGRAM_TOKEN, ACCOUNT_ID).media('wronghashtagID')
       end).must_raise FlyHii::InstagramApi::Response::NotFound
     end
 
     it 'SAD: should raise exception when unauthorized' do
-      _(proc do
+      _(info do
         FlyHii::InstagramApi.new('BAD_TOKEN', 'BAD_ACCOUNT_ID').media('wronghashtagID')
       end).must_raise FlyHii::InstagramApi::Response::Unauthorized
     end
