@@ -29,6 +29,18 @@ module FlyHii
       @media['timestamp']
     end
 
+    def media_url
+      @media['media_url']
+    end
+
+    def children
+      @media['children']
+    end
+
+    def media_type
+      @media['media_type']
+    end
+
     def store_data
       File.write('spec/fixtures/top_media_results.yml', @media.to_yaml, mode: 'a')
     end
