@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'hashtag_mapper'
+
 module FlyHii
   # Provides access to media data
   class Media
@@ -46,3 +48,4 @@ module FlyHii
     end
   end
 end
+  
