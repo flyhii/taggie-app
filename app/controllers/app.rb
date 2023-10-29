@@ -17,7 +17,8 @@ module FlyHii
 
       # GET /
       routing.root do
-        view 'home'
+        view 'home' 
+        puts "hello"
       end
 
       routing.on 'media' do
