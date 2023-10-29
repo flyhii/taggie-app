@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    IG Media Page
+  body
+    Instagram Top Media
+
+    - top_media.each do |media|
+      .media-item 
+       / 创建一个 CSS 类为 media-item 的元素
+        h2 = "Media ID: #{media.id}"
+        p = "Caption: #{media.caption}"
+        p = "Comments Count: #{media.comments_count}"
+        p = "Likes: #{media.like_count}"
+        p = "Media Type: #{media.media_type}"
+        - if media.media_type == "IMAGE" || media.media_type == "VIDEO"
+          img src=media.media_url alt="Media Image"
+        p = "Timestamp: #{media.timestamp}"
+
+    

@@ -1,0 +1,18 @@
+.container
+  form role="form" action="/flyhii_media" method='POST' id='show-media-form'
+    .row.vertical-align.query-bar
+      .col-md-2.col-sm-3
+        .text-right hashtag_name:
+      .col-md-8.col-sm-6
+        input { 
+          type='text' name='hashtag_name'
+          id='hashtag_name_input' class="form-control"
+          placeholder="e.g. #new"
+        }
+      .col-md-2.col-sm-3
+        button { 
+          type='submit' id='media-form-submit' class='submit' 
+          value='submit' class="btn btn-success" 
+        } Show Media
+    .row
+      .col-md-12.blank-row
