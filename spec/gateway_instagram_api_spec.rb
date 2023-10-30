@@ -27,7 +27,7 @@ describe 'Tests Instagram API library' do
   describe 'Media information' do
     it 'HAPPY: should provide correct media information' do
       media = FlyHii::InstagramApi.new(INSTAGRAM_TOKEN, ACCOUNT_ID)
-                                      .media(HASHTAG_ID)
+        .media(HASHTAG_ID)
       _(media.id).must_equal CORRECT['id']
       _(media.caption).must_equal CORRECT['caption']
       _(media.comments_count).must_equal CORRECT['comments_count']
@@ -51,7 +51,7 @@ describe 'Tests Instagram API library' do
   describe 'Hashtag information' do
     before do
       @media = FlyHii::InstagramApi.new(INSTAGRAM_TOKEN, ACCOUNT_ID)
-                                      .media(HASHTAG_ID)
+        .media(HASHTAG_ID)
     end
 
     it 'HAPPY: should recognize hashtag' do
