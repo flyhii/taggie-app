@@ -10,7 +10,8 @@ require 'minitest/rg'
 require 'vcr'
 require 'webmock'
 
-require_relative '../lib/instagram_api'
+require_relative '../require_app'
+require_app
 
 # USERID = '17986576562521259'
 # TIME_STAMP = '2023-10-21T18:33:05+0000'
