@@ -9,7 +9,7 @@ module FlyHii
     class Hashtag < Dry::Struct
       include Dry.Types
 
-      attribute :hashtag_id, Strict::Integer
+      attribute :hashtag_id, Strict::String
     end
   end
 end

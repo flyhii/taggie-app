@@ -13,18 +13,12 @@ module FlyHii
       end
 
       def find(hashtag_name)
-        puts hashtag_name_id = @gateway.hashtag(hashtag_name)
-        data = hashtag_name_id['data'][0]['id']
-        build_entity(data)
+        hashtag_name_id = @gateway.hashtag(hashtag_name)
+        data = hashtag_name_id['data'][0]
+        build_entity(data).hashtag_id
       end
 
-      def load_several(url)
-        @gateway.hashtag(url).map do |data|
-          HashtagMapper.build_entity(data)
-        end
-      end
-
-      def self.build_entity(data)
+      def build_entity(data)
         DataMapper.new(data).build_entity
       end
 
@@ -36,7 +30,7 @@ module FlyHii
 
         def build_entity
           Entity::Hashtag.new(
-            id:
+            hashtag_id:
           )
         end
 

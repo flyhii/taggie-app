@@ -1,22 +1,24 @@
 .container
   .row
-    h2
-      span.project.owner
-        = project.owner.username
-      span.project.name style="padding-left:20px"
-        = project.name
+    .col-lg-12.col-md-12.col-sm-12
+      h1
+        | Media
   .container
     .row
       .col-lg-1.col-md-2.col-sm-2
-        span.project.attribute Repo:
+        span.media.id
+          = media.id
+      .col-lg-1.col-md-2.col-sm-2
+        span.media.url
+          = media.media_url
+      .col-lg-1.col-md-2.col-sm-2
+        span.media.attribute content:
       .col-lg-11.col-md-10.col-sm-6
-        span.project.detail
-          = project.git_url
+        span.media.caption
+          = media.caption
     .row.top-buffer
       .col-lg-1.col-md-2.col-sm-2
-        span.project.attribute Members:
-      .col-lg-11.col-md-10.col-sm-6
-        .row
-          - project.members.each do |member|
-            .col-sm-12
-              a.project.detail href="https://github.com/#{member.username}" #{member.username}
+        span.media.attribute Type:
+      .col-lg-1.col-md-2.col-sm-2
+        span.media.attribute
+          = media.media_type

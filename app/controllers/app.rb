@@ -35,9 +35,7 @@ module FlyHii
             hashtag_id = Instagram::HashtagMapper
               .new(INSTAGRAM_TOKEN, ACCOUNT_ID)
               .find(hashtag_name)
-          end
 
-          routing.get do
             instagram_media = Instagram::MediaMapper
               .new(INSTAGRAM_TOKEN, ACCOUNT_ID)
               .find(hashtag_id)

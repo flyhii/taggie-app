@@ -13,23 +13,28 @@ module FlyHii
       end
 
       def find(hashtag_id)
-        data = @gateway.media(hashtag_id)
+        media_content = @gateway.media(hashtag_id)
+        data = media_content['data'][2]
         build_entity(data)
+        # data.each do |post|
+        #   build_entity(post)
+        # end
       end
 
       def build_entity(data)
-        DataMapper.new(data, @token, @gateway_class).build_entity
+        DataMapper.new(data).build_entity
       end
 
       # Extracts entity specific elements from data structure
       class DataMapper
         def initialize(data)
           @data = data
+          # puts @data
         end
 
         def build_entity
           Entity::Media.new(
-            id: nil,
+            id:,
             caption:,
             comments_count:,
             like_count:,
@@ -41,35 +46,35 @@ module FlyHii
         end
 
         def id
-          @media['id']
+          @data['id']
         end
 
         def caption
-          @media['caption']
+          @data['caption']
         end
 
         def comments_count
-          @media['comments_count']
+          @data['comments_count']
         end
 
         def like_count
-          @media['like_count']
+          @data['like_count']
         end
 
         def timestamp
-          @media['timestamp']
+          @data['timestamp']
         end
 
         def media_url
-          @media['media_url']
+          @data['media_url']
         end
 
         def children
-          @media['children']
+          @data['children']
         end
 
         def media_type
-          @media['media_type']
+          @data['media_type']
         end
       end
     end
