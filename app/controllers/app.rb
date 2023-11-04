@@ -17,16 +17,15 @@ module FlyHii
 
       # GET /
       routing.root do
-        view 'home' 
-        puts "hello"
+        view 'home'
       end
 
       routing.on 'media' do
         routing.is do
-          # GET /hashtag/
-          routing.get do
+          # POST /hashtag_name/
+          routing.post do
             hashtag_name = routing.params['hashtag_name'].downcase
-            routing.redirect "hashtag=#{hashtag_name}/topmedia"
+            routing.redirect "media/#{hashtag_name}"
           end
         end
 
@@ -34,13 +33,16 @@ module FlyHii
           # GET /hashtag/topmedia
           routing.get do
             hashtag_id = Instagram::HashtagMapper
-              .new(INSTAGRAM_TOKEN)
+              .new(INSTAGRAM_TOKEN, ACCOUNT_ID)
               .find(hashtag_name)
+          end
+
+          routing.get do
             instagram_media = Instagram::MediaMapper
-              .new(INSTAGRAM_TOKEN)
+              .new(INSTAGRAM_TOKEN, ACCOUNT_ID)
               .find(hashtag_id)
 
-            view 'media', locals: { project: instagram_media }
+            view 'media', locals: { media: instagram_media }
           end
         end
       end

@@ -1,20 +1,22 @@
-doctype html
-html
-  head
-    IG Media Page
-  body
-    Instagram Top Media
-
-    - top_media.each do |media|
-      .media-item 
-       / 创建一个 CSS 类为 media-item 的元素
-        h2 = "Media ID: #{media.id}"
-        p = "Caption: #{media.caption}"
-        p = "Comments Count: #{media.comments_count}"
-        p = "Likes: #{media.like_count}"
-        p = "Media Type: #{media.media_type}"
-        - if media.media_type == "IMAGE" || media.media_type == "VIDEO"
-          img src=media.media_url alt="Media Image"
-        p = "Timestamp: #{media.timestamp}"
-
-    
+.container
+  .row
+    h2
+      span.project.owner
+        = project.owner.username
+      span.project.name style="padding-left:20px"
+        = project.name
+  .container
+    .row
+      .col-lg-1.col-md-2.col-sm-2
+        span.project.attribute Repo:
+      .col-lg-11.col-md-10.col-sm-6
+        span.project.detail
+          = project.git_url
+    .row.top-buffer
+      .col-lg-1.col-md-2.col-sm-2
+        span.project.attribute Members:
+      .col-lg-11.col-md-10.col-sm-6
+        .row
+          - project.members.each do |member|
+            .col-sm-12
+              a.project.detail href="https://github.com/#{member.username}" #{member.username}
