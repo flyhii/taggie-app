@@ -11,7 +11,7 @@ module FlyHii
     # Library for Github Web API
     class Api
       API_PROJECT_ROOT = 'https://graph.facebook.com/v18.0'
-      FIELDS = 'id,caption,comments_count,like_count,timestamp, media_url, children, media_type'
+      FIELDS = 'id,caption,comments_count,like_count,timestamp,media_url,children,media_type'
       def initialize(token, user_id)
         @ig_token = token
         @ig_user_id = user_id

@@ -14,9 +14,11 @@ module FlyHii
 
       def find(hashtag_id)
         media_content = @gateway.media(hashtag_id)
-        data = media_content['data'][2]
+        data = media_content['data'][0]
+        puts data
         build_entity(data)
-        # data.each do |post|
+        # data = media_content['data']
+        # data.map do |post|
         #   build_entity(post)
         # end
       end
@@ -29,7 +31,6 @@ module FlyHii
       class DataMapper
         def initialize(data)
           @data = data
-          # puts @data
         end
 
         def build_entity
