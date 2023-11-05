@@ -3,34 +3,31 @@
 require 'http'
 require 'httparty'
 require 'yaml'
-require_relative 'hashtag'
-require_relative 'media'
+
+require_relative '../mappers/hashtag_mapper'
+require_relative '../mappers/media_mapper'
 
 module FlyHii
   module Instagram
     # Library for Github Web API
     class Api
-      # API_PROJECT_ROOT = 'https://graph.facebook.com/v18.0'
-      # FIELDS = 'id,caption,comments_count,like_count,timestamp, media_url, children, media_type'
+
+      API_PROJECT_ROOT = 'https://graph.facebook.com/v18.0'
+      FIELDS = 'id,caption,comments_count,like_count,timestamp,media_url,children,media_type'
+
       def initialize(token, user_id)
         @ig_token = token
         @ig_user_id = user_id
       end
 
       def hashtag(hashtag_name)
-        hashtag_response = Request.new(API_PROJECT_ROOT, @ig_user_id, @ig_token)
+        Request.new(API_PROJECT_ROOT, @ig_user_id, @ig_token)
           .hashtag_url(hashtag_name)
-        hashtag = Hashtag.new(hashtag_response)
-        hashtag.store_data_hashtag
       end
 
       def media(hashtag_id)
-        media_response = Request.new(API_PROJECT_ROOT, @ig_user_id, @ig_token)
+        Request.new(API_PROJECT_ROOT, @ig_user_id, @ig_token)
           .media_url(hashtag_id).parsed_response
-        media_response['data'].each do |data|
-          media = Media.new(data)
-          media.store_data
-        end
       end
 
       # request url
