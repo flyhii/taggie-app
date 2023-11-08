@@ -21,6 +21,11 @@ module FlyHii
       attribute :media_type,      Strict::String
       # attribute :owner,     Member
       # attribute :members,   Strict::Array.of(Member)
+
+      def to_attr_hash
+        # to_hash.reject { |key, _| %i[id owner contributors].include? key }
+        to_hash.except(:id, :caption, :comments_count, :like_count, :timestamp, :media_url, :children, :media_type)
+      end
     end
   end
 end

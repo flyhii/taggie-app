@@ -4,21 +4,22 @@
       h1
         | Media
   .container
-    .row
-      .col-lg-1.col-md-2.col-sm-2
-        span.media.id
-          = media.id
-      .col-lg-1.col-md-2.col-sm-2
-        span.media.url
-          = media.media_url
-      .col-lg-1.col-md-2.col-sm-2
-        span.media.attribute content:
-      .col-lg-11.col-md-10.col-sm-6
-        span.media.caption
-          = media.caption
-    .row.top-buffer
-      .col-lg-1.col-md-2.col-sm-2
-        span.media.attribute Type:
-      .col-lg-1.col-md-2.col-sm-2
-        span.media.attribute
-          = media.media_type
+    - media.each do |data|
+      .row
+        .col-lg-1.col-md-2.col-sm-2
+          span.media.id
+            = data.id
+        .col-lg-1.col-md-2.col-sm-2
+          span.media.url
+            = data.media_url
+        .col-lg-1.col-md-2.col-sm-2
+          span.media.attribute content:
+        .col-lg-11.col-md-10.col-sm-6
+          span.media.caption
+            = data.caption
+      .row.top-buffer
+        .col-lg-1.col-md-2.col-sm-2
+          span.media.attribute Type:
+        .col-lg-1.col-md-2.col-sm-2
+          span.media.attribute
+            = data.media_type
