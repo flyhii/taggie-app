@@ -8,18 +8,19 @@ module FlyHii
       def initialize(ig_token, ig_user_id, gateway_class = Instagram::Api)
         @token = ig_token
         @ig_user_id = ig_user_id
-        @gateway_class = gateway_class
-        @gateway = @gateway_class.new(@token, @ig_user_id)
+        @gateway = gateway_class.new(@token, @ig_user_id)
+        @data = []
       end
 
       def find(hashtag_name)
+        @data = hashtag_name
+        build_entity(@data).hashtag_name
         hashtag_name_id = @gateway.hashtag(hashtag_name)
-        data = hashtag_name_id['data'][0]
-        build_entity(data).hashtag_id
+        hashtag_name_id['data'][0]['id']
       end
 
-      def build_entity(data)
-        DataMapper.new(data).build_entity
+      def build_entity
+        DataMapper.new(@data).build_entity
       end
 
       # Extracts entity specific elements from data structure
@@ -30,12 +31,12 @@ module FlyHii
 
         def build_entity
           Entity::Hashtag.new(
-            hashtag_id:
+            hashtag_name:
           )
         end
 
-        def hashtag_id
-          @data['id']
+        def hashtag_name
+          @data
         end
       end
     end
