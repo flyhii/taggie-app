@@ -14,13 +14,13 @@ module FlyHii
 
       def find(hashtag_id)
         media_content = @gateway.media(hashtag_id)
-        data = media_content['data'][0]
-        puts data
+        # data = media_content['data'][0]
+        # puts data
         build_entity(data)
-        # data = media_content['data']
-        # data.map do |post|
-        #   build_entity(post)
-        # end
+        data = media_content['data']
+        data.map do |post|
+          build_entity(post)
+        end
       end
 
       def build_entity(data)
