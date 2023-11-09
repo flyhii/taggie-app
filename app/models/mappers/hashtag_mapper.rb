@@ -5,20 +5,22 @@ module FlyHii
   module Instagram
     # Data Mapper: Instagram contributor -> Hashtag entity
     class HashtagMapper
-      def initialize(hashtag_data, gateway_class = Github::Api)
-        @hashtag = hashtag_data['data'][0]['id']
-        @gateway_class = gateway_class
-        @gateway = @gateway_class.new(@token)
+      def initialize(ig_token, ig_user_id, gateway_class = Instagram::Api)
+        @token = ig_token
+        @ig_user_id = ig_user_id
+        @gateway = gateway_class.new(@token, @ig_user_id)
+        @data = []
       end
 
-      def load_several(url)
-        @gateway.hashtag(url).map do |data|
-          HashtagMapper.build_entity(data)
-        end
+      def find(hashtag_name)
+        @data = hashtag_name
+        build_entity(@data).hashtag_name
+        hashtag_name_id = @gateway.hashtag(hashtag_name)
+        hashtag_name_id['data'][0]['id']
       end
 
-      def self.build_entity(data)
-        DataMapper.new(data).build_entity
+      def build_entity
+        DataMapper.new(@data).build_entity
       end
 
       # Extracts entity specific elements from data structure
@@ -29,20 +31,13 @@ module FlyHii
 
         def build_entity
           Entity::Hashtag.new(
-            id:
+            hashtag_name:
           )
         end
 
-        private
-
-        def hashtag_id
-          @hashtag['hashtag_id']
+        def hashtag_name
+          @data
         end
-      end
-
-      def store_data_hashtag
-        File.write('spec/fixtures/hashtag_results.yml', @hashtag.to_yaml)
-        @hashtag
       end
     end
   end
