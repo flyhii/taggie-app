@@ -4,8 +4,8 @@ require 'http'
 require 'httparty'
 require 'yaml'
 
-require_relative '../mappers/hashtag_mapper'
-require_relative '../mappers/media_mapper'
+require_relative '../../models/mappers/hashtag_mapper'
+require_relative '../../models/mappers/media_mapper'
 
 module FlyHii
   module Instagram

@@ -6,12 +6,14 @@ Sequel.migration do
   change do
     create_table(:media) do
       primary_key :id
-      foreign_key :hashtag_id, :hashtag
 
-      Integer     :media_id, unique: true
-      Integer     :like_count
-      DateTime    :timestamp
+      String      :media_id, unique: true
       String      :caption
+      Integer     :like_count
+      Integer     :comments_count
+      String      :media_url
+      DateTime    :timestamp
+      
 
       DateTime :created_at
       DateTime :updated_at

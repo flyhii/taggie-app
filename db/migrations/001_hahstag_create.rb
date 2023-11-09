@@ -7,7 +7,7 @@ Sequel.migration do
     create_table(:hashtag) do
       primary_key :id
 
-      Integer     :hashtag_id, unique: true
+      String      :api_id, unique: true
       String      :hashtag_name, unique: true, null: false
 
       DateTime :created_at

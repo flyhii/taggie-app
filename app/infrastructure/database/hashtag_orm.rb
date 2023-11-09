@@ -5,7 +5,7 @@ require 'sequel'
 module FlyHii
   module Database
     # Object Relational Mapper for hashtag Entities
-    class hashtagOrm < Sequel::Model(:hashtag)
+    class HashtagOrm < Sequel::Model(:hashtag)
       one_to_many :media,
                   class: :'FlyHii::Database::mediaOrm'
 
