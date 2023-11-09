@@ -37,7 +37,7 @@ describe 'Tests Instagram API library' do
       _(media_info.media_type).must_equal CORRECT['media_type']
     end
 
-    it 'BAD: should raise exception on incorrect hashtag name' do
+    it 'BAD: should raise exception on incorrect project' do
       _(proc do
         FlyHii::Instagram::MediaMapper
           .new(INSTAGRAM_TOKEN, ACCOUNT_ID)
