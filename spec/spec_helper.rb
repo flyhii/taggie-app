@@ -13,14 +13,13 @@ require 'webmock'
 require_relative '../require_app'
 require_app
 
-# USERID = '17986576562521259'
-# TIME_STAMP = '2023-10-21T18:33:05+0000'
 HASHTAG_ID = '17842307719068454'
+HASHTAG_NAME = 'new'
 CONFIG = YAML.safe_load_file('config/secrets.yml')
 INSTAGRAM_TOKEN = CONFIG['INSTAGRAM_TOKEN']
 ACCOUNT_ID = CONFIG['ACCOUNT_ID']
-CORRECT = YAML.safe_load_file('spec/fixtures/top_media_results.yml')
-CORRECT_HS = YAML.safe_load_file('spec/fixtures/hashtag_results.yml')
+CORRECT = YAML.safe_load_file('spec/fixtures/instagram_results.yml')
+# CORRECT_HS = YAML.safe_load_file('spec/fixtures/hashtag_results.yml')
 
 CASSETTES_FOLDER = 'spec/fixtures/cassettes'
 CASSETTE_FILE = 'instagram_api'

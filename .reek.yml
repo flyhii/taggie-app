@@ -4,5 +4,5 @@
       enabled: false
   exclude_paths:
     - _snippets
-    - lib/test.rb # one-time test fixture creator
+    - spec/fixtures/media_info.rb # one-time test fixture creator
     

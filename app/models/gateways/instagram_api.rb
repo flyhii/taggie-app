@@ -11,7 +11,6 @@ module FlyHii
   module Instagram
     # Library for Github Web API
     class Api
-
       API_PROJECT_ROOT = 'https://graph.facebook.com/v18.0'
       FIELDS = 'id,caption,comments_count,like_count,timestamp,media_url,children,media_type'
 

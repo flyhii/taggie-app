@@ -37,7 +37,7 @@ describe 'Tests Instagram API library' do
       _(media_info.media_type).must_equal CORRECT['media_type']
     end
 
-    it 'BAD: should raise exception on incorrect project' do
+    it 'BAD: should raise exception on incorrect hashtag name' do
       _(proc do
         FlyHii::Instagram::MediaMapper
           .new(INSTAGRAM_TOKEN, ACCOUNT_ID)
@@ -51,32 +51,6 @@ describe 'Tests Instagram API library' do
           .new('BAD_TOKEN', ACCOUNT_ID)
           .find(HASHTAG_ID)
       end).must_raise FlyHii::Instagram::Api::Response::Unauthorized
-    end
-  end
-
-  describe 'Media information' do
-    before do
-      @project = FlyHii::Instagram::MediaMapper
-        .new(INSTAGRAM_TOKEN, ACCOUNT_ID)
-        .find(HASHTAG_ID)
-    end
-
-    it 'HAPPY: should recognize owner' do
-      _(@project.owner).must_be_kind_of FlyHii::Entity::Member
-    end
-
-    it 'HAPPY: should identify owner' do
-      _(@project.owner.username).wont_be_nil
-      _(@project.owner.username).must_equal CORRECT['owner']['login']
-    end
-
-    it 'HAPPY: should identify members' do
-      members = @project.members
-      _(members.count).must_equal CORRECT['contributors'].count
-
-      usernames = members.map(&:username)
-      correct_usernames = CORRECT['contributors'].map { |c| c['login'] }
-      _(usernames).must_equal correct_usernames
     end
   end
 end
