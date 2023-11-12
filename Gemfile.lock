@@ -149,6 +149,7 @@ DEPENDENCIES
   flog
   hirb
   http (~> 5.0)
+  httparty
   minitest (~> 5.0)
   minitest-rg (~> 5.0)
   pry
