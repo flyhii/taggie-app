@@ -19,8 +19,6 @@ module FlyHii
       attribute :media_url,       Strict::String.optional
       attribute :children,        Strict::Hash.optional
       attribute :media_type,      Strict::String
-      # attribute :owner,     Member
-      # attribute :members,   Strict::Array.of(Member)
     end
   end
 end
