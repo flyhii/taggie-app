@@ -6,8 +6,8 @@ module FlyHii
   module Database
     # Object Relational Mapper for hashtag Entities
     class HashtagOrm < Sequel::Model(:hashtag)
-      one_to_many :media,
-                  class: :'FlyHii::Database::mediaOrm'
+      many_to_many :media,
+                    class: :'FlyHii::Database::MediaOrm'
 
       plugin :timestamps, update_on_create: true
     end
