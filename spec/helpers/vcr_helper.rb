@@ -9,16 +9,17 @@ module VcrHelper
   INSTAGRAM_CASSETTE = 'instagram_api'
 
   def self.setup_vcr
-    VCR.configure do |c|
-      c.cassette_library_dir = CASSETTES_FOLDER
-      c.hook_into :webmock
+    VCR.configure do |config|
+      config.cassette_library_dir = CASSETTES_FOLDER
+      config.hook_into :webmock
     end
   end
 
+  # Unavoidable :reek:TooManyStatements for VCR configuration
   def self.configure_vcr_for_instagram
-    VCR.configure do |c|
-      c.filter_sensitive_data('<INSTAGRAM_TOKEN>') { INSTAGRAM_TOKEN }
-      c.filter_sensitive_data('<INSTAGRAM_TOKEN_ESC>') { CGI.escape(INSTAGRAM_TOKEN) }
+    VCR.configure do |config|
+      config.filter_sensitive_data('<INSTAGRAM_TOKEN>') { INSTAGRAM_TOKEN }
+      config.filter_sensitive_data('<INSTAGRAM_TOKEN_ESC>') { CGI.escape(INSTAGRAM_TOKEN) }
     end
 
     VCR.insert_cassette(
