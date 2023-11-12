@@ -14,7 +14,7 @@ module FlyHii
 
       def find(hashtag_name)
         @data = hashtag_name
-        build_entity(@data).hashtag_name
+        build_entity.hashtag_name
         hashtag_name_id = @gateway.hashtag(hashtag_name)
         hashtag_name_id['data'][0]['id']
       end

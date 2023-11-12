@@ -11,7 +11,7 @@ module FlyHii
     class Media < Dry::Struct
       include Dry.Types
 
-      attribute :id,              Strict::String
+      attribute :id,              Strict::String.optional
       attribute :caption,         Strict::String
       attribute :comments_count,  Strict::Integer
       attribute :like_count,      Strict::Integer.optional
