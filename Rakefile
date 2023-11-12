@@ -28,8 +28,6 @@ task :rerun do
   sh "rerun -c --ignore 'coverage/*' -- bundle exec puma"
 end
 
-<<<<<<< HEAD
-=======
 namespace :db do
   task :config do
     require 'sequel'
@@ -74,7 +72,6 @@ task :console do
   sh 'pry -r ./load_all'
 end
 
->>>>>>> 1c893fb (database_1)
 namespace :vcr do
   desc 'delete cassette fixtures'
   task :wipe do

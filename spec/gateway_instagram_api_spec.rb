@@ -1,27 +1,26 @@
 # frozen_string_literal: true
 
 require_relative 'spec_helper'
+require_relative 'helpers/vcr_helper'
 
 describe 'Tests Instagram API library' do
-  VCR.configure do |c|
-    c.cassette_library_dir = CASSETTES_FOLDER
-    c.hook_into :webmock
-
-    c.filter_sensitive_data('<INSTAGRAM_TOKEN>') { INSTAGRAM_TOKEN }
-    c.filter_sensitive_data('<INSTAGRAM_TOKEN_ESC>') { CGI.escape(INSTAGRAM_TOKEN) }
-  end
-
   before do
-    VCR.insert_cassette CASSETTE_FILE,
-                        record: :new_episodes,
-                        match_requests_on: %i[method uri headers]
+    VcrHelper.configure_vcr_for_instagram
   end
 
   after do
-    VCR.eject_cassette
+    VcrHelper.eject_vcr
   end
 
   describe 'Media information' do
+    before do
+      @media_info = FlyHii::Instagram::MediaMapper
+        .new(INSTAGRAM_TOKEN, ACCOUNT_ID)
+        .find(HASHTAG_ID)
+    end
+
+    # wait for revise
+
     it 'HAPPY: should provide correct media attributes' do
       media_info =
         FlyHii::Instagram::MediaMapper
