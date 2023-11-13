@@ -8,13 +8,12 @@ Sequel.migration do
       primary_key :id
       foreign_key :hashtag_id, :hashtags
 
-      # String      :media_id, unique: true
       String      :caption, null: false
       Integer     :like_count
       Integer     :comments_count
       String      :media_url
       DateTime    :timestamp
-      
+
       DateTime :created_at
       DateTime :updated_at
     end

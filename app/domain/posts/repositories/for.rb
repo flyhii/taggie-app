@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require_relative 'members'
-require_relative 'projects'
+require_relative 'hashtags'
+require_relative 'posts'
 
-module CodePraise
+module FlyHii
   module Repository
     # Finds the right repository for an entity object or class
     module For
       ENTITY_REPOSITORY = {
-        Entity::Project => Projects,
-        Entity::Member => Members
+        Entity::Media => Posts,
+        Entity::Hashtag => Hashtags
       }.freeze
 
       def self.klass(entity_klass)

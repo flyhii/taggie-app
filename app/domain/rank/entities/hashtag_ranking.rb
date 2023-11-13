@@ -9,7 +9,6 @@ module FlyHii
   module Entity
     # Entity for a one line of code from a contributor
     class HashtagRanking
-
       attr_reader :contributor, :code, :time, :number
 
       def initialize(contributor:, code:, time:, number:)
