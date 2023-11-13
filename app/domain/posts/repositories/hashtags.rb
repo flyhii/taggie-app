@@ -46,7 +46,7 @@ module FlyHii
       end
 
       def self.rebuild_entity(db_record)
-        return nil unless db_record
+        # return nil unless db_record
 
         # Entity::Hashtag.new(
         #   db_record.to_hash.merge(

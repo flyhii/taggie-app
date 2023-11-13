@@ -33,11 +33,11 @@ module FlyHii
           # GET /hashtag/topmedia
           routing.get do
             hashtag_id = Instagram::HashtagMapper
-              .new(INSTAGRAM_TOKEN, ACCOUNT_ID)
+              .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
               .find(hashtag_name)
 
             instagram_media = Instagram::MediaMapper
-              .new(INSTAGRAM_TOKEN, ACCOUNT_ID)
+              .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
               .find(hashtag_id)
 
             view 'media', locals: { media: instagram_media }
