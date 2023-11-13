@@ -52,6 +52,7 @@ namespace :db do
     end
 
     require_app('infrastructure')
+    require_relative 'spec/helpers/database_helper'
     DatabaseHelper.wipe_database
   end
 
@@ -62,8 +63,32 @@ namespace :db do
       return
     end
 
-    FileUtils.rm(FlyHii::App.config.DB_FILENAME)
-    puts "Deleted #{FlyHii::App.config.DB_FILENAME}"
+    FileUtils.rm(app.config.DB_FILENAME)
+    puts "Deleted #{app.config.DB_FILENAME}"
+  end
+end
+
+namespace :repos do
+  task :config do
+    require_relative 'config/environment' # load config info
+    def app = FlyHii::App
+  end
+
+  desc 'Create director for repo store'
+  task :create => :config do
+    puts `mkdir #{app.config.REPOSTORE_PATH}`
+  end
+
+  desc 'Delete cloned repos in repo store'
+  task :wipe => :config do
+    sh "rm -rf #{app.config.REPOSTORE_PATH}/*/" do |ok, _|
+      puts(ok ? 'Cloned repos deleted' : 'Could not delete cloned repos')
+    end
+  end
+
+  desc 'List cloned repos in repo store'
+  task :list => :config do
+    puts `ls #{app.config.REPOSTORE_PATH}`
   end
 end
 

@@ -1,22 +1,16 @@
-# Instagram API client
+# FlyHii
 
-Project to gather account and post information from Instagram API
+Application that allow client to use interesting hashtag searching top 50 post.
 
-## Resources
+## Overview
 
-- User name
-- User Account Information
-- Post Count
-- Post Content
+FlyHii will pull data from Instagram's API.
 
-## Elements
+## Objectives
 
-- User Information
-  - list personal user information
-  - list user status
-- Post Information
-  - id
-  - post content
+### Short-term usability goals
+
+### Long-term goals
 
 ## Entities
 
@@ -25,21 +19,19 @@ These are objects that are important to the post inquiry system, following our t
 - Account (all the information about personal user account)
 - Post (Be post by account)
 
-## Install
-
-## Setting up this script
+## Setup
 
 - Create a personal Instagram API access token in https://developers.facebook.com/docs/instagram-basic-display-api
 - Copy `config/secrets_example.yml` to `config/secrets.yml` and update token
 - Ensure correct version of Ruby install (see `.ruby-version` for `rbenv`)
 - Run `bundle install`
+- Run `bundle exec rake db:migrate` to create dev database
+- Run `RACK_ENV=test bundle exec rake db:migrate` to create test database
 
-## Running this script
+## Running tests
 
-To create fixtures, run:
+To run tests:
 
 ```shell
-ruby lib/account_info.rb
+rake spec
 ```
-
-Fixture data should appear in `spec/fixtures/` folder

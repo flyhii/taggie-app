@@ -4,14 +4,13 @@ require 'http'
 require 'httparty'
 require 'yaml'
 
-require_relative '../../models/mappers/hashtag_mapper'
-require_relative '../../models/mappers/media_mapper'
+require_relative '../../domain/posts/mappers/hashtag_mapper'
+require_relative '../../domain/posts/mappers/media_mapper'
 
 module FlyHii
   module Instagram
     # Library for Github Web API
     class Api
-
       API_PROJECT_ROOT = 'https://graph.facebook.com/v18.0'
       FIELDS = 'id,caption,comments_count,like_count,timestamp,media_url,children,media_type'
 

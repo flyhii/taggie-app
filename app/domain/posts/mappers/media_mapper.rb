@@ -18,13 +18,13 @@ module FlyHii
         # puts one_media = build_entity(data)
         # one_media
         @data = media_content['data']
-        @data.map do |post|
-          build_entity(post)
-        end
+        build_entity
       end
 
       def build_entity
-        DataMapper.new(@data).build_entity
+        @data.map do |post|
+          DataMapper.new(post).build_entity
+        end
       end
 
       # Extracts entity specific elements from data structure

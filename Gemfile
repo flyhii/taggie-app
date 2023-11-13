@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
+ruby File.read('.ruby-version').strip
 
 # Configuration and Utilities
 gem 'figaro', '~> 1.0'
@@ -18,6 +19,7 @@ gem 'dry-types', '~> 1.0'
 
 # Networking
 gem 'http', '~> 5.0'
+gem 'httparty'
 
 # Database
 gem 'hirb'
@@ -26,6 +28,10 @@ gem 'sequel', '~> 5.0'
 
 group :development, :test do
   gem 'sqlite3', '~> 1.0'
+end
+
+group :production do
+  gem 'pg'
 end
 
 # Testing

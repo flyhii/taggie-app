@@ -3,6 +3,7 @@
     IrresponsibleModule:
       enabled: false
   exclude_paths:
-    - _snippets
-    - lib/test.rb # one-time test fixture creator
-    
+    - _snippets                         # demo files ignored
+    - spec/fixtures/media_info.rb     # one-time test fixture creator
+    - spec/helpers/database_helper.rb   # test helper file not considered
+    - spec/helpers/vcr_helper.rb        # test helper file not considered
