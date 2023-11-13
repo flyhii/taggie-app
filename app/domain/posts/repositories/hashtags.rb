@@ -3,9 +3,9 @@
 module FlyHii
   module Repository
     # Repository for Hashtag Entities
-    class Hahstags
+    class Hashtags
       def self.all
-        Database::HahstagOrm.all.map { |db_hashtag| rebuild_entity(db_hashtag) }
+        Database::HashtagOrm.all.map { |db_hashtag| rebuild_entity(db_hashtag) }
       end
 
       #   def self.find_full_name(owner_name, project_name)
@@ -46,7 +46,7 @@ module FlyHii
       end
 
       def self.rebuild_entity(db_record)
-        return nil unless db_record
+        # return nil unless db_record
 
         # Entity::Hashtag.new(
         #   db_record.to_hash.merge(

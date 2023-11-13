@@ -9,17 +9,16 @@ module FlyHii
   module Entity
     # Entity for a one line of code from a contributor
     class HashtagRanking
-      attr_reader :contributor, :code, :time, :number
-
-      def initialize(contributor:, code:, time:, number:)
-        @contributor = contributor
-        @code = code
-        @time = time
-        @number = number
+      def initialize(captions = GetCaption.sperate)
+        @captions = captions
       end
 
-      def credit
-        code.useless? ? NO_CREDIT : FULL_CREDIT
+      # sperate captions into hashtags
+      def hashtags
+        hashtags = @captions.map { |caption| caption.scan(/#([^\s]+)/) }
+        puts hashtags
+        count = hashtags.flatten.tally
+        puts count
       end
     end
   end
