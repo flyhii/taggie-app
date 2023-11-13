@@ -3,7 +3,7 @@
 module FlyHii
   module Repository
     # Repository for Hashtag Entities
-    class Hahstags
+    class Hashtags
       def self.all
         Database::HahstagOrm.all.map { |db_hashtag| rebuild_entity(db_hashtag) }
       end
