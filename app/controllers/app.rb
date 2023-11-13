@@ -7,7 +7,9 @@ module FlyHii
   # Web App
   class App < Roda
     plugin :render, engine: 'slim', views: 'app/views'
-    plugin :assets, css: 'style.css', path: 'app/views/assets'
+    plugin :public, root: 'app/views/public'
+    plugin :assets, path: 'app/views/assets',
+                    css: 'style.css', js: 'table_row_click.js'
     plugin :common_logger, $stderr
     plugin :halt
 
@@ -38,6 +40,9 @@ module FlyHii
               .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
               .find(hashtag_id)
 
+            # Add hashtag to database
+            Repository::For.entity(hashtag_name).create(hashtag_name)
+
             # Add media to database
             Repository::For.entity(instagram_media).create(instagram_media)
 
@@ -52,7 +57,7 @@ module FlyHii
             media = Repository::For.klass(Entity::Media)
               .find_media(hashtag_name)
 
-            # past media to  rank repository
+            # past media to rank repository
             GetMedia.new(media)
 
             view 'media', locals: { media: }
