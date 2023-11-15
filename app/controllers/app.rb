@@ -31,14 +31,14 @@ module FlyHii
             hashtag_name = routing.params['hashtag_name'].downcase
 
             # Get hashtag id from Instagram
-            hashtag_id = Instagram::HashtagMapper
+            hashtag = Instagram::HashtagMapper
               .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
               .find(hashtag_name)
 
             # Get media from Instagram
             instagram_media = Instagram::MediaMapper
               .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
-              .find(hashtag_id)
+              .find(hashtag.id)
 
             # Add hashtag to database
             Repository::For.entity(hashtag_name).create(hashtag_name)

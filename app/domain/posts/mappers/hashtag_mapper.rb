@@ -13,10 +13,10 @@ module FlyHii
       end
 
       def find(hashtag_name)
-        @data = hashtag_name
-        build_entity.hashtag_name
         hashtag_name_id = @gateway.hashtag(hashtag_name)
-        hashtag_name_id['data'][0]['id']
+        @data[0] = hashtag_name_id['data'][0]['id']
+        @data[1] = hashtag_name
+        build_entity.hashtag_name
       end
 
       def build_entity
@@ -31,12 +31,17 @@ module FlyHii
 
         def build_entity
           Entity::Hashtag.new(
+            id:,
             hashtag_name:
           )
         end
 
+        def hashtag_id
+          @data[0]
+        end
+
         def hashtag_name
-          @data
+          @data[1]
         end
       end
     end
