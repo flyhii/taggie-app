@@ -16,7 +16,7 @@ module FlyHii
         hashtag_name_id = @gateway.hashtag(hashtag_name)
         @data[0] = hashtag_name_id['data'][0]['id']
         @data[1] = hashtag_name
-        build_entity.hashtag_name
+        build_entity
       end
 
       def build_entity
@@ -36,7 +36,7 @@ module FlyHii
           )
         end
 
-        def hashtag_id
+        def api_id
           @data[0]
         end
 

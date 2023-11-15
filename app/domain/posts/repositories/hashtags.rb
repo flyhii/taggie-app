@@ -23,20 +23,20 @@ module FlyHii
         find_origin_id(entity.origin_id)
       end
 
-      def self.find_id(id)
-        db_record = Database::HashtagtOrm.first(id:)
+      def self.find_id(api_id)
+        db_record = Database::HashtagOrm.first(api_id:)
         rebuild_entity(db_record)
       end
 
       def self.find_name(hashtag_name)
-        db_record = Database::HashtagtOrm.first(hashtag_name:)
+        db_record = Database::HashtagOrm.first(hashtag_name:)
         rebuild_entity(db_record)
       end
 
-      # def self.find_origin_id(origin_id)
-      #   db_record = Database::HashtagtOrm.first(origin_id:)
-      #   rebuild_entity(db_record)
-      # end
+      def self.find_origin_id(origin_id)
+        db_record = Database::HashtagOrm.first(origin_id:)
+        rebuild_entity(db_record)
+      end
 
       def self.create(entity)
         raise 'Hashtag already exists' if find(entity)
@@ -46,14 +46,14 @@ module FlyHii
       end
 
       def self.rebuild_entity(db_record)
-        # return nil unless db_record
+        return nil unless db_record
 
-        # Entity::Hashtag.new(
-        #   db_record.to_hash.merge(
-        #     owner: Members.rebuild_entity(db_record.owner),
-        #     contributors: Members.rebuild_many(db_record.contributors)
-        #   )
-        # )
+        Entity::Hashtag.new(
+          db_record.to_hash.merge(
+            owner: Members.rebuild_entity(db_record.owner),
+            contributors: Members.rebuild_many(db_record.contributors)
+          )
+        )
       end
 
       # Helper class to persist project and its members to database
