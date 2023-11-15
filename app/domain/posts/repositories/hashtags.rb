@@ -4,6 +4,10 @@ module FlyHii
   module Repository
     # Repository for Hashtag Entities
     class Hashtags
+      def self.all
+        Database::HashtagOrm.all.map { |db_project| rebuild_entity(db_project) }
+      end
+
       def self.find_api_id(api_id)
         rebuild_entity Database::HashtagOrm.first(api_id:)
       end
