@@ -4,36 +4,63 @@ module FlyHii
   module Repository
     # Repository for Meida
     class Posts
-      def self.find_id(id)
-        rebuild_entity Database::MediaOrm.first(id:)
+      def self.all
+        Database::MediaOrm.all.map { |db_project| rebuild_entity(db_project) }
       end
 
-      def self.find_caption(caption)
-        rebuild_entity Database::MediaOrm.first(caption:)
+      def self.find(entity)
+        find_origin_id(entity.origin_id)
+      end
+
+      def self.find_id(id)
+        db_record = Database::MediaOrm.first(id:)
+        rebuild_entity(db_record)
+      end
+
+      def self.find_origin_id(origin_id)
+        db_record = Database::MediaOrm.first(origin_id:)
+        rebuild_entity(db_record)
+      end
+
+      def self.create(entity)
+        raise 'Project already exists' if find(entity)
+
+        db_project = PersistProject.new(entity).call
+        rebuild_entity(db_project)
       end
 
       def self.rebuild_entity(db_record)
         return nil unless db_record
 
         Entity::Media.new(
-          id: db_record.id,
-          # origin_id: db_record.origin_id,
-          caption: db_record.caption,
-          like_count: db_record.like_count,
-          comments_count: db_record.comments_count,
-          media_url: db_record.media_url,
-          timestamp: db_record.timestamp
+          db_record.to_hash.merge(
+            owner: Hashtags.rebuild_entity(db_record.owner),
+            contributors: Hashtags.rebuild_many(db_record.contributors)
+          )
         )
       end
 
-      def self.rebuild_many(db_records)
-        db_records.map do |db_post|
-          Posts.rebuild_entity(db_post)
+      # Helper class to persist project and its members to database
+      class PersistProject
+        def initialize(entity)
+          @entity = entity
         end
-      end
 
-      def self.db_find_or_create(entity)
-        Database::MediaOrm.find_or_create(entity.to_attr_hash)
+        def create_project
+          Database::MediaOrm.create(@entity.to_attr_hash)
+        end
+
+        def call
+          owner = Hashtags.db_find_or_create(@entity.owner)
+
+          create_project.tap do |db_project|
+            db_project.update(owner:)
+
+            @entity.contributors.each do |contributor|
+              db_project.add_contributor(Hashtags.db_find_or_create(contributor))
+            end
+          end
+        end
       end
     end
   end
