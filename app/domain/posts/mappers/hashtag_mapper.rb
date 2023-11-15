@@ -31,7 +31,7 @@ module FlyHii
 
         def build_entity
           Entity::Hashtag.new(
-            id:,
+            api_id:,
             hashtag_name:
           )
         end
