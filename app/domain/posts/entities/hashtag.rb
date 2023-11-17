@@ -13,7 +13,7 @@ module FlyHii
       attribute :hashtag_name, Strict::String
 
       def to_attr_hash
-        to_hash.except(:hashtag_name)
+        to_hash.except(:api_id, :hashtag_name)
       end
     end
   end
