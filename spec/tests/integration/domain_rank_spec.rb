@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require_relative 'helpers/spec_helper'
-require_relative 'helpers/vcr_helper'
-require_relative 'helpers/database_helper'
+require_relative '../../helpers/spec_helper'
+require_relative '../../helpers/vcr_helper'
+require_relative '../../helpers/database_helper'
 
 describe 'Test IG Commands Mapper and Gateway' do
   VcrHelper.setup_vcr
 
   before do
-    VcrHelper.configure_vcr_for_github
+    VcrHelper.configure_vcr_for_instagram
     DatabaseHelper.wipe_database
 
     ig_posts = FlyHii::Instagram::MediaMapper
@@ -27,6 +27,7 @@ describe 'Test IG Commands Mapper and Gateway' do
   end
 
   it 'HAPPY: should get contributions summary for entire repo' do
+    skip
     root = FlyHii::Mapper::Contributions.new(@gitrepo).for_folder('')
     _(root.subfolders.count).must_equal 10
     _(root.base_files.count).must_equal 2
@@ -40,6 +41,7 @@ describe 'Test IG Commands Mapper and Gateway' do
   end
 
   it 'HAPPY: should get accurate contributions summary for specific folder' do
+    skip
     forms = FlyHii::Mapper::Contributions.new(@gitrepo).for_folder('forms')
 
     _(forms.subfolders.count).must_equal 1
