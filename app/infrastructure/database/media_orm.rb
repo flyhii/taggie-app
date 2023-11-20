@@ -15,7 +15,7 @@ module FlyHii
       plugin :timestamps, update_on_create: true
 
       def self.find_or_create(media_info)
-        first(caption: media_info[:caption]) || create(media_info)
+        first(remote_id: media_info[:remote_id]) || create(media_info)
       end
     end
   end

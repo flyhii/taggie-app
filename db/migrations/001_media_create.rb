@@ -5,11 +5,14 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_table(:hashtags) do
+    create_table(:posts) do
       primary_key :id
 
-      String      :api_id
-      String      :hashtag_name, unique: true, null: false
+      String      :caption
+      Integer     :like_count
+      Integer     :comments_count
+      String      :media_url
+      DateTime    :timestamp
 
       DateTime :created_at
       DateTime :updated_at
