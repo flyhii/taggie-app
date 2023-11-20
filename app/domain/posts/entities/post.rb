@@ -3,7 +3,7 @@
 require 'dry-types'
 require 'dry-struct'
 
-require_relative 'hashtag'
+# require_relative 'hashtag'
 
 module FlyHii
   module Entity

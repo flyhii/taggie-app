@@ -25,8 +25,6 @@ module FlyHii
 
       # GET /
       routing.root do
-        hashtag = Repository::For.klass(Entity::Hashtag).all
-        view 'home', locals: { hashtag: }
         # Get cookie viewer's previously searched hashtags
         session[:watching] ||= []
         hashtags = session[:watching]
