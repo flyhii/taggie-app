@@ -12,7 +12,8 @@ module FlyHii
         @data = []
       end
 
-      def find(hashtag_id)
+      def find(hashtag_name)
+        hashtag_id = HashtagMapper.new(@token, @ig_user_id).find(hashtag_name)
         media_content = @gateway.media(hashtag_id)
         # data = media_content['data'][0]
         # puts one_media = build_entity(data)
@@ -34,24 +35,30 @@ module FlyHii
         end
 
         def build_entity
-          Entity::Media.new(
-            id:,
+          Entity::Post.new(
+            id: nil,
+            remote_id:,
             caption:,
+            tags:,
             comments_count:,
             like_count:,
             timestamp:,
-            media_url:,
-            children:,
-            media_type:
+            media_url:
+            # children:,
+            # media_type:
           )
         end
 
-        def id
-          @data['id']
+        def remote_id
+          @data['remote_id']
+        end
+        
+        def caption
+          @data['caption'].scan(/#([^\s]+)/).flatten
         end
 
-        def caption
-          @data['caption']
+        def tags
+          @data['tags']
         end
 
         def comments_count

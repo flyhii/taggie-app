@@ -14,35 +14,7 @@ module FlyHii
 
       def find(hashtag_name)
         hashtag_name_id = @gateway.hashtag(hashtag_name)
-        @data[0] = hashtag_name_id['data'][0]['id']
-        @data[1] = hashtag_name
-        build_entity
-      end
-
-      def build_entity
-        DataMapper.new(@data).build_entity
-      end
-
-      # Extracts entity specific elements from data structure
-      class DataMapper
-        def initialize(data)
-          @data = data
-        end
-
-        def build_entity
-          Entity::Hashtag.new(
-            api_id:,
-            hashtag_name:
-          )
-        end
-
-        def api_id
-          @data[0]
-        end
-
-        def hashtag_name
-          @data[1]
-        end
+        hashtag_name_id['data'][0]['id']
       end
     end
   end
