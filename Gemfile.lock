@@ -163,7 +163,7 @@ PLATFORMS
 DEPENDENCIES
   dry-struct (~> 1.0)
   dry-types (~> 1.0)
-  figaro (~> 1.0)
+  figaro (~> 1.2)
   flog
   headless (~> 2.3)
   hirb
