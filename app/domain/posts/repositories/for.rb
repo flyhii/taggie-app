@@ -8,8 +8,8 @@ module FlyHii
     # Finds the right repository for an entity object or class
     module For
       ENTITY_REPOSITORY = {
-        Entity::Hashtag => Hashtags,
-        Entity::Media   => Posts
+        # Entity::Hashtag => Hashtags,
+        Entity::Post   => Posts
       }.freeze
 
       def self.klass(entity_klass)
