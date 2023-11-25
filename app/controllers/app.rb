@@ -16,7 +16,7 @@ module FlyHii
                     css: 'style.css', js: 'table_row.js'
     plugin :common_logger, $stderr
 
-    use Rack::MethodOverride # allows HTTP verbs beyond GET/POST (e.g., DELETE)
+    # use Rack::MethodOverride # allows HTTP verbs beyond GET/POST (e.g., DELETE)
 
     route do |routing|
       routing.assets # load CSS
@@ -84,7 +84,7 @@ module FlyHii
             path = request.remaining_path
             folder_name = path.empty? ? '' : path[1..]
 
-            # Get project from database instead of Instagram
+            # Get post from database instead of Instagram
             begin
               posts = Repository::For.klass(Entity::Post)
                 .find_(hashtag_posts)

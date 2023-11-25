@@ -9,7 +9,7 @@ module FlyHii
     module For
       ENTITY_REPOSITORY = {
         # Entity::Hashtag => Hashtags,
-        Entity::Post   => Posts
+        Entity::Post => Posts
       }.freeze
 
       def self.klass(entity_klass)
