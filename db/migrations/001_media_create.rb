@@ -8,11 +8,13 @@ Sequel.migration do
     create_table(:posts) do
       primary_key :id
 
+      String      :remote_id
       String      :caption
-      Integer     :like_count
+      String      :tags
       Integer     :comments_count
+      Integer     :like_count
+      Time        :timestamp
       String      :media_url
-      DateTime    :timestamp
 
       DateTime :created_at
       DateTime :updated_at

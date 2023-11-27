@@ -51,8 +51,8 @@ module FlyHii
               posts = Instagram::MediaMapper
                 .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
                 .find(hashtag_name)
-            rescue StandardError => e
-              App.logger.error e.backtrace.join("DB READ PROJ\n")
+            rescue StandardError => err
+              App.logger.error err.backtrace.join("DB READ PROJ\n")
               flash[:error] = 'Could not find that Hashtag'
               routing.redirect '/'
             end
@@ -62,7 +62,7 @@ module FlyHii
               Repository::For.entity(post).create(post)
             end
 
-            # Add new project to watched set in cookies
+            # Add new hashtag to watched set in cookies
             session[:watching].insert(0, hashtag_name).uniq!
 
             # Redirect viewer to hashtag page

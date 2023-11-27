@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'hashtags'
+
 module FlyHii
   module Repository
     # Repository for Meida
@@ -25,24 +27,17 @@ module FlyHii
       def self.create(entity)
         raise 'Post already exists' if find(entity)
 
-        db_post = PersistPost.new(entity).call ### TODO: Do we need this?
+        db_post = PersistPost.new(entity).call
         rebuild_entity(db_post)
       end
 
       def self.rebuild_entity(db_record)
         return nil unless db_record
-
-        ### TODO: change to Entity::Post
-        Entity::Post.new(
-          db_record.to_hash.merge(
-            owner: Hashtags.rebuild_entity(db_record.owner),
-            contributors: Hashtags.rebuild_many(db_record.contributors)
-          )
-        )
+        Entity::Post.new(db_record)
       end
 
       # Helper class to persist post to database
-      class PersistPost
+      class PersistPost # second step
         def initialize(entity)
           @entity = entity
         end
@@ -52,15 +47,11 @@ module FlyHii
         end
 
         def call
-          owner = Hashtags.db_find_or_create(@entity.owner)
-
-          create_post.tap do |db_post|
-            db_post.update(owner:)
-
-            @entity.contributors.each do |contributor|
-              db_post.add_contributor(Hashtags.db_find_or_create(contributor))
-            end
-          end
+          create_post
+          Hashtags.db_find_or_create(@entity.tags)
+          # create_post.tap do |db_post|
+          #   db_post.update(tags:)
+          # end
         end
       end
     end

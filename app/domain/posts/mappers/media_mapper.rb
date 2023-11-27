@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'date'
+
 module FlyHii
   # Provides access to media data
   module Instagram
@@ -51,9 +53,9 @@ module FlyHii
             media_url:
           )
         end
-
+        
         def remote_id
-          @data['remote_id']
+          @data['id']
         end
 
         def caption
@@ -61,7 +63,7 @@ module FlyHii
         end
 
         def tags
-          @data['caption'].scan(/#([^\s]+)/).flatten
+          @data['caption'].scan(/#([^\s]+)/).flatten.join(' ')
         end
 
         def comments_count
@@ -73,7 +75,7 @@ module FlyHii
         end
 
         def timestamp
-          @data['timestamp']
+          Time.parse(@data['timestamp'])
         end
 
         def media_url
