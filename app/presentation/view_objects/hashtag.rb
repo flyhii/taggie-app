@@ -12,12 +12,16 @@ module Views
       @hashtag
     end
 
+    def post_link
+      "/hashtag/#{hashtag_name}"
+    end
+
     def hashtag_name
       @hashtag.hashtag_name
     end
 
     def index_str
-      "project[#{@index}]"
+      "hashtag[#{@index}]"
     end
   end
 end

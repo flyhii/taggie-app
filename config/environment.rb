@@ -23,8 +23,14 @@ module FlyHii
 
     use Rack::Session::Cookie, secret: config.SESSION_SECRET
 
+    configure :app_test do
+      require_relative '../spec/helpers/vcr_helper'
+      VcrHelper.setup_vcr
+      VcrHelper.configure_vcr_for_instagram(recording: :none)
+    end
+
     # Database Setup
-    configure :development, :test do
+    configure :development, :test, :app_test do
       require 'pry'; # for breakpoints
       ENV['DATABASE_URL'] = "sqlite://#{config.DB_FILENAME}"
     end

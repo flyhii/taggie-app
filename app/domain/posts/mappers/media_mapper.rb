@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'date'
+
 module FlyHii
   # Provides access to media data
   module Instagram
@@ -9,21 +11,26 @@ module FlyHii
         @token = ig_token
         @ig_user_id = user_id
         @gateway = gateway_class.new(@token, @ig_user_id)
-        @data = []
+        @posts = []
       end
 
       def find(hashtag_name)
-        hashtag_id = HashtagMapper.new(@token, @ig_user_id).find(hashtag_name)
-        media_content = @gateway.media(hashtag_id)
-        # data = media_content['data'][0]
-        # puts one_media = build_entity(data)
-        # one_media
-        @data = media_content['data']
+        hashtag_id = get_hashtag_id(hashtag_name)
+        @posts = get_media_content(hashtag_id)
         build_entity
       end
 
+      def get_hashtag_id(hashtag_name)
+        HashtagMapper.new(@token, @ig_user_id).find(hashtag_name)
+      end
+
+      def get_media_content(hashtag_id)
+        media_content = @gateway.media(hashtag_id)
+        media_content['data']
+      end
+
       def build_entity
-        @data.map do |post|
+        @posts.map do |post|
           DataMapper.new(post).build_entity
         end
       end
@@ -44,21 +51,19 @@ module FlyHii
             like_count:,
             timestamp:,
             media_url:
-            # children:,
-            # media_type:
           )
         end
 
         def remote_id
-          @data['remote_id']
+          @data['id']
         end
-        
+
         def caption
-          @data['caption'].scan(/#([^\s]+)/).flatten
+          @data['caption']
         end
 
         def tags
-          @data['tags']
+          @data['caption'].scan(/#([^\s]+)/).flatten.join(' ')
         end
 
         def comments_count
@@ -70,19 +75,11 @@ module FlyHii
         end
 
         def timestamp
-          @data['timestamp']
+          Time.parse(@data['timestamp'])
         end
 
         def media_url
           @data['media_url']
-        end
-
-        def children
-          @data['children']
-        end
-
-        def media_type
-          @data['media_type']
         end
       end
     end

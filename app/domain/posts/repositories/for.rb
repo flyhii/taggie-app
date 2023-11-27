@@ -8,7 +8,7 @@ module FlyHii
     # Finds the right repository for an entity object or class
     module For
       ENTITY_REPOSITORY = {
-        # Entity::Hashtag => Hashtags,
+        Value::Hashtag => Hashtags,
         Entity::Post   => Posts
       }.freeze
 

@@ -9,7 +9,6 @@ Sequel.migration do
       primary_key :id
       # foreign_key :media_id, :posts
 
-      String      :api_id
       String      :hashtag_name, unique: true, null: false
 
       DateTime :created_at
