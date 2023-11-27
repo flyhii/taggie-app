@@ -12,11 +12,11 @@ module FlyHii
       attribute :hashtag_name, Strict::String
 
       def initialize(hashtag_name)
-        self.hashtag_name = hashtag_name
+        super(self.hashtag_name = hashtag_name)
       end
 
       def to_attr_hash
-        { hashtag_name: hashtag_name }
+        { hashtag_name: }
       end
     end
   end

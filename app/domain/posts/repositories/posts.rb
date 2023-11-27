@@ -33,11 +33,12 @@ module FlyHii
 
       def self.rebuild_entity(db_record)
         return nil unless db_record
+
         Entity::Post.new(db_record)
       end
 
       # Helper class to persist post to database
-      class PersistPost # second step
+      class PersistPost
         def initialize(entity)
           @entity = entity
         end

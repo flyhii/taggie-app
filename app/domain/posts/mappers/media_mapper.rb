@@ -53,7 +53,7 @@ module FlyHii
             media_url:
           )
         end
-        
+
         def remote_id
           @data['id']
         end

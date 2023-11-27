@@ -51,8 +51,8 @@ module FlyHii
               posts = Instagram::MediaMapper
                 .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
                 .find(hashtag_name)
-            rescue StandardError => err
-              App.logger.error err.backtrace.join("DB READ PROJ\n")
+            rescue StandardError => e
+              App.logger.error e.backtrace.join("DB READ PROJ\n")
               flash[:error] = 'Could not find that Hashtag'
               routing.redirect '/'
             end

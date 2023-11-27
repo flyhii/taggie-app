@@ -27,15 +27,14 @@ module FlyHii
       end
 
       def self.rebuild_many(db_records)
-
         db_records.map do |db_hashtag|
           Hashtags.rebuild_value(db_hashtag)
         end
       end
 
       def self.db_find_or_create(value)
-        tags = value.split(' ')
-        tags = self.rebuild_many(tags)
+        tags = value.split
+        tags = rebuild_many(tags)
 
         tags.map do |hashtag|
           puts hashtag.hashtag_name
