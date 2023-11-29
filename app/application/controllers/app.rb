@@ -6,7 +6,7 @@ require 'slim/include'
 
 require_relative 'helpers'
 
-module CodePraise
+module FlyHii
   # Web App
   class App < Roda
     include RouteHelpers
@@ -21,7 +21,7 @@ module CodePraise
     plugin :common_logger, $stderr
 
     MSG_GET_STARTED = 'Search for a Hashtag to get started'
-    MSG_PROJECT_ADDED = 'Project added to your list'
+    MSG_POST_ADDED = 'Post added to your list'
 
     route do |routing|
       routing.assets # load CSS
@@ -33,43 +33,44 @@ module CodePraise
         # Get cookie viewer's previously seen hashtags
         session[:watching] ||= []
 
-        result = Service::ListProjects.new.call(session[:watching])
+        result = Service::ListPosts.new.call(session[:watching])
 
         if result.failure?
           flash[:error] = result.failure
-          viewable_projects = []
+          viewable_posts = []
         else
-          projects = result.value!
-          flash.now[:notice] = MSG_GET_STARTED if projects.none?
+          posts = result.value!
+          flash.now[:notice] = MSG_GET_STARTED if posts.none?
 
-          session[:watching] = projects.map(&:fullname)
-          viewable_projects = Views::ProjectsList.new(projects)
+          session[:watching] = posts.map(&:fullname)
+          viewable_posts = Views::PostsList.new(posts)
         end
 
-        view 'home', locals: { projects: viewable_projects }
+        view 'home', locals: { post: viewable_posts }
       end
 
-      routing.on 'project' do
+      routing.on 'post' do
         routing.is do
-          # POST /project/
+          # POST /post/
           routing.post do
-            url_request = Forms::NewProject.new.call(routing.params)
-            project_made = Service::AddProject.new.call(url_request)
+            url_request = Forms::NewPost.new.call(routing.params)
+            post_made = Service::AddPost.new.call(url_request)
 
-            if project_made.failure?
-              flash[:error] = project_made.failure
+            if post_made.failure?
+              flash[:error] = post_made.failure
               routing.redirect '/'
             end
 
-            project = project_made.value!
-            session[:watching].insert(0, project.fullname).uniq!
-            flash[:notice] = MSG_PROJECT_ADDED
-            routing.redirect "project/#{project.owner.username}/#{project.name}"
+            post = post_made.value!
+            session[:watching].insert(0, post.fullname).uniq!
+            flash[:notice] = MSG_POST_ADDED
+            routing.redirect "project/#{post.owner.username}/#{post.name}"
           end
         end
 
+        # can skip?
         routing.on String, String do |owner_name, project_name|
-          # DELETE /project/{owner_name}/{project_name}
+          # DELETE /post/{owner_name}/{project_name}
           routing.delete do
             fullname = "#{owner_name}/#{project_name}"
             session[:watching].delete(fullname)
@@ -79,13 +80,13 @@ module CodePraise
 
           # GET /project/{owner_name}/{project_name}[/folder_namepath/]
           routing.get do
-            path_request = ProjectRequestPath.new(
+            path_request = PostRequestPath.new(
               owner_name, project_name, request
             )
 
             session[:watching] ||= []
 
-            result = Service::AppraiseProject.new.call(
+            result = Service::AppraisePost.new.call(
               watched_list: session[:watching],
               requested: path_request
             )
@@ -96,11 +97,11 @@ module CodePraise
             end
 
             appraised = result.value!
-            proj_folder = Views::ProjectFolderContributions.new(
-              appraised[:project], appraised[:folder]
+            post_folder = Views::ProjectFolderContributions.new(
+              appraised[:post], appraised[:folder]
             )
 
-            view 'project', locals: { proj_folder: }
+            view 'post', locals: { post_folder: }
           end
         end
       end
