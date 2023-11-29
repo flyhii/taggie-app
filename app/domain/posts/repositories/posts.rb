@@ -27,6 +27,7 @@ module FlyHii
       def self.create(entity)
         raise 'Post already exists' if find(entity)
 
+        puts entity.remote_id
         db_post = PersistPost.new(entity).call
         rebuild_entity(db_post)
       end
@@ -44,12 +45,13 @@ module FlyHii
         end
 
         def create_post
+          puts @entity.remote_id
           Database::MediaOrm.create(@entity.to_attr_hash)
         end
 
         def call
-          create_post
           Hashtags.db_find_or_create(@entity.tags)
+          create_post
           # create_post.tap do |db_post|
           #   db_post.update(tags:)
           # end

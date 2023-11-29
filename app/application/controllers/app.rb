@@ -21,7 +21,7 @@ module FlyHii
     plugin :common_logger, $stderr
 
     MSG_GET_STARTED = 'Search for a Hashtag to get started'
-    MSG_POST_ADDED = 'Post added to your list'
+    # MSG_PROJECT_ADDED = 'Project added to your list'
 
     route do |routing|
       routing.assets # load CSS
@@ -33,28 +33,20 @@ module FlyHii
         # Get cookie viewer's previously seen hashtags
         session[:watching] ||= []
 
-        result = Service::ListPosts.new.call(session[:watching])
+        hashtags = session[:watching]
+        flash.now[:notice] = MSG_GET_STARTED if hashtags.none?
 
-        if result.failure?
-          flash[:error] = result.failure
-          viewable_posts = []
-        else
-          posts = result.value!
-          flash.now[:notice] = MSG_GET_STARTED if posts.none?
+        searched_hashtags = Views::HashtagsList.new(hashtags)
 
-          session[:watching] = posts.map(&:fullname)
-          viewable_posts = Views::PostsList.new(posts)
-        end
-
-        view 'home', locals: { post: viewable_posts }
+        view 'home', locals: { hashtags: searched_hashtags }
       end
 
-      routing.on 'post' do
+      routing.on 'media' do
         routing.is do
-          # POST /post/
+          # POST /hashtag_name/
           routing.post do
-            url_request = Forms::NewPost.new.call(routing.params)
-            post_made = Service::AddPost.new.call(url_request)
+            hashtag_name = Forms::HashtagName.new.call(routing.params)
+            project_made = Service::AddPost.new.call(hashtag_name)
 
             if post_made.failure?
               flash[:error] = post_made.failure

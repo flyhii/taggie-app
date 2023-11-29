@@ -11,10 +11,6 @@ module FlyHii
 
       attribute :hashtag_name, Strict::String
 
-      def initialize(hashtag_name)
-        super(self.hashtag_name = hashtag_name)
-      end
-
       def to_attr_hash
         { hashtag_name: }
       end

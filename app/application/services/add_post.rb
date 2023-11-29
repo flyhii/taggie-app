@@ -1,27 +1,29 @@
+# frozen_string_literal: true
+
 require 'dry/transaction'
 
-module CodePraise
+module FlyHii
   module Service
     # Transaction to store project from Github API to database
     class AddPost
       include Dry::Transaction
 
-      step :parse_url
-      step :find_post
-      step :store_post
+      step :get_name
+      step :find_project
+      step :store_project
 
       private
 
-      def parse_url(input)
+      def get_name(input)
         if input.success?
-          owner_name, project_name = input[:remote_url].split('/')[-2..]
-          Success(owner_name:, project_name:)
+          hashtag_name = input
+          Success(hashtag_name:)
         else
           Failure("URL #{input.errors.messages.first}")
         end
       end
 
-      def find_project(input)
+      def find_hashtag(input)
         if (project = project_in_database(input))
           input[:local_project] = project
         else
@@ -48,9 +50,9 @@ module CodePraise
       # following are support methods that other services could use
 
       def project_from_github(input)
-        Github::ProjectMapper
-          .new(App.config.GITHUB_TOKEN)
-          .find(input[:owner_name], input[:project_name])
+        Github::Instagram::MediaMapper
+          .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
+          .find(input)
       rescue StandardError
         raise 'Could not find that project on Github'
       end
