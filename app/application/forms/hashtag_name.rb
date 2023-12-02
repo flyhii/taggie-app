@@ -4,7 +4,7 @@ require 'dry-validation'
 
 module FlyHii
   module Forms
-    # Form validation for Github project URL
+    # Form validation for Instagram hashtag
     class HashtagName < Dry::Validation::Contract
       HASHTAG_REGEX = /\b\#[a-zA-Z]+(?<!;)\b/
       MSG_INVALID_FORMAT = 'Please enter a hashtag in the correct format'

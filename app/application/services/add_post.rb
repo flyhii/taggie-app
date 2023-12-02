@@ -4,13 +4,13 @@ require 'dry/transaction'
 
 module FlyHii
   module Service
-    # Transaction to store project from Github API to database
+    # Transaction to store post from Instagram API to database
     class AddPost
       include Dry::Transaction
 
       step :get_name
-      step :find_project
-      step :store_project
+      step :find_post
+      step :store_post
 
       private
 
@@ -24,10 +24,10 @@ module FlyHii
       end
 
       def find_hashtag(input)
-        if (project = project_in_database(input))
-          input[:local_project] = project
+        if (post = post_in_database(input))
+          input[:local_post] = post
         else
-          input[:remote_project] = project_from_github(input)
+          input[:remote_post] = post_from_instagram(input)
         end
         Success(input)
       rescue StandardError => error
@@ -36,8 +36,8 @@ module FlyHii
 
       def store_post(input)
         post =
-          if (new_proj = input[:remote_post])
-            Repository::For.entity(new_proj).create(new_proj)
+          if (new_po = input[:remote_post])
+            Repository::For.entity(new_po).create(new_po)
           else
             input[:local_post]
           end
@@ -49,12 +49,12 @@ module FlyHii
 
       # following are support methods that other services could use
 
-      def project_from_github(input)
+      def post_from_instagram(input)
         FlyHii::Instagram::MediaMapper
           .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
           .find(input)
       rescue StandardError
-        raise 'Could not find that post on Github'
+        raise 'Could not find that post on Instagram'
       end
 
       def post_in_database(input)

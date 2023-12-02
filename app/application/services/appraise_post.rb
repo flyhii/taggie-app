@@ -30,7 +30,7 @@ module FlyHii
           input[:requested].owner_name, input[:requested].post_name
         )
 
-        input[:post] ? Success(input) : Failure('Project not found')
+        input[:post] ? Success(input) : Failure('Post not found')
       rescue StandardError
         Failure('Having trouble accessing the database')
       end

@@ -41,9 +41,9 @@ describe 'Ranking Posts Service Integration Test' do
       _(posts).must_include db_post
     end
 
-    it 'HAPPY: should not return projects that are not being watched' do
-      # GIVEN: a valid project exists locally but is not being watched
-      ig_post = FlyHii::Instagram::ProjectMapper
+    it 'HAPPY: should not return posts that are not being watched' do
+      # GIVEN: a valid post exists locally but is not being watched
+      ig_post = FlyHii::Instagram::MediaMapper
         .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
         .find(hashtag_name)
       FlyHii::Repository::For.entity(ig_post)
