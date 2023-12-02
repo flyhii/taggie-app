@@ -2,7 +2,7 @@
 
 module Views
   # View for a single hashtag entity
-  class Hashtag
+  class HashtagsList
     def initialize(hashtag, index = nil)
       @hashtag = hashtag
       @index = index

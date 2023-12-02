@@ -46,7 +46,7 @@ module FlyHii
           # POST /hashtag_name/
           routing.post do
             hashtag_name = Forms::HashtagName.new.call(routing.params)
-            project_made = Service::AddPost.new.call(hashtag_name)
+            post_made = Service::AddPost.new.call(hashtag_name)
 
             if post_made.failure?
               flash[:error] = post_made.failure
@@ -56,13 +56,13 @@ module FlyHii
             post = post_made.value!
             session[:watching].insert(0, post.fullname).uniq!
             flash[:notice] = MSG_POST_ADDED
-            routing.redirect "project/#{post.owner.username}/#{post.name}"
+            routing.redirect "media/#{post.owner.username}/#{post.name}"
           end
         end
 
         # can skip?
         routing.on String, String do |owner_name, project_name|
-          # DELETE /post/{owner_name}/{project_name}
+          # DELETE /media/{owner_name}/{project_name}
           routing.delete do
             fullname = "#{owner_name}/#{project_name}"
             session[:watching].delete(fullname)
@@ -73,7 +73,7 @@ module FlyHii
           # GET /project/{owner_name}/{project_name}[/folder_namepath/]
           routing.get do
             path_request = PostRequestPath.new(
-              owner_name, project_name, request
+              post_name, request
             )
 
             session[:watching] ||= []
@@ -90,10 +90,10 @@ module FlyHii
 
             appraised = result.value!
             post_folder = Views::ProjectFolderContributions.new(
-              appraised[:post], appraised[:folder]
+              appraised[:media], appraised[:folder]
             )
 
-            view 'post', locals: { post_folder: }
+            view 'media', locals: { post_folder: }
           end
         end
       end

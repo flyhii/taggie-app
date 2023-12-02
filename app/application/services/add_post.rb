@@ -34,14 +34,14 @@ module FlyHii
         Failure(error.to_s)
       end
 
-      def store_project(input)
-        project =
-          if (new_proj = input[:remote_project])
+      def store_post(input)
+        post =
+          if (new_proj = input[:remote_post])
             Repository::For.entity(new_proj).create(new_proj)
           else
-            input[:local_project]
+            input[:local_post]
           end
-        Success(project)
+        Success(post)
       rescue StandardError => error
         App.logger.error error.backtrace.join("\n")
         Failure('Having trouble accessing the database')
@@ -50,15 +50,15 @@ module FlyHii
       # following are support methods that other services could use
 
       def project_from_github(input)
-        Github::Instagram::MediaMapper
+        FlyHii::Instagram::MediaMapper
           .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
           .find(input)
       rescue StandardError
-        raise 'Could not find that project on Github'
+        raise 'Could not find that post on Github'
       end
 
-      def project_in_database(input)
-        Repository::For.klass(Entity::Project)
+      def post_in_database(input)
+        Repository::For.klass(Entity::Post)
           .find_full_name(input[:owner_name], input[:project_name])
       end
     end
