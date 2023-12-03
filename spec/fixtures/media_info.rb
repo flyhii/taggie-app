@@ -5,19 +5,19 @@ require 'httparty'
 require 'yaml'
 
 config = YAML.safe_load_file('config/secrets.yml')
-API_PROJECT_ROOT = 'https://graph.facebook.com/v18.0'
+API_IG_ROOT = 'https://graph.facebook.com/v18.0'
 FIELDS = 'id,caption,comments_count,like_count,timestamp,media_url,children,media_type'
 HASHTAG_NAME = 'new'
 HASHTAG_ID = '17842307719068454'
 
 def get_hashtag_url(config)
-  url = "#{API_PROJECT_ROOT}/ig_hashtag_search?user_id=#{config['ACCOUNT_ID']}&q=#{HASHTAG_NAME}&access_token=#{config['INSTAGRAM_TOKEN']}"
+  url = "#{API_IG_ROOT}/ig_hashtag_search?user_id=#{config['ACCOUNT_ID']}&q=#{HASHTAG_NAME}&access_token=#{config['INSTAGRAM_TOKEN']}"
   # HTTParty.get(url)
   HTTParty.get(url).parsed_response['data']
 end
 
 def call_ig_url(config, hashtag_id)
-  url = "#{API_PROJECT_ROOT}/#{hashtag_id}/top_media?user_id=#{config['ACCOUNT_ID']}&fields=#{FIELDS}&access_token=#{config['INSTAGRAM_TOKEN']}"
+  url = "#{API_IG_ROOT}/#{hashtag_id}/top_media?user_id=#{config['ACCOUNT_ID']}&fields=#{FIELDS}&access_token=#{config['INSTAGRAM_TOKEN']}"
   # HTTParty.get(url)
   HTTParty.get(url).parsed_response['data']
 end
@@ -25,7 +25,7 @@ end
 ig_response = {}
 ig_results = {}
 
-## HAPPY project request
+## HAPPY post request
 # hashtag_id = get_hashtag_url(config)
 
 media_url = call_ig_url(config, HASHTAG_ID)
@@ -54,7 +54,7 @@ end
 # contributors.map { |c| c['login'] }
 # should be ["Yuan-Yu", "SOA-KunLin", "luyimin"]
 
-## BAD project request
+## BAD post request
 bad_hashtag_id = 'foobar'
 ig_response[bad_hashtag_id] = call_ig_url(config, bad_hashtag_id)
 # ig_response[bad_hashtag_id].parsed_response

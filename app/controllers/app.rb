@@ -66,7 +66,7 @@ module FlyHii
             session[:watching].insert(0, hashtag_name).uniq!
 
             # Redirect viewer to hashtag page
-            routing.redirect "/hashtag/#{hashtag_name}"
+            routing.redirect "/media/#{hashtag_name}"
           end
         end
 
@@ -105,7 +105,7 @@ module FlyHii
                 .new(gitrepo).for_folder(folder_name)
             rescue StandardError
               flash[:error] = 'Could not find that folder'
-              routing.redirect "/hashtag/#{hashtag_name}"
+              routing.redirect "/hashtag/#{folder}"
             end
 
             if media.empty?
