@@ -2,11 +2,15 @@
 
 require 'dry-validation'
 
-module CodePraise
+module FlyHii
   module Forms
-    # Form validation for Github project URL
+    # Form validation for Instagram url
+    # don't need this
     class NewPost < Dry::Validation::Contract
-      URL_REGEX = %r{(http[s]?)://(www.)?github\.com/.*/.*(?<!git)$}
+      API_IG_ROOT = 'https://graph.facebook.com/v18.0'
+      FIELDS = 'id,caption,comments_count,like_count,timestamp,media_url,children,media_type'
+
+      URL_REGEX = %r{(http[s]?)://(www.)?facebook\.com/.*/.*(?<!git)$}
       MSG_INVALID_URL = 'is an invalid address for a instagram hashtag'
 
       params do

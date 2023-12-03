@@ -9,7 +9,7 @@ module FlyHii
       include Dry::Transaction
 
       step :get_name
-      step :find_post
+      step :find_hashtag_name
       step :store_post
 
       private
@@ -23,7 +23,7 @@ module FlyHii
         end
       end
 
-      def find_hashtag(input)
+      def find_hashtag_name(input)
         if (post = post_in_database(input))
           input[:local_post] = post
         else
@@ -44,6 +44,7 @@ module FlyHii
         Success(post)
       rescue StandardError => error
         App.logger.error error.backtrace.join("\n")
+        puts 'add_post'
         Failure('Having trouble accessing the database')
       end
 

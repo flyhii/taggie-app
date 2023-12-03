@@ -15,13 +15,13 @@ describe 'Integration Tests of Instagram API and Database' do
     VcrHelper.eject_vcr
   end
 
-  describe 'Retrieve and store project' do
+  describe 'Retrieve and store post' do
     before do
       DatabaseHelper.wipe_database
     end
 
-    it 'HAPPY: should be able to save project from Github to database' do
-      ig_posts = FlyHii::Instagram::MediaMapper
+    it 'HAPPY: should be able to save post from Instagram to database' do
+      instagram_media = FlyHii::Instagram::MediaMapper
         .new(INSTAGRAM_TOKEN, ACCOUNT_ID)
         .find(HASHTAG_ID)
 
@@ -37,7 +37,7 @@ describe 'Integration Tests of Instagram API and Database' do
       _(rebuilt.media_type).must_equal(instagram_media.media_type)
       # _(rebuilt.contributors.count).must_equal(instagram_media.contributors.count)
 
-      # ig_posts.contributors.each do |member|
+      # instagram_media.contributors.each do |member|
       #   found = rebuilt.contributors.find do |potential|
       #     potential.origin_id == member.origin_id
       #   end

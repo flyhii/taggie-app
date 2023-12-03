@@ -14,6 +14,12 @@ module FlyHii
         find_remote_id(entity.remote_id)
       end
 
+      def self.find_full_name(hashtag_name)
+        db_info = Database::MediaOrm.all
+        # TODO: find_full_name for app/controller
+        rebuild_entity(db_info)
+      end
+
       # def self.find_id(id)
       #   db_record = Database::MediaOrm.first(id:)
       #   rebuild_entity(db_record)
