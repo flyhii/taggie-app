@@ -11,7 +11,7 @@ module FlyHii
   module Instagram
     # Library for Instagram Web API
     class Api
-      API_PROJECT_ROOT = 'https://graph.facebook.com/v18.0'
+      API_IG_ROOT = 'https://graph.facebook.com/v18.0'
       FIELDS = 'id,caption,comments_count,like_count,timestamp,media_url,children,media_type'
 
       def initialize(token, user_id)
@@ -20,12 +20,12 @@ module FlyHii
       end
 
       def hashtag(hashtag_name)
-        Request.new(API_PROJECT_ROOT, @ig_user_id, @ig_token)
+        Request.new(API_IG_ROOT, @ig_user_id, @ig_token)
           .hashtag_url(hashtag_name)
       end
 
       def media(hashtag_id)
-        Request.new(API_PROJECT_ROOT, @ig_user_id, @ig_token)
+        Request.new(API_IG_ROOT, @ig_user_id, @ig_token)
           .media_url(hashtag_id).parsed_response
       end
 

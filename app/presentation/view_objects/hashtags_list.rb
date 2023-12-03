@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Views
-  # View for a single project entity
-  class Hashtag
+  # View for a single hashtag entity
+  class HashtagsList
     def initialize(hashtag, index = nil)
       @hashtag = hashtag
       @index = index
