@@ -16,7 +16,9 @@ module FlyHii
                     css: 'style.css', js: 'table_row.js'
     plugin :common_logger, $stderr
 
-    # use Rack::MethodOverride # allows HTTP verbs beyond GET/POST (e.g., DELETE)
+    use Rack::MethodOverride # allows HTTP verbs beyond GET/POST (e.g., DELETE)
+
+    MSG_GET_STARTED = 'Search for a Hashtag to get started'
 
     route do |routing|
       routing.assets # load CSS
@@ -25,18 +27,19 @@ module FlyHii
 
       # GET /
       routing.root do
-        # Get cookie viewer's previously searched hashtags
+        # Get cookie viewer's previously seen hashtags
         session[:watching] ||= []
         hashtags = session[:watching]
+        flash.now[:notice] = MSG_GET_STARTED if hashtags.none?
 
-        hashtags.none? ? flash.now[:notice] = 'Search for a Hashtag to get started' : nil
+        searched_hashtags = Views::HashtagsList.new(hashtags)
 
-        view 'home', locals: { hashtags: }
+        view 'home', locals: { hashtags: searched_hashtags }
       end
 
       routing.on 'media' do
         routing.is do
-          # POST /hashtag_name/
+          # POST /media/
           routing.post do
             hashtag_name = routing.params['hashtag_name'].downcase
             unless !hashtag_name.include?(' ') &&
@@ -51,15 +54,20 @@ module FlyHii
               posts = Instagram::MediaMapper
                 .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
                 .find(hashtag_name)
-            rescue StandardError => e
-              App.logger.error e.backtrace.join("DB READ PROJ\n")
-              flash[:error] = 'Could not find that Hashtag'
+            rescue StandardError => err
+              App.logger.error err.backtrace.join("DB READ POST\n")
+              flash[:error] = 'Could not find that Post'
               routing.redirect '/'
             end
 
             # Add Posts to database
-            posts.map do |post|
-              Repository::For.entity(post).create(post)
+            begin
+              posts.map do |post|
+                Repository::For.entity(post).create(post)
+              end
+            rescue StandardError
+              flash[:error] = 'Post already exists'
+              routing.redirect '/'
             end
 
             # Add new hashtag to watched set in cookies
@@ -71,52 +79,53 @@ module FlyHii
         end
 
         routing.on String do |hashtag_name|
-          # DELETE /hashtag/{hashtag_name}
+          # DELETE /media/{hashtag_name}
           routing.delete do
-            hashtag_name = hashtag_name.to_s
-            session[:watching].delete(hashtag_name)
+            full_tag_name = hashtag_name.to_s
+            session[:watching].delete(full_tag_name)
 
             routing.redirect '/'
           end
 
-          # GET /hashtag/{hashtag_name}
+          # GET /media/{hashtag_name}
           routing.get do
             path = request.remaining_path
             folder_name = path.empty? ? '' : path[1..]
 
             # Get post from database instead of Instagram
             begin
+              puts hashtag_name
               posts = Repository::For.klass(Entity::Post)
-                .find_(hashtag_posts)
+                .find_full_name(hashtag_name)
 
               if posts.nil?
                 flash[:error] = 'Hashtag not found'
                 routing.redirect '/'
               end
             rescue StandardError
-              flash[:error] = 'Having trouble accessing the database'
+              flash[:error] = 'app Having trouble accessing the database'
               routing.redirect '/'
             end
 
             ### TODO: Ranking in different ways
             # Rank all hashtags by counting appearances in all posts
             begin
-              folder = Mapper::RankedList ### TODO: add ranker in Mapper
-                .new(gitrepo).for_folder(folder_name)
+              tags = Mapper::Ranking ### TODO: add ranker in Mapper
+                .new(tag_name)
             rescue StandardError
-              flash[:error] = 'Could not find that folder'
-              routing.redirect "/hashtag/#{folder}"
+              flash[:error] = 'Could not find those tags'
+              routing.redirect "/media/#{hashtag_name}"
             end
 
-            if media.empty?
-              flash[:error] = 'Could not find that folder'
-              routing.redirect "/hashtag/#{hashtag_name}"
+            if tags.empty?
+              flash[:error] = 'Could not find those tags'
+              routing.redirect "/media/#{hashtag_name}"
             end
 
-            # proj_folder = Views::RankedList.new(project, folder)
+            ranking_list = Views::RankedList.new(hashtag_name)
 
             # Show viewer the posts information
-            view 'media', locals: { media: }
+            view 'media', locals: { ranking_list: }
 
             # past media to rank repository
             # GetMedia.new(media)

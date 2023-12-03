@@ -21,7 +21,7 @@ module FlyHii
     plugin :common_logger, $stderr
 
     MSG_GET_STARTED = 'Search for a Hashtag to get started'
-    # MSG_PROJECT_ADDED = 'Project added to your list'
+    MSG_POST_ADDED = 'Post added to your list'
 
     route do |routing|
       routing.assets # load CSS
@@ -32,7 +32,6 @@ module FlyHii
       routing.root do
         # Get cookie viewer's previously seen hashtags
         session[:watching] ||= []
-
         hashtags = session[:watching]
         flash.now[:notice] = MSG_GET_STARTED if hashtags.none?
 
@@ -43,7 +42,7 @@ module FlyHii
 
       routing.on 'media' do
         routing.is do
-          # POST /hashtag_name/
+          # POST /media/
           routing.post do
             hashtag_name = Forms::HashtagName.new.call(routing.params)
             post_made = Service::AddPost.new.call(hashtag_name)
@@ -56,21 +55,20 @@ module FlyHii
             post = post_made.value!
             session[:watching].insert(0, post.fullname).uniq!
             flash[:notice] = MSG_POST_ADDED
-            routing.redirect "media/#{post.owner.username}/#{post.name}"
+            routing.redirect "media/#{hashtag_name}"
           end
         end
 
-        # can skip?
-        routing.on String, String do |owner_name, project_name|
-          # DELETE /media/{owner_name}/{project_name}
+        routing.on String, String do |hashtag_name|
+          # DELETE /media/hashtag_name
           routing.delete do
-            fullname = "#{owner_name}/#{project_name}"
+            fullname = "#{hashtag_name}"
             session[:watching].delete(fullname)
 
             routing.redirect '/'
           end
 
-          # GET /project/{owner_name}/{project_name}[/folder_namepath/]
+          # GET /media/hashtag_name/ranking
           routing.get do
             path_request = PostRequestPath.new(
               post_name, request
