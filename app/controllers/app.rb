@@ -89,9 +89,6 @@ module FlyHii
 
           # GET /media/{hashtag_name}
           routing.get do
-            # path = request.remaining_path
-            # folder_name = path.empty? ? '' : path[1..]
-
             # Get post from database instead of Instagram
             begin
               puts hashtag_name

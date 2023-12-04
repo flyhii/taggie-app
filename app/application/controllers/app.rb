@@ -60,7 +60,7 @@ module FlyHii
         end
 
         routing.on String, String do |hashtag_name|
-          # DELETE /media/hashtag_name
+          # DELETE /media/#{hashtag_name}
           routing.delete do
             fullname = "#{hashtag_name}"
             session[:watching].delete(fullname)
@@ -68,7 +68,7 @@ module FlyHii
             routing.redirect '/'
           end
 
-          # GET /media/hashtag_name/ranking
+          # GET /media/#{hashtag_name}/ranking
           routing.get do
             path_request = PostRequestPath.new(
               post_name, request

@@ -1021,4 +1021,86 @@ http_interactions:
         does not exist, cannot be loaded due to missing permissions, or does not support
         this operation. Please read the Graph API documentation at https:\/\/developers.facebook.com\/docs\/graph-api","type":"GraphMethodException","code":100,"error_subcode":33,"fbtrace_id":"A4x9c2rnjwbnX1yk423sCut"}}'
   recorded_at: Wed, 08 Nov 2023 16:58:49 GMT
+- request:
+    method: get
+    uri: https://graph.facebook.com/v18.0/ig_hashtag_search?access_token=<INSTAGRAM_TOKEN>&q=17842307719068454&user_id=17841462175987660
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 400
+      message: Bad Request
+    headers:
+      Vary:
+      - Accept-Encoding
+      - Origin
+      Cross-Origin-Resource-Policy:
+      - cross-origin
+      X-App-Usage:
+      - '{"call_count":0,"total_cputime":0,"total_time":0}'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Www-Authenticate:
+      - OAuth "Facebook Platform" "invalid_request" "The requested resource does not
+        exist"
+      Access-Control-Allow-Origin:
+      - "*"
+      Facebook-Api-Version:
+      - v18.0
+      Strict-Transport-Security:
+      - max-age=15552000; preload
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-store
+      Expires:
+      - Sat, 01 Jan 2000 00:00:00 GMT
+      X-Fb-Request-Id:
+      - AZowG9TXw8qjgnsF-EOfwsY
+      X-Fb-Trace-Id:
+      - BlrcQOlAwmo
+      X-Fb-Rev:
+      - '1010180241'
+      X-Fb-Debug:
+      - ZvP/mqLSHCK/djDD4AfyxiaVJvQqFjVmZYBRcBIvLZCha5QNuEjnzQrj3zyxQaU9KQhsqMh9btQGNux2o5uQsw==
+      Date:
+      - Mon, 04 Dec 2023 08:05:06 GMT
+      Proxy-Status:
+      - http_request_error; e_clientaddr="AcLqwiPEhZszTNO47oj7X8Pb_zG5JeSXV9NXFoH3QPFyA7nDL4dw0o5DNiV_CJFXgsKwQaogXk-4ndcLGJ3J4ZrLlw0ymHJ8BOoyynWvfsgZtQ";
+        e_fb_vipport="AcL6yDpXoj50LSI4pX08C6-uS2B2qcC5vrbovxZHqUkiZQa7ofES7ugOcVMW";
+        e_upip="AcIQmqZ0xtJ0hFPw2vq3NY1G2JjUG2OW9KhP81AsbTS2QmBGzuKDds0ku8XeC7wf6gIiDiZYO7atfyuQ2OXzTuzQPNKJ9Rpj5A";
+        e_fb_hostheader="AcIG1AvxQGQ2fV10ikBrv4u-XbWtN-M_TooteAEgCPeQ-CdmXmvSRqCna7y_h_QnXRU916BH_1fsrAeP";
+        e_fb_vipaddr="AcKzCtOPoVqrWMFsPZLQcrYleg083pnLl1Yji7le4c8AuWiMuzKZeFMzZSekd9ez86s6o26bWp4vVgoVKQsZ-Y7SJsl3RRHx";
+        e_fb_requesthandler="AcIp734jtoNOhht4nx0zio4peqdYozzejcw6QCyNNCLaU_X77C8KLKadJaz0_fmRUax9wePnxJo";
+        e_fb_builduser="AcJG9Pr-kJCqETUM6eF451huxsW3aKUCQ8ji7hbB6504htNiiZDXRFO7KYH34rrOsDU";
+        e_fb_binaryversion="AcKcp6ODWFusQFnTk91WZnYD6YbsWnJcg7IQ9yw2XVrzvMi1Xa5kzytTzRKoMU4lGJil0G7uAvoAL_STD2K7MuWvDMPNbxNs8aI";
+        e_proxy="AcIqi8Ws39SEev_c6VStk_VUV80UpnH3NEp1Nhyw6S8hVkWSikQ9ZuQgu9tAodEWlX2TZ_oz9OYOvuf3Gw4i",
+        http_request_error; e_clientaddr="AcKoPepgdRtNtvgg64F5FyPxZxqhRdn4JxnK6anCQzxjDGhGfnxHCYVUzhC5tPDaRltlvAlutKvzdydo5s8";
+        e_fb_vipport="AcKpj0JpROqSYR-uQ0H04GPu97yoj-3abIfKR7v7q38Rg7jsXOpyINJaSHk4";
+        e_upip="AcIin6dTAmnozRKx7RPflE8XGyv_nx9Cx_u2KrgjVc90WoO4d_Uy53cFGw2meXHszXXfq2z_05qX1hvxYub1VMungnd46hXD";
+        e_fb_hostheader="AcINbEy-id1AmsNn-F6WXe0t9ffyCtUl6s82pZjKTZz92-obSOldaFaHQWpNpZAaXmVxel_h6WWMAc3k";
+        e_fb_vipaddr="AcIxBrdcrp7JGEPQavg2-cDly2OgMRPpIexKyX-tYOslDL0ooVrNvhPOmAYVualN3t0w4A";
+        e_fb_requesthandler="AcIbC1Ur8GPTaZw7KeYAZrWb2e46abhdl33grWS2Wc800DpgaXdOhKRGYMN4-SyTVe3oKp943QQ";
+        e_fb_builduser="AcIN7I3ONt1M_dL-Ha2pDZRl-WQAA5TQkdXiIXHEdcjECeJ2Sif7AGOYyKlW6VDmrLE";
+        e_fb_binaryversion="AcJs5qQ71wk0ouXztM80zJKImzcnXvQz6BUanCJTNJCodsoD5oqkovjxEoyJ_fdsg2AXogYTJ2_8UFiV-3Us9UdnCUbTgMXiylo";
+        e_proxy="AcIxRglb-i9vUQ1HYl99Qhea_kv-kkUFUvsUtAfIZo2zrOBuSyytDUPpwst3dvLTOgqSSPeJA6daWcw"
+      Alt-Svc:
+      - h3=":443"; ma=86400
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '522'
+    body:
+      encoding: ASCII-8BIT
+      string: '{"error":{"message":"The requested resource does not exist","type":"OAuthException","code":24,"error_subcode":2207024,"is_transient":false,"error_user_title":"\u627e\u4e0d\u5230\u76f8\u7b26\u7684\u4e3b\u984c\u6a19\u7c64","error_user_msg":"\u7121\u6cd5\u986f\u793a\u7528\u6236\u8981\u6c42\u7684\u4e3b\u984c\u6a19\u7c64\u300c
+        17842307719068454 \u300d\uff0c\u539f\u56e0\u53ef\u80fd\u662f\u7f3a\u5c11\u6b0a\u9650\u3001\u4e3b\u984c\u6a19\u7c64\u7121\u6548\u6216\u4e0d\u5b58\u5728\u3002","fbtrace_id":"AZowG9TXw8qjgnsF-EOfwsY"}}'
+  recorded_at: Mon, 04 Dec 2023 08:05:05 GMT
 recorded_with: VCR 6.2.0
