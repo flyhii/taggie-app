@@ -93,7 +93,7 @@ module FlyHii
             begin
               puts hashtag_name
               posts = Repository::For.klass(Entity::Post)
-                .find_full_name(hashtag_name)
+                .find_full_name
 
               if posts.nil?
                 flash[:error] = 'Hashtag not found'
