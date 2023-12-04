@@ -89,8 +89,8 @@ module FlyHii
 
           # GET /media/{hashtag_name}
           routing.get do
-            path = request.remaining_path
-            folder_name = path.empty? ? '' : path[1..]
+            # path = request.remaining_path
+            # folder_name = path.empty? ? '' : path[1..]
 
             # Get post from database instead of Instagram
             begin
@@ -109,23 +109,23 @@ module FlyHii
 
             ### TODO: Ranking in different ways
             # Rank all hashtags by counting appearances in all posts
-            begin
-              tags = Mapper::Ranking ### TODO: add ranker in Mapper
-                .new(tag_name)
-            rescue StandardError
-              flash[:error] = 'Could not find those tags'
-              routing.redirect "/media/#{hashtag_name}"
-            end
+            # begin
+            #   tags = Mapper::Ranking ### TODO: add ranker in Mapper
+            #     .new(tag_name)
+            # rescue StandardError
+            #   flash[:error] = 'Having problem doing ranking'
+            #   routing.redirect '/'
+            # end
 
-            if tags.empty?
-              flash[:error] = 'Could not find those tags'
-              routing.redirect "/media/#{hashtag_name}"
-            end
+            # if tags.empty?
+            #   flash[:error] = 'Could not find those tags'
+            #   routing.redirect '/'
+            # end
 
-            ranking_list = Views::RankedList.new(hashtag_name)
+            # ranking_list = Views::RankedList.new(hashtag_name)
 
             # Show viewer the posts information
-            view 'media', locals: { ranking_list: }
+            view 'media', locals: { posts: }
 
             # past media to rank repository
             # GetMedia.new(media)

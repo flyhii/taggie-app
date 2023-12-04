@@ -17,7 +17,9 @@ module FlyHii
       def self.find_full_name(hashtag_name)
         db_info = Database::MediaOrm.all
         # TODO: find_full_name for app/controller
-        rebuild_entity(db_info)
+        db_info.map do |db_post|
+          rebuild_entity(db_post)
+        end
       end
 
       # def self.find_id(id)
