@@ -3,7 +3,6 @@
 require 'roda'
 require 'slim'
 require 'slim/include'
-
 require_relative 'helpers'
 
 module FlyHii
@@ -19,6 +18,8 @@ module FlyHii
     plugin :assets, path: 'app/presentation/assets',
                     css: 'style.css', js: 'table_row.js'
     plugin :common_logger, $stderr
+
+    use Rack::MethodOverride
 
     MSG_GET_STARTED = 'Search for a Hashtag to get started'
     MSG_POST_ADDED = 'Post added to your list'
