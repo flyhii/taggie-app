@@ -4,47 +4,68 @@ require 'http'
 require 'httparty'
 require 'yaml'
 
-require_relative '../../domain/posts/mappers/hashtag_mapper'
-require_relative '../../domain/posts/mappers/media_mapper'
-
 module FlyHii
-  module Instagram
-    # Library for Instagram Web API
+  module Gateway
+    # Infrastructure to call Instagram API
     class Api
-      API_IG_ROOT = 'https://graph.facebook.com/v18.0'
-      FIELDS = 'id,caption,comments_count,like_count,timestamp,media_url,children,media_type'
-
-      def initialize(token, user_id)
-        @ig_token = token
-        @ig_user_id = user_id
+      def initialize(config)
+        @config = config
+        @request = Request.new(@config)
       end
 
-      def hashtag(hashtag_name)
-        Request.new(API_IG_ROOT, @ig_user_id, @ig_token)
-          .hashtag_url(hashtag_name)
+      def alive?
+        @request.get_root.success?
       end
 
-      def media(hashtag_id)
-        Request.new(API_IG_ROOT, @ig_user_id, @ig_token)
-          .media_url(hashtag_id).parsed_response
+      def projects_list(list)
+        @request.projects_list(list)
+      end
+
+      def add_project(owner_name, project_name)
+        @request.add_project(owner_name, project_name)
+      end
+
+      # Gets appraisal of a project folder rom API
+      # - req: ProjectRequestPath
+      #        with #owner_name, #project_name, #folder_name, #project_fullname
+      def appraise(req)
+        @request.get_appraisal(req)
       end
 
       # request url
       class Request
-        def initialize(resource_root, ig_user_id, token)
-          @resource_root = resource_root
-          @user_id = ig_user_id
-          @token = token
+        def get_root # rubocop:disable Naming/AccessorMethodName
+          call_api('get')
         end
 
-        def hashtag_url(hashtag_name)
-          url = "#{@resource_root}/ig_hashtag_search?user_id=#{@user_id}&q=#{hashtag_name}&access_token=#{@token}"
-          InstagramApiResponseHandler.handle(url)
+        def posts_list(list)
+          call_api('get', ['posts'],
+                   'list' => Value::WatchedList.to_encoded(list))
         end
 
-        def media_url(hashtag_id)
-          url = "#{@resource_root}/#{hashtag_id}/top_media?user_id=#{@user_id}&fields=#{FIELDS}&access_token=#{@token}"
-          InstagramApiResponseHandler.handle(url)
+        def add_project(owner_name, project_name)
+          call_api('post', ['posts', owner_name, project_name])
+        end
+
+        def get_appraisal(req)
+          call_api('get', ['posts',
+                           req.owner_name, req.project_name, req.folder_name])
+        end
+
+        private
+
+        def params_str(params)
+          params.map { |key, value| "#{key}=#{value}" }.join('&')
+            .then { |str| str ? '?' + str : '' }
+        end
+
+        def call_api(method, resources = [], params = {})
+          api_path = resources.empty? ? @api_host : @api_root
+          url = [api_path, resources].flatten.join('/') + params_str(params)
+          HTTP.headers('Accept' => 'application/json').send(method, url)
+            .then { |http_response| Response.new(http_response) }
+        rescue StandardError
+          raise "Invalid URL request: #{url}"
         end
       end
 
@@ -67,24 +88,22 @@ module FlyHii
         end
       end
 
-      # Decorates HTTP responses from Instagram with success/error reporting
+      # Decorates HTTP responses with success/error
       class Response < SimpleDelegator
-        # Represents an unauthorized access error
-        Unauthorized = Class.new(StandardError)
-        # Represents a not found error
         NotFound = Class.new(StandardError)
 
-        HTTP_ERROR = {
-          401 => Unauthorized,
-          404 => NotFound
-        }.freeze
+        SUCCESS_CODES = (200..299).freeze
 
-        def successful?
-          HTTP_ERROR.keys.none?(code)
+        def success?
+          code.between?(SUCCESS_CODES.first, SUCCESS_CODES.last)
         end
 
-        def error
-          HTTP_ERROR[code]
+        def message
+          payload['message']
+        end
+
+        def payload
+          body.to_s
         end
       end
     end
