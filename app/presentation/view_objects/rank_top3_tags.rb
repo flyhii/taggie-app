@@ -3,9 +3,21 @@
 module Views
   # View for all ranked hashtags
   class RankedList
-    def initialize(hashtags, index = nil)
-      @hashtags = hashtags
+    def initialize(top3tags, index = nil)
+      @top3tags = top3tags
       @index = index
     end
+
+    
+
+
+
+
+
+
+
+
+
+
   end
 end
