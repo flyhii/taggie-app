@@ -54,8 +54,9 @@ module FlyHii
         routing.is do
           # POST /media/
           routing.post do
-            #must be input hashtag, but there is some wrong now
-            hashtag_name = Forms::HashtagName.new.call(routing.params)
+            puts routing.params['hashtag_name']
+            hashtag_name = Forms::HashtagName.new.call(routing.params['hashtag_name'])
+            puts "hashtagname = #{hashtag_name}"
             post_made = Service::AddPost.new.call(hashtag_name)
 
             #if the process of hashtag lead to increase the post has some wrong, lead to home page

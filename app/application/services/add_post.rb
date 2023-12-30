@@ -4,13 +4,13 @@ require 'dry/transaction'
 
 module FlyHii
   module Service
-    # Transaction to store post from Instagram API to database
+    # Transaction to store project from Github API to database
     class AddPost
       include Dry::Transaction
 
-      step :get_name
-      step :find_hashtag_name
-      step :store_post
+      step :validate_input
+      step :request_post
+      step :reify_post
 
       private
 
@@ -21,7 +21,7 @@ module FlyHii
           hashtag_name = input
           Success(hashtag_name:)
         else
-          Failure("URL #{input.errors.messages.first}")
+          Failure(input.errors.messages)
         end
       end
 
