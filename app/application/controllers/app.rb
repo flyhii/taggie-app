@@ -56,7 +56,9 @@ module FlyHii
         routing.is do
           # POST /media/
           routing.post do
-            hashtag_name = Forms::HashtagName.new.call(routing.params)
+            puts routing.params['hashtag_name']
+            hashtag_name = Forms::HashtagName.new.call(routing.params['hashtag_name'])
+            puts "hashtagname = #{hashtag_name}"
             post_made = Service::AddPost.new.call(hashtag_name)
 
             if post_made.failure?
