@@ -34,8 +34,9 @@ module FlyHii
       routing.root do
         # Get cookie viewer's previously seen hashtags
         session[:watching] ||= []
-
+        puts "session = #{session[:watching]}"
         result = Service::ListHashtags.new.call(session[:watching])
+        puts "result = #{result}"
         if result.failure?
           puts "fail"
           flash[:error] = result.failure
@@ -48,7 +49,6 @@ module FlyHii
           session[:watching] = hashtags.map(&:fullname)
           viewable_hashtags = Views::HashtagsList.new(hashtags)
         end
-
         view 'home', locals: { hashtags: viewable_hashtags }
       end
 
