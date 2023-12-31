@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
+require_relative 'list_request'
 require 'http'
-require 'httparty'
-require 'yaml'
 
 module FlyHii
   module Gateway
-    # Infrastructure to call Instagram API
+    # Infrastructure to call CodePraise API
     class Api
       def initialize(config)
         @config = config
@@ -17,46 +16,51 @@ module FlyHii
         @request.get_root.success?
       end
 
-      def projects_list(list)
-        @request.projects_list(list)
+      def hashtags_list(list)
+        @request.hashtags_list(list)
       end
 
-      def add_project(owner_name, project_name)
-        @request.add_project(owner_name, project_name)
+      def add_posts(hashtag_name)
+        @request.add_posts(hashtag_name)
       end
 
-      # Gets appraisal of a project folder rom API
+      # Gets rank of hashtags from API
       # - req: ProjectRequestPath
-      #        with #owner_name, #project_name, #folder_name, #project_fullname
-      def appraise(req)
-        @request.get_appraisal(req)
+      #        with #hashtag_name
+      def rank(req)
+        @request.get_rank(req)
       end
 
-      # request url
+      # HTTP request transmitter
       class Request
+        def initialize(config)
+          @api_host = config.API_HOST
+          @api_root = "#{config.API_HOST}/api/v1"
+        end
+
         def get_root # rubocop:disable Naming/AccessorMethodName
           call_api('get')
         end
 
-        def posts_list(list)
-          call_api('get', ['posts'],
+        def hashtags_list(list)
+          call_api('get', ['hashtags'],
                    'list' => Value::WatchedList.to_encoded(list))
         end
 
-        def add_project(owner_name, project_name)
-          call_api('post', ['posts', owner_name, project_name])
+        def add_posts(hashtag_name)
+          call_api('post', ['posts', hashtag_name])
         end
 
-        def get_appraisal(req)
-          call_api('get', ['posts',
-                           req.owner_name, req.project_name, req.folder_name])
+        def get_rank(req)
+          call_api('get', ['rank',
+                           req.hashtag_name])
         end
 
         private
 
         def params_str(params)
           params.map { |key, value| "#{key}=#{value}" }.join('&')
-            .then { |str| str ? '?' + str : '' }
+            .then { |str| str ? "?#{str}" : '' }
         end
 
         def call_api(method, resources = [], params = {})
@@ -69,30 +73,11 @@ module FlyHii
         end
       end
 
-      # increase one module to deal with HTTP request
-      module HTTPRequestHandler
-        def self.get(url)
-          HTTParty.get(url)
-        end
-      end
-
-      # take the get url response
-      class InstagramApiResponseHandler
-        def self.handle(url)
-          # use new HTTPRequestHandler
-          response = HTTPRequestHandler.get(url)
-
-          Response.new(response).tap do |inner_response|
-            raise(inner_response.error) unless inner_response.successful?
-          end
-        end
-      end
-
       # Decorates HTTP responses with success/error
       class Response < SimpleDelegator
         NotFound = Class.new(StandardError)
 
-        SUCCESS_CODES = (200..299).freeze
+        SUCCESS_CODES = (200..299)
 
         def success?
           code.between?(SUCCESS_CODES.first, SUCCESS_CODES.last)
