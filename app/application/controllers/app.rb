@@ -76,7 +76,7 @@ module FlyHii
         routing.on String, String do |hashtag_name|
           # DELETE /media/#{hashtag_name}
           routing.delete do
-            fullname = "#{hashtag_name}"
+            fullname = hashtag_name
             session[:watching].delete(fullname)
 
             routing.redirect '/'
