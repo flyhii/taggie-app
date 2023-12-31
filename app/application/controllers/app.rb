@@ -54,29 +54,33 @@ module FlyHii
         routing.is do
           # POST /media/
           routing.post do
+            #must be input hashtag, but there is some wrong now
             hashtag_name = Forms::HashtagName.new.call(routing.params)
             post_made = Service::AddPost.new.call(hashtag_name)
 
+            #if the process of hashtag lead to increase the post has some wrong, lead to home page
             if post_made.failure?
               flash[:error] = post_made.failure
               routing.redirect '/'
             end
 
-            post = post_made.value!
-            session[:watching].insert(0, post.fullname).uniq!
+            post = post_made.value! #
+            session[:watching].insert(0, post.fullname).uniq! #第二次之後存cookie
             flash[:notice] = MSG_POST_ADDED
             routing.redirect "media/#{hashtag_name}"
           end
         end
 
         routing.on String, String do |hashtag_name|
-          # DELETE /media/#{hashtag_name}
+          # DELETE /media/#{hashtag_name} delete previous history
           routing.delete do
             fullname = hashtag_name
             session[:watching].delete(fullname)
 
             routing.redirect '/'
           end
+
+
 
           # GET /media/#{hashtag_name}/ranking
           routing.get do
@@ -101,12 +105,12 @@ module FlyHii
               appraised[:media], appraised[:folder]
             )
 
-            # Only use browser caching in production
-            App.configure :production do
-              response.expires 60, public: true
-            end
+            posts_list = Views::PostsList.new(post_made)
+            #rank_list = Views::RankedList.new(ranking_made)  # turning to rank things
 
-            view 'media', locals: { post_folder: }
+            view 'media', locals: { posts_list: , rank_list: }
+
+            
           end
         end
       end
