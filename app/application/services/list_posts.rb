@@ -1,20 +1,38 @@
 # frozen_string_literal: true
 
-require 'dry/monads'
+require 'dry/transaction'
 
 module FlyHii
   module Service
-    # Retrieves array of all listed posts entities
-    class ListPosts
-      include Dry::Monads::Result::Mixin
+    # Retrieves array of all listed hashtags values
+    class ListHashtags
+      include Dry::Transaction
 
-      def call(posts_list)
-        posts = Repository::For.klass(Entity::Post)
-          .find_full_names(posts_list)
+      step :get_api_list
+      step :reify_list
 
-        Success(posts)
+      private
+
+      def get_api_list(hashtags_list)
+        puts "get api list"
+        Gateway::Api.new(FlyHii::App.config)
+          .hashtags_list(hashtags_list)
+          .then do |result|
+            puts "hey"
+            result.success? ? Success(result.payload) : Failure(result.message)
+          end
       rescue StandardError
-        Failure('Could not access database')
+        puts "???"
+        Failure('Could not access our API')
+      end
+
+      def reify_list(hashtags_json)
+        puts "stage 1 success"
+        Representer::HashtagsList.new(OpenStruct.new)
+          .from_json(hashtags_json)
+          .then { |hashtags| Success(hashtags) }
+      rescue StandardError
+        Failure('Could not parse response from API')
       end
     end
   end

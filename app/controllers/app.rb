@@ -29,9 +29,15 @@ module FlyHii
       routing.root do
         # Get cookie viewer's previously seen hashtags
         session[:watching] ||= []
-        hashtags = session[:watching]
-        flash.now[:notice] = MSG_GET_STARTED if hashtags.none?
 
+        # Load previously viewed hashtags
+        hashtags = Repository::For.klass(Entity::Hashtags)
+          .find_hashtag_name(session[:watching])
+
+        session[:watching] = hashtags.map(&:fullname)
+
+        # hashtags = session[:watching]
+        flash.now[:notice] = MSG_GET_STARTED if hashtags.none?
         searched_hashtags = Views::HashtagsList.new(hashtags)
 
         view 'home', locals: { hashtags: searched_hashtags }

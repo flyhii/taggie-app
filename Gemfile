@@ -17,41 +17,25 @@ gem 'puma', '~> 6.0'
 gem 'rack-session', '~> 0.3'
 gem 'roda', '~> 3.0'
 
+# Representers
+gem 'multi_json', '~> 1.15'
+gem 'roar', '~> 1.0'
+
 # Controllers and services
 gem 'dry-monads', '~> 1.4'
 gem 'dry-transaction', '~> 0.13'
 gem 'dry-validation', '~> 1.7'
-
-# DOMAIN LAYER
-# Validation
-gem 'dry-struct', '~> 1.0'
-gem 'dry-types', '~> 1.0'
 
 # INFRASTRUCTURE LAYER
 # Networking
 gem 'http', '~> 5.0'
 gem 'httparty'
 
-# Database
-gem 'hirb'
-# gem 'hirb-unicode' # incompatible with new rubocop
-gem 'sequel', '~> 5.0'
-
-group :development, :test do
-  gem 'sqlite3', '~> 1.0'
-end
-
-group :production do
-  gem 'pg', '~> 1.2'
-end
-
 # TESTING
 group :test do
   gem 'minitest', '~> 5.0'
   gem 'minitest-rg', '~> 5.0'
   gem 'simplecov', '~> 0.0'
-  gem 'vcr', '~> 6.0'
-  gem 'webmock', '~> 3.0'
 
   gem 'headless', '~> 2.3'
   gem 'page-object', '~> 2.3'
