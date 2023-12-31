@@ -13,6 +13,7 @@ module FlyHii
     plugin :halt
     plugin :flash
     plugin :all_verbs # allows DELETE and other HTTP verbs beyond GET/POST
+    plugin :caching
     plugin :render, engine: 'slim', views: 'app/presentation/views_html'
     plugin :public, root: 'app/presentation/public'
     plugin :assets, path: 'app/presentation/assets',
@@ -101,6 +102,11 @@ module FlyHii
             post_folder = Views::ProjectFolderContributions.new(
               appraised[:media], appraised[:folder]
             )
+
+            # Only use browser caching in production
+            App.configure :production do
+              response.expires 60, public: true
+            end
 
             view 'media', locals: { post_folder: }
           end

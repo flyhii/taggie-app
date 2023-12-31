@@ -5,8 +5,6 @@ require 'logger'
 require 'rack/session'
 require 'roda'
 require 'yaml'
-# require 'delegate' # needed until Rack 2.3 fixes delegateclass bug
-
 module FlyHii
   # Environment-specific configuration
   class App < Roda

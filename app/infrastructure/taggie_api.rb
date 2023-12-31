@@ -5,7 +5,7 @@ require 'http'
 
 module FlyHii
   module Gateway
-    # Infrastructure to call CodePraise API
+    # Infrastructure to call FlyHii API
     class Api
       def initialize(config)
         @config = config
