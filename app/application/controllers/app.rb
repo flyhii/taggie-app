@@ -3,7 +3,6 @@
 require 'roda'
 require 'slim'
 require 'slim/include'
-
 require_relative 'helpers'
 
 module FlyHii
@@ -14,11 +13,14 @@ module FlyHii
     plugin :halt
     plugin :flash
     plugin :all_verbs # allows DELETE and other HTTP verbs beyond GET/POST
+    plugin :caching
     plugin :render, engine: 'slim', views: 'app/presentation/views_html'
     plugin :public, root: 'app/presentation/public'
     plugin :assets, path: 'app/presentation/assets',
                     css: 'style.css', js: 'table_row.js'
     plugin :common_logger, $stderr
+
+    use Rack::MethodOverride
 
     MSG_GET_STARTED = 'Search for a Hashtag to get started'
     MSG_POST_ADDED = 'Post added to your list'
@@ -32,12 +34,22 @@ module FlyHii
       routing.root do
         # Get cookie viewer's previously seen hashtags
         session[:watching] ||= []
-        hashtags = session[:watching]
-        flash.now[:notice] = MSG_GET_STARTED if hashtags.none?
 
-        searched_hashtags = Views::HashtagsList.new(hashtags)
+        result = Service::ListHashtags.new.call(session[:watching])
+        if result.failure?
+          puts "fail"
+          flash[:error] = result.failure
+          viewable_hashtags = []
+        else
+          hashtags = result.value!.hashtags
+          puts hashtags
+          flash.now[:notice] = MSG_GET_STARTED if hashtags.none?
 
-        view 'home', locals: { hashtags: searched_hashtags }
+          session[:watching] = hashtags.map(&:fullname)
+          viewable_hashtags = Views::HashtagsList.new(hashtags)
+        end
+
+        view 'home', locals: { hashtags: viewable_hashtags }
       end
 
       routing.on 'media' do
@@ -90,6 +102,11 @@ module FlyHii
             post_folder = Views::ProjectFolderContributions.new(
               appraised[:media], appraised[:folder]
             )
+
+            # Only use browser caching in production
+            App.configure :production do
+              response.expires 60, public: true
+            end
 
             view 'media', locals: { post_folder: }
           end
