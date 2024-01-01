@@ -34,16 +34,14 @@ module FlyHii
       routing.root do
         # Get cookie viewer's previously seen hashtags
         session[:watching] ||= []
-        puts "session = #{session[:watching]}"
         result = Service::ListHashtags.new.call(session[:watching])
-        puts "result = #{result}"
+        puts result
         if result.failure?
-          puts "fail"
+          puts 'fail'
           flash[:error] = result.failure
           viewable_hashtags = []
         else
           hashtags = result.value!.hashtags
-          puts hashtags
           flash.now[:notice] = MSG_GET_STARTED if hashtags.none?
 
           session[:watching] = hashtags.map(&:fullname)
@@ -56,9 +54,7 @@ module FlyHii
         routing.is do
           # POST /media/
           routing.post do
-            puts routing.params['hashtag_name']
-            hashtag_name = Forms::HashtagName.new.call(routing.params['hashtag_name'])
-            puts "hashtagname = #{hashtag_name}"
+            hashtag_name = Forms::HashtagName.new.call(routing.params)
             post_made = Service::AddPost.new.call(hashtag_name)
 
             if post_made.failure?

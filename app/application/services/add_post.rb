@@ -4,42 +4,70 @@ require 'dry/transaction'
 
 module FlyHii
   module Service
-    # Transaction to store project from Github API to database
+    # Transaction to store post from Instagram API to database
     class AddPost
       include Dry::Transaction
 
-      step :validate_input
-      step :request_post
-      step :reify_post
+      step :get_name
+      step :find_hashtag_name
+      step :store_post
 
       private
 
-      def validate_input(input)
+      def get_name(input)
+        puts '0'
         if input.success?
-          hashtag_name = input[:hashtag_name]
+          puts '1'
+          hashtag_name = input
           Success(hashtag_name:)
         else
-          Failure(input.errors.messages)
+          Failure("URL #{input.errors.messages.first}")
         end
       end
 
-      def request_post(input)
-        result = Gateway::Api.new(FlyHii::App.config)
-          .add_post(input[:hashtag_name])
-
-        result.success? ? Success(result.payload) : Failure(result.message)
-      rescue StandardError => e
-        puts e.inspect
-        puts e.backtrace
-        Failure('Cannot add posts right now; please try again later')
+      def find_hashtag_name(input)
+        # if (post = post_in_database(input))
+        #   input[:local_post] = post
+        # else
+        #   puts input
+        puts '2'
+        input[:remote_post] = post_from_instagram(input)
+        # end
+        Success(input)
+      rescue StandardError => error
+        Failure(error.to_s)
       end
 
-      def reify_post(post_json)
-        Representer::Post.new(Struct.new)
-          .from_json(post_json)
-          .then { |post| Success(post) }
+      def store_post(input)
+        puts '3'
+        post =
+          if (new_po = input[:remote_post])
+            Repository::For.entity(new_po).create(new_po)
+          else
+            input[:local_post]
+          end
+        Success(post)
+      rescue StandardError => error
+        App.logger.error error.backtrace.join("\n")
+        puts 'add_post'
+        Failure('Having trouble accessing the database')
+      end
+
+      # following are support methods that other services could use
+
+      def post_from_instagram(input)
+        hashtag_name = input[:hashtag_name][:hashtag_name]
+        puts "hashtag_name = #{hashtag_name}"
+        FlyHii::Instagram::MediaMapper
+          .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
+          .find(hashtag_name)
       rescue StandardError
-        Failure('Error in the post -- please try again')
+        raise 'Could not find posts associated with this hashtag on Instagram'
+      end
+
+      def post_in_database(input)
+        Repository::For.klass(Entity::Post)
+          .find_hashtag_name(input[:hashtag_name])
       end
     end
   end
