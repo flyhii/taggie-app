@@ -14,11 +14,11 @@ module Views
 
     # #ask the route, need to revise (also based on domain ?)
     # def post_link
-    #   "/hashtag/#{hashtag_name}" 
+    #   "/hashtag/#{hashtag_name}"
     # end
 
-    def hashtag_name
-    end
+    # def hashtag_name
+    # end
 
     def index_str
       "post[#{@index}]"
@@ -27,10 +27,10 @@ module Views
     def content_caption
       @post.caption
     end
-tags
-      @post.tags
-    def content_
-    end
+# tags
+#       @post.tags
+#     def content_
+#     end
 
     def content_comment_counts
       @post.comments_count
@@ -47,11 +47,8 @@ tags
     def content_media_url
       @post.media_url
     end
-    
-    
   end
 end
-
 
 # class Post < Dry::Struct
 #   include Dry.Types
