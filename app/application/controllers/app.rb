@@ -81,8 +81,6 @@ module FlyHii
             routing.redirect '/'
           end
 
-
-
           # GET /media/#{hashtag_name}/ranking
           routing.get do
             path_request = PostRequestPath.new(
@@ -111,7 +109,10 @@ module FlyHii
 
             view 'media', locals: { posts_list: , rank_list: }
 
-            
+            # Only use browser caching in production
+            App.configure :production do
+              response.expires 60, public: true
+            end
           end
         end
       end
