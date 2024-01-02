@@ -98,10 +98,10 @@ module FlyHii
               routing.redirect '/'
             end
 
-            appraised = result.value!
-            post_folder = Views::ProjectFolderContributions.new(
-              appraised[:media], appraised[:folder]
-            )
+            # appraised = result.value!
+            # post_folder = Views::ProjectFolderContributions.new(
+            #   appraised[:media], appraised[:folder]
+            # )
 
             posts_list = Views::PostsList.new(post_made)
             #rank_list = Views::RankedList.new(ranking_made)  # turning to rank things

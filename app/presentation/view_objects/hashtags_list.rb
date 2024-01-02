@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 module Views
-  # View for a list of project entities
+  # View for a list of hashtag entities
   class HashtagsList
     def initialize(hashtags)
-      @hashtags = hashtags.map.with_index { |hash, i| Project.new(hash, i) }
+      @hashtags = hashtags.map.with_index { |hash, i| Hashtag.new(hash, i) }
     end
 
     def each(&show)

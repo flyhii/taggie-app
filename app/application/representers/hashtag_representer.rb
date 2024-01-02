@@ -9,7 +9,7 @@ module FlyHii
     class Hashtag < Roar::Decorator
       include Roar::JSON
 
-      property :hashtag_name
+      property :hashtag
     end
   end
 end
