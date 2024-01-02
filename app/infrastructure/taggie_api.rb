@@ -43,6 +43,7 @@ module FlyHii
         end
 
         def hashtags_list(list)
+          puts "list = #{list}"
           call_api('get', ['hashtags'],
                    'list' => Value::WatchedList.to_encoded(list))
         end
@@ -65,6 +66,7 @@ module FlyHii
 
         def call_api(method, resources = [], params = {})
           api_path = resources.empty? ? @api_host : @api_root
+          puts "api_path = #{api_path}"
           url = [api_path, resources].flatten.join('/') + params_str(params)
           HTTP.headers('Accept' => 'application/json').send(method, url)
             .then { |http_response| Response.new(http_response) }

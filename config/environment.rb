@@ -5,6 +5,8 @@ require 'logger'
 require 'rack/session'
 require 'roda'
 require 'yaml'
+# require 'delegate' # needed until Rack 2.3 fixes delegateclass bug
+
 module FlyHii
   # Environment-specific configuration
   class App < Roda
@@ -22,7 +24,7 @@ module FlyHii
 
     # Logger Setup
     @logger = Logger.new($stderr)
-    def self.logger = @logger
+    def self.logger = @logger # rubocop:disable Style/TrivialAccessors
 
     configure :development, :test, :app_test do
       require 'pry'; # for breakpoints

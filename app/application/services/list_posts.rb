@@ -14,7 +14,7 @@ module FlyHii
       private
 
       def get_api_list(hashtags_list)
-        puts "get api list"
+        puts "hashtaglist = #{hashtags_list}"
         Gateway::Api.new(FlyHii::App.config)
           .hashtags_list(hashtags_list)
           .then do |result|

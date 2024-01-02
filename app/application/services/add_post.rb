@@ -15,7 +15,9 @@ module FlyHii
       private
 
       def get_name(input)
+        puts '0'
         if input.success?
+          puts '1'
           hashtag_name = input
           Success(hashtag_name:)
         else
@@ -24,17 +26,20 @@ module FlyHii
       end
 
       def find_hashtag_name(input)
-        if (post = post_in_database(input))
-          input[:local_post] = post
-        else
-          input[:remote_post] = post_from_instagram(input)
-        end
+        # if (post = post_in_database(input))
+        #   input[:local_post] = post
+        # else
+        #   puts input
+        puts '2'
+        input[:remote_post] = post_from_instagram(input)
+        # end
         Success(input)
       rescue StandardError => error
         Failure(error.to_s)
       end
 
       def store_post(input)
+        puts '3'
         post =
           if (new_po = input[:remote_post])
             Repository::For.entity(new_po).create(new_po)
@@ -51,16 +56,18 @@ module FlyHii
       # following are support methods that other services could use
 
       def post_from_instagram(input)
+        hashtag_name = input[:hashtag_name][:hashtag_name]
+        puts "hashtag_name = #{hashtag_name}"
         FlyHii::Instagram::MediaMapper
           .new(App.config.INSTAGRAM_TOKEN, App.config.ACCOUNT_ID)
-          .find(input)
+          .find(hashtag_name)
       rescue StandardError
-        raise 'Could not find that post on Instagram'
+        raise 'Could not find posts associated with this hashtag on Instagram'
       end
 
       def post_in_database(input)
         Repository::For.klass(Entity::Post)
-          .find_full_name(input[:owner_name], input[:project_name])
+          .find_hashtag_name(input[:hashtag_name])
       end
     end
   end

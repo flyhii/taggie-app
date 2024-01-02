@@ -34,21 +34,19 @@ module FlyHii
       routing.root do
         # Get cookie viewer's previously seen hashtags
         session[:watching] ||= []
-
         result = Service::ListHashtags.new.call(session[:watching])
+        puts result
         if result.failure?
-          puts "fail"
+          puts 'fail'
           flash[:error] = result.failure
           viewable_hashtags = []
         else
           hashtags = result.value!.hashtags
-          puts hashtags
           flash.now[:notice] = MSG_GET_STARTED if hashtags.none?
 
           session[:watching] = hashtags.map(&:fullname)
           viewable_hashtags = Views::HashtagsList.new(hashtags)
         end
-
         view 'home', locals: { hashtags: viewable_hashtags }
       end
 
@@ -57,24 +55,26 @@ module FlyHii
           # POST /media/
           routing.post do
             hashtag_name = Forms::HashtagName.new.call(routing.params)
+            puts "hashtagname = #{hashtag_name}"
             post_made = Service::AddPost.new.call(hashtag_name)
 
+            #if the process of hashtag lead to increase the post has some wrong, lead to home page
             if post_made.failure?
               flash[:error] = post_made.failure
               routing.redirect '/'
             end
 
-            post = post_made.value!
-            session[:watching].insert(0, post.fullname).uniq!
+            post = post_made.value! #
+            session[:watching].insert(0, post.fullname).uniq! #第二次之後存cookie
             flash[:notice] = MSG_POST_ADDED
             routing.redirect "media/#{hashtag_name}"
           end
         end
 
         routing.on String, String do |hashtag_name|
-          # DELETE /media/#{hashtag_name}
+          # DELETE /media/#{hashtag_name} delete previous history
           routing.delete do
-            fullname = "#{hashtag_name}"
+            fullname = hashtag_name
             session[:watching].delete(fullname)
 
             routing.redirect '/'
@@ -103,12 +103,15 @@ module FlyHii
               appraised[:media], appraised[:folder]
             )
 
+            posts_list = Views::PostsList.new(post_made)
+            #rank_list = Views::RankedList.new(ranking_made)  # turning to rank things
+
+            view 'media', locals: { posts_list: , rank_list: }
+
             # Only use browser caching in production
             App.configure :production do
               response.expires 60, public: true
             end
-
-            view 'media', locals: { post_folder: }
           end
         end
       end
