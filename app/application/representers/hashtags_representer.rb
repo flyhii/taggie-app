@@ -7,7 +7,7 @@ require_relative 'post_representer'
 
 module FlyHii
   module Representer
-    # Represents list of projects for API output
+    # Represents list of hashtags for API output
     class HashtagsList < Roar::Decorator
       include Roar::JSON
 

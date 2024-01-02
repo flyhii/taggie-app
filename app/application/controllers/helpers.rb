@@ -11,14 +11,13 @@ module FlyHii
         @path = request.remaining_path
       end
 
-      # attr_reader :owner_name, :project_name
       attr_reader :post_name
 
       def folder_name
         @folder_name ||= @path.empty? ? '' : @path[1..]
       end
 
-      def project_fullname
+      def post_fullname
         @request.captures.join '/'
       end
     end

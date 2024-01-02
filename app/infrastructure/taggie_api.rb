@@ -25,7 +25,7 @@ module FlyHii
       end
 
       # Gets rank of hashtags from API
-      # - req: ProjectRequestPath
+      # - req: PostRequestPath
       #        with #hashtag_name
       def rank(req)
         @request.get_rank(req)
