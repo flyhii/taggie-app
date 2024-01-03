@@ -15,7 +15,7 @@ module FlyHii
       private
 
       def validate_input(input)
-        puts '000'
+        puts '0'
         if input.success?
           hashtag_name = input[:hashtag_name]
           Success(hashtag_name:)
@@ -25,7 +25,7 @@ module FlyHii
       end
 
       def request_post(input)
-        puts '123'
+        puts '1'
         result = Gateway::Api.new(FlyHii::App.config)
           .add_posts(input[:hashtag_name])
 
@@ -36,14 +36,13 @@ module FlyHii
         Failure('Cannot get posts right now; please try again later')
       end
 
-      def reify_post(post_json)
+      def reify_post(project_json)
         puts '2'
-        puts post_json
-        Representer::Post.new(OpenStruct.new)
-          .from_json(post_json)
-          .then { |post| Success(post) }
+        Representer::Project.new(OpenStruct.new)
+          .from_json(project_json)
+          .then { |project| Success(project) }
       rescue StandardError
-        Failure('Error in the post -- please try again')
+        Failure('Error in the project -- please try again')
       end
     end
   end
