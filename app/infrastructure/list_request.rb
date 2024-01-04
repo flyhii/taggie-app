@@ -13,6 +13,7 @@ module FlyHii
 
         # Use in client App to create params to send
         def self.to_encoded(list)
+          puts "value/watched list = #{list}"
           Base64.urlsafe_encode64(list.to_json)
         end
 

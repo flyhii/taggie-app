@@ -12,8 +12,10 @@ module FlyHii
       include Roar::Hypermedia
       include Roar::Decorator::HypermediaConsumer
 
+      property :id
       property :remote_id
       property :caption
+      property :tags
       property :comments_count
       property :like_count
       property :timestamp
@@ -28,7 +30,7 @@ module FlyHii
       private
 
       def hashtag_name
-        represented.name
+        represented.id
       end
     end
   end

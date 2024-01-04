@@ -55,23 +55,24 @@ module FlyHii
           # POST /media/
           routing.post do
             hashtag_name = Forms::HashtagName.new.call(routing.params)
-            puts "hashtagname = #{hashtag_name}"
+            puts "hashtagname = #{hashtag_name['hashtag_name']}"
             post_made = Service::AddPost.new.call(hashtag_name)
 
-            #if the process of hashtag lead to increase the post has some wrong, lead to home page
+            # if the process of hashtag lead to increase the post has some wrong, lead to home page
             if post_made.failure?
               flash[:error] = post_made.failure
               routing.redirect '/'
             end
 
-            post = post_made.value! #
-            session[:watching].insert(0, post.fullname).uniq! #第二次之後存cookie
+            puts post = post_made.value!
+            session[:watching].insert(0, post.fullname).uniq!
             flash[:notice] = MSG_POST_ADDED
-            routing.redirect "media/#{hashtag_name}"
+            routing.redirect "media/#{hashtag_name['hashtag_name']}"
           end
         end
 
-        routing.on String, String do |hashtag_name|
+        routing.on String do |hashtag_name|
+          puts 'here!'
           # DELETE /media/#{hashtag_name} delete previous history
           routing.delete do
             fullname = hashtag_name
@@ -104,7 +105,7 @@ module FlyHii
             # )
 
             posts_list = Views::PostsList.new(post_made)
-            #rank_list = Views::RankedList.new(ranking_made)  # turning to rank things
+            # rank_list = Views::RankedList.new(ranking_made)  # turning to rank things
 
             view 'media', locals: { posts_list: , rank_list: }
 
