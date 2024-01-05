@@ -14,7 +14,7 @@ module FlyHii
       end
 
       rule(:hashtag_name) do
-        puts 'rule'
+        puts 'correct format'
         key.failure(MSG_INVALID_FORMAT) unless HASHTAG_REGEX.match?(value)
       end
     end
