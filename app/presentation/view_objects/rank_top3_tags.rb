@@ -8,16 +8,5 @@ module Views
       @index = index
     end
 
-    
-
-
-
-
-
-
-
-
-
-
   end
 end
