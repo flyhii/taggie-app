@@ -38,7 +38,7 @@ module FlyHii
 
       def reify_post(project_json)
         puts '2'
-        Representer::Project.new(OpenStruct.new)
+        Representer::Post.new(OpenStruct.new)
           .from_json(project_json)
           .then { |project| Success(project) }
       rescue StandardError
