@@ -27,10 +27,10 @@ module Views
     def content_caption
       @post.caption
     end
-# tags
-#       @post.tags
-#     def content_
-#     end
+
+    def content_tags
+      @post.tags
+    end
 
     def content_comment_counts
       @post.comments_count
