@@ -7,6 +7,5 @@ module Views
       @top3tags = top3tags
       @index = index
     end
-
   end
 end
