@@ -67,7 +67,11 @@ module FlyHii
             puts post = post_made.value!
             session[:watching].insert(0, post.fullname).uniq!
             flash[:notice] = MSG_POST_ADDED
-            routing.redirect "media/#{hashtag_name['hashtag_name']}"
+            # routing.redirect "media/#{hashtag_name['hashtag_name']}"
+
+            post = Views::Post.new(post_made.value!)
+
+            view 'media', locals: { post: }
           end
         end
 
@@ -83,21 +87,21 @@ module FlyHii
 
           # GET /media/#{hashtag_name}/ranking
           routing.get do
-            path_request = PostRequestPath.new(
-              post_name, request
-            )
+            # path_request = PostRequestPath.new(
+            #   post_name, request
+            # )
 
-            session[:watching] ||= []
+            # session[:watching] ||= []
 
-            result = Service::AppraisePost.new.call(
-              watched_list: session[:watching],
-              requested: path_request
-            )
+            # result = Service::AppraisePost.new.call(
+            #   watched_list: session[:watching],
+            #   requested: path_request
+            # )
 
-            if result.failure?
-              flash[:error] = result.failure
-              routing.redirect '/'
-            end
+            # if result.failure?
+            #   flash[:error] = result.failure
+            #   routing.redirect '/'
+            # end
 
             # appraised = result.value!
             # post_folder = Views::ProjectFolderContributions.new(
@@ -107,7 +111,7 @@ module FlyHii
             posts_list = Views::PostsList.new(post_made)
             # rank_list = Views::RankedList.new(ranking_made)  # turning to rank things
 
-            view 'media', locals: { posts_list: , rank_list: }
+            view 'media', locals: { posts_list:, rank_list: }
 
             # Only use browser caching in production
             App.configure :production do
