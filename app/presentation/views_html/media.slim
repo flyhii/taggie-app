@@ -8,15 +8,20 @@
     .col-lg-6.col-md-12.col-sm-12
         .row
           .col-md-2.col-sm-3
-            button { 
-              type='submit' id='media-form-submit' class='submit' 
-              value='submit' class="btn btn-success" 
-            } Show Popular
+            button.btn.btn-outline-secondary(type="submit") 
+              | Show Popular
           .col-md-2.col-sm-3
-            button { 
-              type='submit' id='recent-form-submit' class='submit' 
-              value='submit' class="btn btn-success" 
-            } Show Recent
+            button.btn.btn-outline-secondary(type="submit") 
+              | Show Recent
+          /   button { 
+          /     type='submit' id='media-form-submit' class='submit' 
+          /     value='submit' class="btn btn-success" 
+          /   } Show Popular
+          / .col-md-2.col-sm-3
+          /   button { 
+          /     type='submit' id='recent-form-submit' class='submit' 
+          /     value='submit' class="btn btn-success" 
+          /   } Show Recent
   .row
   .col-md-12.blank-row
 .container
@@ -33,3 +38,4 @@
         .col-lg-10.col-md-12.col-sm-12
           span.media.caption
             = post.content_tags
+    

@@ -33,11 +33,14 @@ module FlyHii
       # GET /
       routing.root do
         # Get cookie viewer's previously seen hashtags
-        session[:watching] ||= []
+        session[:watching] ||= [] ### 初始化為一個空數組
+
         result = Service::ListHashtags.new.call(session[:watching])
-        puts result
+        puts result ###
+        puts "I wilmaaaaaaaaa"
+        
         if result.failure?
-          puts 'fail'
+          #puts 'fail' ###
           flash[:error] = result.failure
           viewable_hashtags = []
         else
@@ -55,7 +58,7 @@ module FlyHii
           # POST /media/
           routing.post do
             hashtag_name = Forms::HashtagName.new.call(routing.params)
-            puts "hashtagname = #{hashtag_name['hashtag_name']}"
+            #puts "hashtagname = #{hashtag_name['hashtag_name']}" ###
             post_made = Service::AddPost.new.call(hashtag_name)
 
             # if the process of hashtag lead to increase the post has some wrong, lead to home page
@@ -87,26 +90,26 @@ module FlyHii
 
           # GET /media/#{hashtag_name}/ranking
           routing.get do
-            # path_request = PostRequestPath.new(
-            #   post_name, request
-            # )
+            path_request = PostRequestPath.new(
+              post_name, request
+            )
 
-            # session[:watching] ||= []
+            session[:watching] ||= []
 
-            # result = Service::AppraisePost.new.call(
-            #   watched_list: session[:watching],
-            #   requested: path_request
-            # )
+            result = Service::AppraisePost.new.call(
+              watched_list: session[:watching],
+              requested: path_request
+            )
 
-            # if result.failure?
-            #   flash[:error] = result.failure
-            #   routing.redirect '/'
-            # end
+            if result.failure?
+              flash[:error] = result.failure
+              routing.redirect '/'
+            end
 
-            # appraised = result.value!
-            # post_folder = Views::ProjectFolderContributions.new(
-            #   appraised[:media], appraised[:folder]
-            # )
+            appraised = result.value!
+            post_folder = Views::ProjectFolderContributions.new(
+              appraised[:media], appraised[:folder]
+            )
 
             posts_list = Views::PostsList.new(post_made)
             # rank_list = Views::RankedList.new(ranking_made)  # turning to rank things
