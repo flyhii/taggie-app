@@ -36,11 +36,10 @@ module FlyHii
         session[:watching] ||= [] ### 初始化為一個空數組
 
         result = Service::ListHashtags.new.call(session[:watching])
-        puts result ###
+        puts result
         puts "I wilmaaaaaaaaa"
-        
+
         if result.failure?
-          #puts 'fail' ###
           flash[:error] = result.failure
           viewable_hashtags = []
         else
@@ -59,6 +58,7 @@ module FlyHii
           routing.post do
             @hashtag_name = Forms::HashtagName.new.call(routing.params)
             puts "hashtagname = #{@hashtag_name['hashtag_name']}"
+            # get posts
             post_made = Service::AddPost.new.call(@hashtag_name)
 
             # if the process of hashtag lead to increase the post has some wrong, lead to home page
@@ -71,9 +71,21 @@ module FlyHii
             session[:watching].insert(0, @hashtag_name['hashtag_name']).uniq!
             flash[:notice] = MSG_POST_ADDED
 
-            post = Views::PostsList.new(post_made.value!)
+            # get recent posts
+            recent_post_made = Service::AddRecentPost.new.call(@hashtag_name)
+            if recent_post_made.failure?
+              flash[:error] = recent_post_made.failure
+              routing.redirect '/'
+            end
 
-            view 'media', locals: { post: }
+            puts "recent_post_made = #{recent_post_made.value!}"
+            session[:watching].insert(0, @hashtag_name['hashtag_name']).uniq!
+            flash[:notice] = MSG_POST_ADDED
+
+            post = Views::PostsList.new(post_made.value!)
+            recent_post = Views::RecentPostsList.new(recent_post_made.value!)
+
+            view 'media', locals: { post:, recent_post: }
             # routing.redirect "media/#{@hashtag_name['hashtag_name']}"
           end
         end
