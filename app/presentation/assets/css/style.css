@@ -1,4 +1,3 @@
-
 /* title(new add) */
 .title {
   font-size: 32px;
@@ -82,7 +81,7 @@ h1 {
   font-size: 1.2em;
 }
 
-.project.attribute {
+/* .project.attribute {
   font-weight: bold;
 }
 
@@ -92,11 +91,7 @@ h1 {
 
 .project.owner {
   font-weight: bold
-}
-
-.project.name {
-  
-}
+} */
 
 .vcenter {
   display: inline-block;
