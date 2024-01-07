@@ -20,7 +20,7 @@ module FlyHii
           hashtag_name = input[:hashtag_name]
           Success(hashtag_name:)
         else
-          Failure(input.errors.values)
+          Failure('Please input a hashtag in the correct format')
         end
       end
 
