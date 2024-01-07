@@ -1,38 +1,128 @@
-.container
-  form role="form" action="/media" method='POST' id='show-media-form'
-    .row.vertical-align.query-bar
-      .col-md-2.col-sm-3
-        .text-right Hashstag:
-      .col-md-8.col-sm-6
-        input { 
-          type='text' name='hashtag_name'
-          id='hashtag_name_input' class="form-control"
-          placeholder="e.g. #new"
-        }
-      .col-md-2.col-sm-3
-        button { 
-          type='submit' id='media-form-submit' class='submit' 
-          value='submit' class="btn btn-success" 
-        } Show Media
-    .row
-    .col-md-12.blank-row
-    
-  - if hashtags.any?
-    table class="table table-hover" id="hashtags_table"
-      thead
-        tr
-          th
-          th history hashtag
-      tbody
-        - hashtags.each do |hashtag|
-          tr class="table-row hashtag_row" data-href=hashtag.post_link id="#{hashtag.index_str}.row"
-            td id='delete_hashtag'
-              form role='form' method='post' action=hashtag.post_link
-                input type='hidden' name='_method' value='delete'
-                button type="submit" class="btn btn-sm btn-link" id="#{hashtag.index_str}.delete"
-                  i class="fas fa-trash-alt"
-            td id='td_hashtag_name'
-              span class="hashtag_name" id="#{hashtag.index_str}.name"
-                a href=hashtag.post_link id="#{hashtag.index_str}.link" #{hashtag.hashtag_name}
 
-/ 1.post_link 2.index_str 3.hashtag_name
+.container
+  
+  / h1.title Tags
+   
+  form.form-inline.tags-form(action="/media" method="post")
+
+    / .input-group : 創建一個輸入框和按鈕組合的元素
+    / background-image: url('/images/magnifier.png'); background-position: 10px center; background-repeat: no-repeat;
+    .input-group(style="height: 60px;")
+      input#hashtag_name_input.form-control(style="border-radius: 10px; background-color: #EEEEEE; padding-left: 40px; margin-right: 40px; text-indent: 40px;" name="hashtag_name" placeholder="Search tags..." type="text")
+       span.input-group-prepend
+         img(src="/images/magnifier.png" alt="magnifier" style="height: 50px; width: 50px; position: absolute; left: 15px; top: 50%; transform: translateY(-50%);")
+    button.btn.btn-outline-secondary(type="submit") 
+      | Show Media
+  
+  .blank-row
+  
+  table.table.table-hover#hashtags_table
+    
+    thead
+      tr
+        / 將History置中
+        th(colspan="2" style="text-align: center;") Search History
+        
+    tbody   
+      - hashtags.each do |hashtag|  
+    
+        tr.hashtag_row
+          td
+            form  
+              button.btn.btn-link.delete(type="submit") 
+                i.fa.fa-trash
+            
+          td#td_hashtag_name
+            a.hashtag(href=hashtag.post_link)  
+              = hashtag.hashtag_name
+              
+  / footer.powered-by 
+  /   | Powered by @Taggie Team2 Anita Angel Wilma: Welcome to Taggie! This project is for demonstration purpose.
+
+
+
+/ .container 
+  
+/   h1.title Tags
+   
+/   form.form-inline.tags-form(action="/media" method='POST' id='show-media-form')
+  
+
+/     .row
+    
+/       .col-md-2  
+/        .text-right Hashstag:
+       
+/       .col-md-8  
+/         input#hashtag_name_input.form-control(placeholder="Search tags...")
+       
+/       .col-md-2
+/         button#media-form-submit.btn.btn-primary(type="submit") Search
+  
+/   .blank-row  
+  
+/   table.table.table-hover#hashtags_table
+    
+/     thead
+/       tr 
+/         th  
+/         th history
+        
+/     tbody   
+      
+/       - hashtags.each do |hashtag|
+        
+/         tr.hashtag_row  
+/           td  
+/             form  
+/               button.btn.btn-link.delete(type="submit")
+/                 i.fa.fa-trash
+                
+/           td#td_hashtag_name  
+/             span.hashtag_name
+/               a.hashtag(href=hashtag.post_link) 
+/                 = hashtag.hashtag_name
+                
+/   footer.powered-by
+/     | Powered by @Taggie Team2 Anita Angel Wilma: Welcome to Taggie! This project is for demonstration purpose.
+
+
+
+/ .container
+/   form role="form" action="/media" method='POST' id='show-media-form'
+/     .row.vertical-align.query-bar
+/       .col-md-2.col-sm-3
+/         .text-right Hashstag:
+/       .col-md-8.col-sm-6
+/         input { 
+/           type='text' name='hashtag_name'
+/           id='hashtag_name_input' class="form-control"
+/           placeholder="e.g. #new"
+/         }
+/       .col-md-2.col-sm-3
+/         button { 
+/           type='submit' id='media-form-submit' class='submit' 
+/           value='submit' class="btn btn-success" 
+/         } Show Media
+/     .row
+/     .col-md-12.blank-row
+    
+/   - if hashtags.any?
+/     table class="table table-hover" id="hashtags_table"
+/       thead
+/         tr
+/           th
+/           th history hashtag
+/       tbody
+/         - hashtags.each do |hashtag|
+/           tr class="table-row hashtag_row" data-href=hashtag.post_link id="#{hashtag.index_str}.row"
+/             td id='delete_hashtag'
+/               form role='form' method='post' action=hashtag.post_link
+/                 input type='hidden' name='_method' value='delete'
+/                 button type="submit" class="btn btn-sm btn-link" id="#{hashtag.index_str}.delete"
+/                   i class="fas fa-trash-alt"
+/             td id='td_hashtag_name'
+/               span class="hashtag_name" id="#{hashtag.index_str}.name"
+/                 a href=hashtag.post_link id="#{hashtag.index_str}.link" #{hashtag.hashtag_name}
+
+/ / 1.post_link 2.index_str 3.hashtag_name
