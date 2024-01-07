@@ -14,20 +14,20 @@ module FlyHii
       private
 
       def validate_input(input)
-        puts '0'
-        if input.success?
-          hashtag_name = input[:hashtag_name]
+        puts "input = #{input}"
+        if input
+          hashtag_name = input
           Success(hashtag_name:)
         else
-          Failure(input.errors.values)
+          Failure('Ranking failed')
         end
       end
 
       def request_ranked_hashtags(input)
-        puts '1'
+        puts '2.1'
         result = Gateway::Api.new(FlyHii::App.config)
           .rank(input[:hashtag_name])
-
+        puts "result = #{result}"
         result.success? ? Success(result.payload) : Failure(result.message)
       rescue StandardError => e
         puts e.inspect

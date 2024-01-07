@@ -36,13 +36,12 @@ module FlyHii
         Failure('Cannot get posts right now; please try again later')
       end
 
-      def reify_post(project_json)
-        puts '2'
-        Representer::Post.new(OpenStruct.new)
-          .from_json(project_json)
-          .then { |project| Success(project) }
+      def reify_post(post_json)
+        Representer::PostsList.new(OpenStruct.new)
+          .from_json(post_json)
+          .then { |post| Success(post) }
       rescue StandardError
-        Failure('Error in the project -- please try again')
+        Failure('Error in the post -- please try again')
       end
     end
   end

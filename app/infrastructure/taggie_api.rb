@@ -28,6 +28,7 @@ module FlyHii
       # - req: PostRequestPath
       #        with #hashtag_name
       def rank(req)
+        puts "req = #{req}"
         @request.get_rank(req)
       end
 
@@ -44,7 +45,7 @@ module FlyHii
 
         def hashtags_list(list)
           puts "list = #{list}"
-          call_api('get', ['hashtags'],
+          call_api('get', ['posts'],
                    'list' => Value::WatchedList.to_encoded(list))
         end
 
@@ -53,8 +54,7 @@ module FlyHii
         end
 
         def get_rank(req)
-          call_api('get', ['rank',
-                           req.hashtag_name])
+          call_api('get', ['posts', req])
         end
 
         private

@@ -57,9 +57,9 @@ module FlyHii
         routing.is do
           # POST /media/
           routing.post do
-            hashtag_name = Forms::HashtagName.new.call(routing.params)
-            #puts "hashtagname = #{hashtag_name['hashtag_name']}" ###
-            post_made = Service::AddPost.new.call(hashtag_name)
+            @hashtag_name = Forms::HashtagName.new.call(routing.params)
+            puts "hashtagname = #{@hashtag_name['hashtag_name']}"
+            post_made = Service::AddPost.new.call(@hashtag_name)
 
             # if the process of hashtag lead to increase the post has some wrong, lead to home page
             if post_made.failure?
@@ -67,14 +67,14 @@ module FlyHii
               routing.redirect '/'
             end
 
-            puts post = post_made.value!
-            session[:watching].insert(0, post.fullname).uniq!
+            puts "post_made = #{post_made.value!}"
+            session[:watching].insert(0, @hashtag_name['hashtag_name']).uniq!
             flash[:notice] = MSG_POST_ADDED
-            # routing.redirect "media/#{hashtag_name['hashtag_name']}"
 
-            post = Views::Post.new(post_made.value!)
+            post = Views::PostsList.new(post_made.value!)
 
             view 'media', locals: { post: }
+            # routing.redirect "media/#{@hashtag_name['hashtag_name']}"
           end
         end
 
@@ -90,28 +90,16 @@ module FlyHii
 
           # GET /media/#{hashtag_name}/ranking
           routing.get do
-            path_request = PostRequestPath.new(
-              post_name, request
-            )
-
-            session[:watching] ||= []
-
-            result = Service::AppraisePost.new.call(
-              watched_list: session[:watching],
-              requested: path_request
-            )
-
-            if result.failure?
-              flash[:error] = result.failure
+            ranking_made = Service::RankHashtags.new.call(hashtag_name)
+            puts "ranking_made = #{ranking_made}"
+            # if the process of hashtag lead to increase the post has some wrong, lead to home page
+            if ranking_made.failure?
+              flash[:error] = ranking_made.failure
               routing.redirect '/'
             end
 
-            appraised = result.value!
-            post_folder = Views::ProjectFolderContributions.new(
-              appraised[:media], appraised[:folder]
-            )
-
-            posts_list = Views::PostsList.new(post_made)
+            rank_list = Views::RankedList.new(ranking_made.value!)
+            posts_list = Views::Post.new(@post_made.value!)
             # rank_list = Views::RankedList.new(ranking_made)  # turning to rank things
 
             view 'media', locals: { posts_list:, rank_list: }

@@ -4,8 +4,8 @@ module Views
   # View for a a list of post entities
   class PostsList
     def initialize(posts)
-      # @posts = posts.map.with_index { |pos, i| Post.new(pos, i) }
-      @posts = Post.new(posts, 1)
+      @posts = posts.map.with_index { |pos, i| Post.new(pos, i) }
+      # @posts = Post.new(posts, 1)
     end
 
     def each(&show)
