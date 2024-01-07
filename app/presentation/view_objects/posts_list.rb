@@ -9,14 +9,17 @@ module Views
     end
 
     def each(&show)
-      # @posts.each do |pos|
-      #   show.call pos
-      # end
-      show.call @posts
+      @posts.each do |pos|
+        show.call pos
+      end
     end
 
     def any?
       @posts.any?
+    end
+
+    def posts_ca
+      @posts
     end
   end
 end

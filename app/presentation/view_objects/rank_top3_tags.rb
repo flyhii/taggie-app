@@ -9,7 +9,7 @@ module Views
     end
 
     def top_3_tags
-      @top3tags.ranked_tags
+      @top3tags.ranked_hashtags
     end
   end
 end

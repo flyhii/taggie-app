@@ -37,7 +37,7 @@ module FlyHii
       end
 
       def reify_hashtags(post_json)
-        Representer::PostsList.new(OpenStruct.new)
+        Representer::RankedHashtags.new(OpenStruct.new)
           .from_json(post_json)
           .then { |post| Success(post) }
       rescue StandardError

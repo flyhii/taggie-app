@@ -35,21 +35,21 @@ module FlyHii
         # Get cookie viewer's previously seen hashtags
         session[:watching] ||= [] ### 初始化為一個空數組
 
-        result = Service::ListHashtags.new.call(session[:watching])
+        result = session[:watching]
         puts result
         puts "I wilmaaaaaaaaa"
 
-        if result.failure?
-          flash[:error] = result.failure
-          viewable_hashtags = []
-        else
-          hashtags = result.value!.hashtags
-          flash.now[:notice] = MSG_GET_STARTED if hashtags.none?
+        # if result.failure?
+        #   flash[:error] = result.failure
+        #   viewable_hashtags = []
+        # else
+        #   hashtags = result.value!.hashtags
+        #   flash.now[:notice] = MSG_GET_STARTED if hashtags.none?
 
-          session[:watching] = hashtags.map(&:fullname)
-          viewable_hashtags = Views::HashtagsList.new(hashtags)
-        end
-        view 'home', locals: { hashtags: viewable_hashtags }
+        # session[:watching] = hashtags.map(&:fullname)
+        # viewable_hashtags = Views::HashtagsList.new(result)
+        # end
+        view 'home', locals: { }
       end
 
       routing.on 'media' do
@@ -70,21 +70,15 @@ module FlyHii
             session[:watching].insert(0, hashtag_name['hashtag_name']).uniq!
             flash[:notice] = MSG_POST_ADDED
 
-            # get recent posts
-            recent_post_made = Service::AddRecentPost.new.call(@hashtag_name)
-            if recent_post_made.failure?
-              flash[:error] = recent_post_made.failure
-              routing.redirect '/'
-            end
+            # # get recent posts
+            # recent_post_made = Service::AddRecentPost.new.call(hashtag_name)
+            # if recent_post_made.failure?
+            #   flash[:error] = recent_post_made.failure
+            #   routing.redirect '/'
+            # end
 
-            puts "recent_post_made = #{recent_post_made.value!}"
-            session[:watching].insert(0, @hashtag_name['hashtag_name']).uniq!
-            flash[:notice] = MSG_POST_ADDED
+            # puts "recent_post_made = #{recent_post_made.value!}"
 
-            post = Views::PostsList.new(post_made.value!)
-            recent_post = Views::RecentPostsList.new(recent_post_made.value!)
-
-            view 'media', locals: { post:, recent_post: }
             # routing.redirect "media/#{@hashtag_name['hashtag_name']}"
             ranking_made = Service::RankHashtags.new.call(hashtag_name['hashtag_name'])
             puts "ranking_made = #{ranking_made}"
@@ -96,10 +90,11 @@ module FlyHii
 
             # routing.redirect "media/#{hashtag_name['hashtag_name']}"
 
-            # posts_list = Views::PostsList.new(post_made.value!)
+            post = Views::PostsList.new(post_made.value!.posts)
             rank_list = Views::RankedList.new(ranking_made.value!)
-
-            view 'media', locals: { posts_list:, rank_list: }
+            # binding.irb
+            puts rank_list.top_3_tags
+            view 'media', locals: { post:, rank_list: }
           end
         end
 

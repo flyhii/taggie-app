@@ -21,30 +21,30 @@ module Views
     # end
 
     def index_str
-      "post[#{@index}]"
+      @index
     end
 
-    def content_caption
+    def caption
       @post.caption
     end
 
-    def content_tags
+    def tags
       @post.tags
     end
 
-    def content_comment_counts
+    def comments_count
       @post.comments_count
     end
 
-    def content_like_count
+    def like_count
       @post.like_count
     end
 
-    def content_timestamp
+    def timestamp
       @post.timestamp
     end
 
-    def content_media_url
+    def media_url
       @post.media_url
     end
   end

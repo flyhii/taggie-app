@@ -29,17 +29,17 @@
         th(colspan="2" style="text-align: center;") Search History
         
     tbody   
-      - hashtags.each do |hashtag|  
+      / - hashtags.each do |hashtag|  
     
-        tr.hashtag_row
-          td
-            form  
-              button.btn.btn-link.delete(type="submit") 
-                i.fa.fa-trash
+      /   tr.hashtag_row
+      /     td
+      /       form  
+      /         button.btn.btn-link.delete(type="submit") 
+      /           i.fa.fa-trash
             
-          td#td_hashtag_name
-            a.hashtag(href=hashtag.post_link)  
-              = hashtag.hashtag_name
+      /     td#td_hashtag_name
+      /       a.hashtag(href=hashtag.post_link)  
+      /         = hashtag.hashtag_name
               
   / footer.powered-by 
   /   | Powered by @Taggie Team2 Anita Angel Wilma: Welcome to Taggie! This project is for demonstration purpose.
