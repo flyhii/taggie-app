@@ -56,10 +56,9 @@ module FlyHii
         routing.is do
           # POST /media/
           routing.post do
-            @hashtag_name = Forms::HashtagName.new.call(routing.params)
-            puts "hashtagname = #{@hashtag_name['hashtag_name']}"
-            # get posts
-            post_made = Service::AddPost.new.call(@hashtag_name)
+            hashtag_name = Forms::HashtagName.new.call(routing.params)
+            puts "hashtagname = #{hashtag_name['hashtag_name']}"
+            post_made = Service::AddPost.new.call(hashtag_name)
 
             # if the process of hashtag lead to increase the post has some wrong, lead to home page
             if post_made.failure?
@@ -68,7 +67,7 @@ module FlyHii
             end
 
             puts "post_made = #{post_made.value!}"
-            session[:watching].insert(0, @hashtag_name['hashtag_name']).uniq!
+            session[:watching].insert(0, hashtag_name['hashtag_name']).uniq!
             flash[:notice] = MSG_POST_ADDED
 
             # get recent posts
@@ -87,6 +86,20 @@ module FlyHii
 
             view 'media', locals: { post:, recent_post: }
             # routing.redirect "media/#{@hashtag_name['hashtag_name']}"
+            ranking_made = Service::RankHashtags.new.call(hashtag_name['hashtag_name'])
+            puts "ranking_made = #{ranking_made}"
+
+            if ranking_made.failure?
+              flash[:error] = ranking_made.failure
+              routing.redirect '/'
+            end
+
+            # routing.redirect "media/#{hashtag_name['hashtag_name']}"
+
+            # posts_list = Views::PostsList.new(post_made.value!)
+            rank_list = Views::RankedList.new(ranking_made.value!)
+
+            view 'media', locals: { posts_list:, rank_list: }
           end
         end
 
@@ -109,10 +122,10 @@ module FlyHii
               flash[:error] = ranking_made.failure
               routing.redirect '/'
             end
-
+            @post_made = session[:post_made]
+            puts "post_made = #{@post_made}"
+            posts_list = Views::PostsList.new(@post_made.value!)
             rank_list = Views::RankedList.new(ranking_made.value!)
-            posts_list = Views::Post.new(@post_made.value!)
-            # rank_list = Views::RankedList.new(ranking_made)  # turning to rank things
 
             view 'media', locals: { posts_list:, rank_list: }
 

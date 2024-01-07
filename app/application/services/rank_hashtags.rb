@@ -10,6 +10,7 @@ module FlyHii
 
       step :validate_input
       step :request_ranked_hashtags
+      step :reify_hashtags
 
       private
 
@@ -33,6 +34,14 @@ module FlyHii
         puts e.inspect
         puts e.backtrace
         Failure('Cannot get ranks right now; please try again later')
+      end
+
+      def reify_hashtags(post_json)
+        Representer::PostsList.new(OpenStruct.new)
+          .from_json(post_json)
+          .then { |post| Success(post) }
+      rescue StandardError
+        Failure('Error in the post -- please try again')
       end
     end
   end

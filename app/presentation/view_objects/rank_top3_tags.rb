@@ -7,5 +7,9 @@ module Views
       @top3tags = top3tags
       @index = index
     end
+
+    def top_3_tags
+      @top3tags.ranked_tags
+    end
   end
 end
