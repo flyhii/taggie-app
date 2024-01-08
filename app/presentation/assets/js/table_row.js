@@ -23,14 +23,14 @@ function showProgressBar() {
             progressBar.style.width = width + '%';
             updateProgressText(progressText, width);
           }
-        }, 700);
+        }, 600);
       } else {
         width += 20;
         progressBar.style.width = width + '%';
         updateProgressText(progressText, width);
       }
     }
-  }, 900);
+  }, 800);
 }
 
 function updateProgressText(progressText, width) {
