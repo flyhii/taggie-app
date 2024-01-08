@@ -13,6 +13,11 @@ html
     / Custom CSS
     / link rel='stylesheet' href='/presentation/assets/css/style.css'
     == assets(:css)
+
+    / Custom JS
+    / link rel='stylesheet' href='/presentation/assets/js/table_row.css'
+    == assets(:js)
+
   body
     / Popper
     script{ 
@@ -34,14 +39,18 @@ html
 
     .container id='html_body'
       section
-        .row style="vertical-align: middle;"
+        .row style="display: flex; vertical-align: middle;"
           .col-12
-            h1 id='main_header'
-              a.text-underline-hover href="/" Flyhii
+            h1 id='main_header' style="text-align: center;"
+              / a.text-underline-hover href="/" Taggie
+              a(href="/")
+                img(src="/images/taggie.png" alt="Logo" style="width: 300px; height: auto; margin-top: 20px; margin-bottom: 20px; ")
+              / 更改樣式
 
       section
         include :flash_bar
         == yield
 
-      footer
-        = "Welcome to Taggie!     This project is for demonstration purpose."
+      / new add: -powered-by
+      footer.powered-by 
+        = "Powered by @Taggie Team2 Anita Angel Wilma: Welcome to Taggie! This project is for demonstration purpose."

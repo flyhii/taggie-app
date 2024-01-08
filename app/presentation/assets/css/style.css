@@ -1,3 +1,67 @@
+/* title(new add) */
+.title {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 20px; 
+}
+
+/* horizontal form(new add) */
+.form-inline {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;  
+}
+
+/* The hint box is grayed out */ 
+.table-hover tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* the bottom copyright
+.powered-by {
+  text-align: center; 
+  background: #eee;
+  padding: 12px;
+} */
+
+/* button icon */
+.btn .fa {
+  margin-right: 6px;  
+}
+
+/* Search tags框樣式 */
+.input-group input.form-control {
+  border: none;
+  /* 更圓角化 */
+  border-radius: 10px;  
+  background-color: #EEEEEE;
+}
+
+/* 放大鏡圖示樣式  */
+.input-group-text i.fa-search {
+  color: gray;
+}
+
+/* Button樣式 */
+button.btn.btn-outline-secondary {
+  /* 修改字體大小 */
+  font-size: 12px; 
+  /* 添加滑鼠移至button的顏色過渡效果 */
+  transition: background-color 0.3s;
+  background-color: #EEEEEE;
+  /* 修改按鈕的寬度和高度 */
+  width: 100px;
+  height: 50px;
+  /* 修改按鈕的圓角程度 */
+  border-radius: 15px;
+   /* 添加陰影效果 */
+   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+button.btn.btn-outline-secondary:hover {
+  /* 比原始顏色更深的灰色 */
+  background-color: #CCCCCC;  
+}
 
 h1 {
   font-weight: bold;
@@ -17,7 +81,7 @@ h1 {
   font-size: 1.2em;
 }
 
-.project.attribute {
+/* .project.attribute {
   font-weight: bold;
 }
 
@@ -27,11 +91,7 @@ h1 {
 
 .project.owner {
   font-weight: bold
-}
-
-.project.name {
-  
-}
+} */
 
 .vcenter {
   display: inline-block;

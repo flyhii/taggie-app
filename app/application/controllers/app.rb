@@ -33,21 +33,23 @@ module FlyHii
       # GET /
       routing.root do
         # Get cookie viewer's previously seen hashtags
-        session[:watching] ||= []
-        result = Service::ListHashtags.new.call(session[:watching])
-        puts result
-        if result.failure?
-          puts 'fail'
-          flash[:error] = result.failure
-          viewable_hashtags = []
-        else
-          hashtags = result.value!.hashtags
-          flash.now[:notice] = MSG_GET_STARTED if hashtags.none?
+        session[:watching] ||= [] ### 初始化為一個空數組
 
-          session[:watching] = hashtags.map(&:fullname)
-          viewable_hashtags = Views::HashtagsList.new(hashtags)
-        end
-        view 'home', locals: { hashtags: viewable_hashtags }
+        result = session[:watching]
+        puts result
+        puts "I wilmaaaaaaaaa"
+
+        # if result.failure?
+        #   flash[:error] = result.failure
+        #   viewable_hashtags = []
+        # else
+        #   hashtags = result.value!.hashtags
+        #   flash.now[:notice] = MSG_GET_STARTED if hashtags.none?
+
+        # session[:watching] = hashtags.map(&:fullname)
+        # viewable_hashtags = Views::HashtagsList.new(result)
+        # end
+        view 'home', locals: { }
       end
 
       routing.on 'media' do
@@ -64,14 +66,35 @@ module FlyHii
               routing.redirect '/'
             end
 
-            puts post = post_made.value!
-            session[:watching].insert(0, post.fullname).uniq!
+            puts "post_made = #{post_made.value!}"
+            session[:watching].insert(0, hashtag_name['hashtag_name']).uniq!
             flash[:notice] = MSG_POST_ADDED
+
+            # # get recent posts
+            # recent_post_made = Service::AddRecentPost.new.call(hashtag_name)
+            # if recent_post_made.failure?
+            #   flash[:error] = recent_post_made.failure
+            #   routing.redirect '/'
+            # end
+
+            # puts "recent_post_made = #{recent_post_made.value!}"
+
+            # routing.redirect "media/#{@hashtag_name['hashtag_name']}"
+            ranking_made = Service::RankHashtags.new.call(hashtag_name['hashtag_name'])
+            puts "ranking_made = #{ranking_made}"
+
+            if ranking_made.failure?
+              flash[:error] = ranking_made.failure
+              routing.redirect '/'
+            end
+
             # routing.redirect "media/#{hashtag_name['hashtag_name']}"
 
-            post = Views::Post.new(post_made.value!)
-
-            view 'media', locals: { post: }
+            post = Views::PostsList.new(post_made.value!.posts)
+            rank_list = Views::RankedList.new(ranking_made.value!)
+            # binding.irb
+            puts rank_list.top_3_tags
+            view 'media', locals: { post:, rank_list: }
           end
         end
 
@@ -87,29 +110,17 @@ module FlyHii
 
           # GET /media/#{hashtag_name}/ranking
           routing.get do
-            # path_request = PostRequestPath.new(
-            #   post_name, request
-            # )
-
-            # session[:watching] ||= []
-
-            # result = Service::AppraisePost.new.call(
-            #   watched_list: session[:watching],
-            #   requested: path_request
-            # )
-
-            # if result.failure?
-            #   flash[:error] = result.failure
-            #   routing.redirect '/'
-            # end
-
-            # appraised = result.value!
-            # post_folder = Views::ProjectFolderContributions.new(
-            #   appraised[:media], appraised[:folder]
-            # )
-
-            posts_list = Views::PostsList.new(post_made)
-            # rank_list = Views::RankedList.new(ranking_made)  # turning to rank things
+            ranking_made = Service::RankHashtags.new.call(hashtag_name)
+            puts "ranking_made = #{ranking_made}"
+            # if the process of hashtag lead to increase the post has some wrong, lead to home page
+            if ranking_made.failure?
+              flash[:error] = ranking_made.failure
+              routing.redirect '/'
+            end
+            @post_made = session[:post_made]
+            puts "post_made = #{@post_made}"
+            posts_list = Views::PostsList.new(@post_made.value!)
+            rank_list = Views::RankedList.new(ranking_made.value!)
 
             view 'media', locals: { posts_list:, rank_list: }
 
