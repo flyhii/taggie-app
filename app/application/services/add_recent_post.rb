@@ -5,39 +5,39 @@ require 'dry/transaction'
 module FlyHii
   module Service
     # Transaction to store post from Instagram API to database
-    class RankHashtags
+    class AddRecentPost
       include Dry::Transaction
 
       step :validate_input
-      step :request_ranked_hashtags
-      step :reify_hashtags
+      step :request_post
+      step :reify_post
 
       private
 
       def validate_input(input)
-        puts "input = #{input}"
-        if input
-          hashtag_name = input
+        puts '0'
+        if input.success?
+          hashtag_name = input[:hashtag_name]
           Success(hashtag_name:)
         else
-          Failure('Ranking failed')
+          Failure('Please input a hashtag in the correct format')
         end
       end
 
-      def request_ranked_hashtags(input)
-        puts '2.1'
+      def request_post(input)
+        puts '1'
         result = Gateway::Api.new(FlyHii::App.config)
-          .rank(input[:hashtag_name])
-        puts "result = #{result}"
+          .add_posts(input[:hashtag_name])
+
         result.success? ? Success(result.payload) : Failure(result.message)
       rescue StandardError => e
         puts e.inspect
         puts e.backtrace
-        Failure('Cannot get ranks right now; please try again later')
+        Failure('Cannot get recent posts right now; please try again later')
       end
 
-      def reify_hashtags(post_json)
-        Representer::RankedHashtags.new(OpenStruct.new)
+      def reify_post(post_json)
+        Representer::PostsList.new(OpenStruct.new)
           .from_json(post_json)
           .then { |post| Success(post) }
       rescue StandardError
