@@ -52,17 +52,16 @@
       select.form-control 
         option(value='option1') Chinese
         option(value='option2') English
-    .col-md-2.col-sm-2  
+    .col-md-2.col-sm-2
       button.btn.btn-outline-secondary
         | translate
   .row
   .col-md-12.blank-row
 
-.container
+.container(style="border-radius: 10px;")
   - post.posts_ca.each do |po|
-    .container
-      .row.vertical-align.query-bar
-
+    .container(style="border-radius: 10px;")
+      .row.vertical-align.query-bar(style="border-radius: 10px;")
         .row  
           .col
             strong caption:

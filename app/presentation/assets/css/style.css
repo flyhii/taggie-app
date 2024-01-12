@@ -119,9 +119,12 @@ h1 {
 }
 
 .query-bar {
-  background-color: #EEEEEE;
+  /* seems not use */
+  background-color: #EEEEEE; 
   padding: 5px 5px 5px 5px;
 }
+
+
 
 footer {
   padding: 0.5in;
