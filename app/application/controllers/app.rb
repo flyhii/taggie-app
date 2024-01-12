@@ -37,7 +37,7 @@ module FlyHii
 
         result = session[:watching]
         puts result
-        puts "I wilmaaaaaaaaa"
+        # puts "I wilmaaaaaaaaa"
 
         # if result.failure?
         #   flash[:error] = result.failure
