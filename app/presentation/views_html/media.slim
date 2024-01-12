@@ -1,8 +1,8 @@
 .container
   .row
     .col-lg-12.col-md-12.col-sm-12
-      h4
-        |Content
+      h3
+        |Filter
 
 .container
   .row
@@ -24,6 +24,7 @@
           button.btn.btn-outline-secondary(type="submit") 
             | comment counts
         .col-md-12.blank-row
+
         .col-md-12.col-sm-12
             h3
               |Related Hashtag
@@ -32,9 +33,28 @@
                 .col-md-6.col-sm-6
                   span.media.caption
                     = tag
-        .col-md-2.col-sm-3
-          button.btn.btn-outline-secondary(type="submit") 
-            | Translate
+        .col-md-12.blank-row
+
+        / .col-lg-12.col-md-12.col-sm-12
+        /     h3
+        /       |Instagram Content
+        
+        / .col-md-2.col-sm-3
+        /   button.btn.btn-outline-secondary(type="submit") 
+        /     | Translate
+.container  
+  .row 
+    .col-md-5.col-sm-5
+      h3
+        | Instagram Content
+    .col-md-2.col-sm-2  
+    .col-md-2.col-sm-2
+      select.form-control 
+        option(value='option1') Chinese
+        option(value='option2') English
+    .col-md-2.col-sm-2  
+      button.btn.btn-outline-secondary
+        | translate
   .row
   .col-md-12.blank-row
 
