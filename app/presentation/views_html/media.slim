@@ -1,4 +1,19 @@
 .container
+  / h1.title Tags
+
+  form.form-inline.tags-form(action="/media" method="post")
+
+    / .input-group : 創建一個輸入框和按鈕組合的元素
+    / background-image: url('/images/magnifier.png'); background-position: 10px center; background-repeat: no-repeat;
+    .input-group(style="height: 60px;")
+      input#hashtag_name_input.form-control(style="border-radius: 10px; background-color: #EEEEEE; padding-left: 40px; margin-right: 40px; text-indent: 40px;" name="hashtag_name" placeholder="Search tags..." type="text")
+       span.input-group-prepend
+         img(src="/images/magnifier.png" alt="magnifier" style="height: 50px; width: 50px; position: absolute; left: 15px; top: 50%; transform: translateY(-50%);")
+    button.btn.btn-outline-secondary(type="submit", onclick="showProgressBar()")
+      | Show Media
+  .col-md-12.blank-row    
+  
+.container
   .row
     .col-lg-12.col-md-12.col-sm-12
       h3
@@ -23,29 +38,30 @@
         .col-md-2.col-sm-3
           button.btn.btn-outline-secondary(type="submit") 
             | comment counts
-        form.form-inline.tags-form(action="/media" method="post")
-          .input-group(style="height: 60px;")
-            input#hashtag_name_input.form-control(style="border-radius: 10px; background-color: #EEEEEE; padding-left: 40px; margin-right: 40px; text-indent: 40px; width: 50px; " name="hashtag_name" placeholder="Search tags..." type="text")
-              span.input-group-prepend
-                img(src="/images/magnifier.png" alt="magnifier" style="height: 50px; width: 50px; position: absolute; left: 15px; top: 50%; transform: translateY(-50%);")
-          button.btn.btn-outline-secondary(type="submit", onclick="showProgressBar()")
-            | Show Media
-        .col-md-12.blank-row
+    / .col-md-6.col-sm-12.text-right
+    /   form.form-inline.tags-form(action="/media" method="post")
+    /     .input-group(style="height: 60px;")
+    /       input#hashtag_name_input.form-control(style="border-radius: 10px; background-color: #EEEEEE; padding-left: 40px; margin-right: 40px; text-indent: 40px; width: 50px; " name="hashtag_name" placeholder="Search tags..." type="text")
+    /         span.input-group-prepend
+    /           img(src="/images/magnifier.png" alt="magnifier" style="height: 50px; width: 50px; position: absolute; left: 15px; top: 50%; transform: translateY(-50%);")
+    /   button.btn.btn-outline-secondary(type="submit", onclick="showProgressBar()")
+    /     | Show Media
+    .col-md-12.blank-row
 
-        .col-md-12.col-sm-12
-            h3
-              |Related Hashtag
-            .col-md-12.col-sm-12
-              .row
-                - rank_list.top_3_tags.each do |tag|
-                  - hashtag_length = tag.length
-                  - container_width = hashtag_length * 10 + 50
-                  .col-md-3.col-sm-3
-                    .hashtag-container(style="background-color: #e5e2e2; border-radius: 20px; padding: 10px; margin-bottom: 10px; width: #{container_width}px; display: flex; align-items: center; justify-content: center; writing-mode: horizontal-tb; white-space: nowrap;")
-                      span.media.caption
-                        | #
-                        = tag
-        .col-md-12.blank-row
+    .col-md-12.col-sm-12
+      h3
+        |Related Hashtag
+    .col-md-12.col-sm-12
+      .row
+        - rank_list.top_3_tags.each do |tag|
+          - hashtag_length = tag.length
+          - container_width = hashtag_length * 10 + 50
+          .col-md-2.col-sm-2
+            .hashtag-container(style="background-color: #e5e2e2; border-radius: 20px; padding: 10px; margin-bottom: 10px; width: #{container_width}px; display: flex; align-items: center; justify-content: center; writing-mode: horizontal-tb; white-space: nowrap;")
+              span.media.caption
+                | #
+                = tag
+    .col-md-12.blank-row
 
         / .col-lg-12.col-md-12.col-sm-12
         /     h3
