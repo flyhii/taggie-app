@@ -57,20 +57,29 @@
       img(src="/images/hashtag.png" alt="filter" style="height: 40px; width: 40px;")
     .col-md-11.col-sm-11
       .row
-        - rank_list.top_3_tags.each do |tag|
-          - hashtag_length = tag.length
-          - container_width = hashtag_length * 10 + 50
-          .col-md-2.col-sm-2
-            .hashtag-container(style="background-color: #e5e2e2; border-radius: 20px; padding: 10px; margin-bottom: 10px; width: #{container_width}px; display: flex; align-items: center; justify-content: center; writing-mode: horizontal-tb; white-space: nowrap;")
-              span.media.caption
-                | #
-                = tag
+        / margin-left: -40px => 調整hashtags們與"#"圖案的距離
+        .tags-container(style="display: flex; flex-wrap: wrap;  margin-left: -40px;")
+          - rank_list.top_3_tags.each do |tag|
+
+            - hashtag_length = tag.length
+            - container_width = hashtag_length * 10 + 50
+            / 控制間距 為固定的 / margin-right: 10px => hashtags之間的間距
+            .outter(style="margin-right: 10px; margin-bottom: 20px;")
+              / padding: 7px => hashtag字樣與包裹hashtag外框的的上下間距
+              .hashtag-container(style="background-color: #e5e2e2; border-radius: 20px; padding: 10px; width: #{container_width}px; display: flex; align-items: center; justify-content: center; writing-mode: horizontal-tb; white-space: nowrap;")
+                span.media.caption
+                  | #
+                  = tag
+
+            // 最後一個外框不設置右邊距
+            - if tag == rank_list.top_3_tags.last
+            .outter(style="margin-right: 0; margin-bottom: 20px;")          
     .col-md-12.blank-row
 
 .container  
   .row 
     .col-md-5.col-sm-5
-      h3
+      h4
         | Instagram Posts
     .col-md-3.col-sm-3
     .col-md-2.col-sm-2
