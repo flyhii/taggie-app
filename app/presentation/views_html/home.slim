@@ -10,7 +10,7 @@
        span.input-group-prepend
          img(src="/images/magnifier.png" alt="magnifier" style="height: 50px; width: 50px; position: absolute; left: 15px; top: 50%; transform: translateY(-50%);")
     button.btn.btn-outline-secondary(type="submit", onclick="showProgressBar()")
-      | Show Media
+      | Search
   
   .blank-row
   .progress#progress-bar(style="display: none;")
@@ -24,7 +24,7 @@
   
   
   / h1 Previously Viewed Tags
-
+ 
   table.table.table-hover#hashtags_table
     
     thead
@@ -36,7 +36,20 @@
       - if search_history.any?
         - search_history.tags.each do |tag|
           tr
-            td = tag  
+            td
+              form(action="/media" method="post")
+                input(type="hidden" name="hashtag_name" value=tag)
+                button(type="submit" style="background: none; border: none; padding: 0; outline: none; cursor: pointer;")
+                  = tag
+              / progressbar還沒有作用
+              .progress#progress-bar(style="display: none;")
+              .progress-bar.progressbar-color.progress-bar-striped.active(
+                role="progressbar" aria-valuenow="10" aria-valuemin="0"
+                aria-valuemax="100" style="width:0%"
+              )
+              .blank-row
+              #progress-text(style="text-align: center; color: #888;")
+              
       - else
         tr
           td(colspan="2") 
@@ -61,7 +74,7 @@
 / .container 
   
 /   h1.title Tags
-   
+  
 /   form.form-inline.tags-form(action="/media" method='POST' id='show-media-form')
   
 
@@ -69,10 +82,10 @@
     
 /       .col-md-2  
 /        .text-right Hashstag:
-       
+      
 /       .col-md-8  
 /         input#hashtag_name_input.form-control(placeholder="Search tags...")
-       
+      
 /       .col-md-2
 /         button#media-form-submit.btn.btn-primary(type="submit") Search
   

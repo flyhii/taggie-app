@@ -156,6 +156,23 @@ h1 {
   margin-bottom: 10px;
 }
 
+.history-row {
+  cursor: pointer;  
+}
+
+.history-tag {
+  font-weight: bold;
+  color: #39f;
+}
+
+.invisible-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  cursor: pointer;
+}
+
 footer {
   padding: 0.5in;
   font-size:11px;
