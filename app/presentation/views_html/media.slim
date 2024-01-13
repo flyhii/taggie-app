@@ -11,18 +11,29 @@
          img(src="/images/magnifier.png" alt="magnifier" style="height: 50px; width: 50px; position: absolute; left: 15px; top: 50%; transform: translateY(-50%);")
     button.btn.btn-outline-secondary(type="submit", onclick="showProgressBar()")
       | Show Media
-  .col-md-12.blank-row    
-  
-.container
-  .row
-    .col-lg-12.col-md-12.col-sm-12
-      h3
-        |Filter
+
+  .blank-row
+  .progress#progress-bar(style="display: none;")
+  .progress-bar.progressbar-color.progress-bar-striped.active(
+    role="progressbar" aria-valuenow="10" aria-valuemin="0"
+    aria-valuemax="100" style="width:0%"
+  )
+  .blank-row
+  #progress-text(style="text-align: center; color: #888;") 
+  .blank-row
+
+/ .container
+/   .row
+/     .col-lg-12.col-md-12.col-sm-12
+/       h3
+/         |Filter
 
 .container
   .row
     .col-lg-6.col-md-12.col-sm-12
       .row
+        .col-md-1.col-sm-2
+          img(src="/images/filter.png" alt="filter" style="height: 40px; width: 40px;")
         .col-md-2.col-sm-3
           button.btn.btn-outline-secondary(type="submit") 
             | Show Popular
