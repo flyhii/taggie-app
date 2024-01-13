@@ -21,6 +21,10 @@
   .blank-row
   #progress-text(style="text-align: center; color: #888;")
 
+  
+  
+  h1 Previously Viewed Tags
+
   table.table.table-hover#hashtags_table
     
     thead
@@ -29,6 +33,14 @@
         th(colspan="2" style="text-align: center;") Search History
         
     tbody   
+      - if watching.any?
+        - watching.each do |tag|
+          tr
+            td = tag  
+      - else
+        tr
+          td(colspan="2") 
+            | No tags viewed yet
       / - hashtags.each do |hashtag|  
     
       /   tr.hashtag_row
