@@ -23,18 +23,18 @@
 
   
   
-  h1 Previously Viewed Tags
+  / h1 Previously Viewed Tags
 
   table.table.table-hover#hashtags_table
     
     thead
       tr
         / 將History置中
-        th(colspan="2" style="text-align: center;") Search History
+        th(colspan="2" style="text-align: center; font-size: 30px; font-family: 'Times New Roman'") Search History
         
     tbody   
-      - if watching.any?
-        - watching.each do |tag|
+      - if search_history.any?
+        - search_history.tags.each do |tag|
           tr
             td = tag  
       - else
