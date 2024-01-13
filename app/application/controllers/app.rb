@@ -49,7 +49,9 @@ module FlyHii
         # session[:watching] = hashtags.map(&:fullname)
         # viewable_hashtags = Views::HashtagsList.new(result)
         # end
-        view 'home', locals: { }
+        view 'home', locals: {
+          watching: result
+         }
       end
 
       routing.on 'media' do
