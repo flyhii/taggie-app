@@ -19,7 +19,7 @@ module Views
       @recent_posts.any?
     end
 
-    def posts_re ### new add 1/12
+    def posts_re
       @recent_posts
     end
   end

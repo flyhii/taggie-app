@@ -37,7 +37,7 @@ module FlyHii
       end
 
       def reify_post(post_json)
-        Representer::PostsList.new(OpenStruct.new)
+        Representer::PostsList.new(OpenStruct.new) # rubocop:disable Style/OpenStructUse
           .from_json(post_json)
           .then { |post| Success(post) }
       rescue StandardError
