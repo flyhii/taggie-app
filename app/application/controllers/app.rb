@@ -33,11 +33,10 @@ module FlyHii
       # GET /
       routing.root do
         # Get cookie viewer's previously seen hashtags
-        session[:watching] ||= [] ### 初始化為一個空數組
+        session[:watching] ||= []
 
         result = session[:watching]
         puts result
-        # puts "I wilmaaaaaaaaa"
 
         # if result.failure?
         #   flash[:error] = result.failure
@@ -50,7 +49,7 @@ module FlyHii
         # viewable_hashtags = Views::HashtagsList.new(result)
         # end
         search_history = Views::HistoryViewObject.new(result)
-        view 'home', locals: { search_history: search_history}
+        view 'home', locals: { search_history: search_history }
         # view 'home', locals: {
         #   watching: result
         #  }
