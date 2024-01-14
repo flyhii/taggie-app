@@ -82,13 +82,17 @@
       h4
         | Instagram Posts
     .col-md-3.col-sm-3
-    .col-md-2.col-sm-2
-      select.form-control 
-        option(value='option1') Chinese
-        option(value='option2') English
-    .col-md-2.col-sm-2.text-right
-      button.btn.btn-outline-secondary
-        | translate
+    form.form-inline.tags-form(action="/media/translate" method="post")
+      .col-md-2.col-sm-2
+        select.form-control(name='language')
+          option(value='zh-TW') Chinese
+          option(value='en') English
+          option(value='fr') French
+          option(value='ja') Japanese
+          option(value='ko') Korean
+      .col-md-2.col-sm-2.text-right
+        button.btn.btn-outline-secondary
+          | translate
   .row
   .col-md-12.blank-row
 

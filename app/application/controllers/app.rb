@@ -100,6 +100,29 @@ module FlyHii
             view 'media', locals: { post:, rank_list: }
           end
         end
+      
+        routing.on 'translate' do
+          routing.is do
+            # puts 'here!'
+            # GET /media/#{hashtag_name}/ranking
+            routing.post do
+              # puts routing.params['language']
+              post_made = Service::TranslateAllPosts.new.call(routing.params['language'])
+              ranking_made = Service::RankHashtags.new.call(hashtag_name['hashtag_name'])
+              # puts "ranking_made = #{ranking_made}"
+
+              if ranking_made.failure?
+                flash[:error] = ranking_made.failure
+                routing.redirect '/'
+              end
+
+              posts_list = Views::TranslatePostsList.new(post_made.value!.posts)
+              rank_list = Views::RankedList.new(ranking_made.value!)
+
+              view 'media', locals: { posts_list:, rank_list: }
+            end    
+          end
+        end  
 
         routing.on String do |hashtag_name|
           puts 'here!'
