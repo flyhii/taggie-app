@@ -39,7 +39,7 @@
             td
               form(action="/media" method="post")
                 input(type="hidden" name="hashtag_name" value=tag)
-                button(type="submit" style="background: none; border: none; padding: 0; outline: none; cursor: pointer;")
+                button(type="submit", onclick="showProgressBar()" style="background: none; border: none; padding: 0; outline: none; cursor: pointer;")
                   = tag
               / progressbar還沒有作用
               .progress#progress-bar(style="display: none;")
@@ -49,7 +49,6 @@
               )
               .blank-row
               #progress-text(style="text-align: center; color: #888;")
-              
       - else
         tr
           td(colspan="2") 
