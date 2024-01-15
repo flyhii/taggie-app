@@ -49,7 +49,7 @@ module FlyHii
         # viewable_hashtags = Views::HashtagsList.new(result)
         # end
         search_history = Views::HistoryViewObject.new(result)
-        view 'home', locals: { search_history: search_history }
+        view 'home', locals: { search_history: }
         # view 'home', locals: {
         #   watching: result
         #  }
@@ -100,59 +100,31 @@ module FlyHii
             view 'media', locals: { post:, rank_list: }
           end
         end
-      
         routing.on 'translate' do
           routing.is do
-            # puts 'here!'
-            # GET /media/#{hashtag_name}/ranking
+            puts 'here!'
+            # POST /media/#{hashtag_name}/translate
             routing.post do
-              # puts routing.params['language']
-              post_made = Service::TranslateAllPosts.new.call(routing.params['language'])
-              ranking_made = Service::RankHashtags.new.call(hashtag_name['hashtag_name'])
-              # puts "ranking_made = #{ranking_made}"
+              puts session[:watching][0]
+              puts routing.params['language']
+              post_translated = Service::TranslateAllPosts.new.call(routing.params['language'])
+              ranking_made = Service::RankHashtags.new.call(session[:watching][0])
+              puts "translated post = #{post_translated}"
 
-              if ranking_made.failure?
-                flash[:error] = ranking_made.failure
+              if post_translated.failure?
+                flash[:error] = post_translated.failure
                 routing.redirect '/'
               end
 
-              posts_list = Views::TranslatePostsList.new(post_made.value!.posts)
-              rank_list = Views::RankedList.new(ranking_made.value!)
+              puts post = Views::TranslatePostsList.new(post_translated.value!.posts)
+              puts rank_list = Views::RankedList.new(ranking_made.value!)
 
-              view 'media', locals: { posts_list:, rank_list: }
-            end    
-          end
-        end  
+              view 'media', locals: { post:, rank_list: }
 
-        routing.on String do |hashtag_name|
-          puts 'here!'
-          # DELETE /media/#{hashtag_name} delete previous history
-          routing.delete do
-            fullname = hashtag_name
-            session[:watching].delete(fullname)
-
-            routing.redirect '/'
-          end
-
-          # GET /media/#{hashtag_name}/ranking
-          routing.get do
-            ranking_made = Service::RankHashtags.new.call(hashtag_name)
-            puts "ranking_made = #{ranking_made}"
-            # if the process of hashtag lead to increase the post has some wrong, lead to home page
-            if ranking_made.failure?
-              flash[:error] = ranking_made.failure
-              routing.redirect '/'
-            end
-            @post_made = session[:post_made]
-            puts "post_made = #{@post_made}"
-            posts_list = Views::PostsList.new(@post_made.value!)
-            rank_list = Views::RankedList.new(ranking_made.value!)
-
-            view 'media', locals: { posts_list:, rank_list: }
-
-            # Only use browser caching in production
-            App.configure :production do
-              response.expires 60, public: true
+              # Only use browser caching in production
+              App.configure :production do
+                response.expires 60, public: true
+              end
             end
           end
         end
