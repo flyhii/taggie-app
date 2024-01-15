@@ -42,7 +42,7 @@
   color: gray;
 }
 
-/* Button樣式 */
+/* Button樣式  */
 button.btn.btn-outline-secondary {
   /* 修改字體大小 */
   font-size: 12px; 
@@ -56,12 +56,36 @@ button.btn.btn-outline-secondary {
   border-radius: 15px;
    /* 添加陰影效果 */
    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+} 
+
+ button.btn.btn-outline-secondary:hover { 
+  /* 比原始顏色更深的灰色 */
+   background-color: #CCCCCC;   
+ } 
+
+ .my-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #444; 
+  color: #ddd;
+  border: none;
+  padding: 10px 20px; 
+  font-size: 12px; 
+  transition: background-color 0.3s;
+  width: 100px;
+  height: 50px;
+  border-radius: 15px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-button.btn.btn-outline-secondary:hover {
-  /* 比原始顏色更深的灰色 */
-  background-color: #CCCCCC;  
+
+.my-button:hover {
+  background-color: #696868;
+  color: #ddd;  
 }
+
 
 h1 {
   font-weight: bold;
@@ -119,8 +143,34 @@ h1 {
 }
 
 .query-bar {
-  background-color: #EEEEEE;
+  /* seems not use */
+  background-color: #EEEEEE; 
   padding: 5px 5px 5px 5px;
+}
+
+/* can't use in slim(need to find out why) */
+.hashtag-container {
+  background-color: #e5e2e2;
+  border-radius: 20px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.history-row {
+  cursor: pointer;  
+}
+
+.history-tag {
+  font-weight: bold;
+  color: #39f;
+}
+
+.invisible-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  cursor: pointer;
 }
 
 footer {
