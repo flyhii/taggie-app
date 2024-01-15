@@ -1,48 +1,103 @@
 .container
-  .row
-    .col-lg-12.col-md-12.col-sm-12
-      h4
-        |Content
+  form.form-inline.tags-form(action="/media" method="post")
+
+    .input-group(style="height: 60px;")
+      input#hashtag_name_input.form-control(style="border-radius: 10px; background-color: #EEEEEE; padding-left: 40px; margin-right: 40px; text-indent: 40px;" name="hashtag_name" placeholder="Search tags..." type="text")
+       span.input-group-prepend
+         img(src="/images/magnifier.png" alt="magnifier" style="height: 50px; width: 50px; position: absolute; left: 15px; top: 50%; transform: translateY(-50%);")
+    button.btn.btn-outline-secondary(type="submit", onclick="showProgressBar()")
+      | Show Media
+
+  .blank-row
+  .progress#progress-bar(style="display: none;")
+  .progress-bar.progressbar-color.progress-bar-striped.active(
+    role="progressbar" aria-valuenow="10" aria-valuemin="0"
+    aria-valuemax="100" style="width:0%"
+  )
+  .blank-row
+  #progress-text(style="text-align: center; color: #888;") 
+  .blank-row
 
 .container
   .row
     .col-lg-6.col-md-12.col-sm-12
       .row
+        .col-md-1.col-sm-2
+          img(src="/images/filter.png" alt="filter" style="height: 40px; width: 40px;")
         .col-md-2.col-sm-3
-          button.btn.btn-outline-secondary(type="submit") 
+          button.my-button(type="submit") 
             | Show Popular
         .col-md-2.col-sm-3
-          button.btn.btn-outline-secondary(type="submit") 
+          button.my-button(type="submit") 
             | Show Recent
         .col-md-2.col-sm-3
-          button.btn.btn-outline-secondary(type="submit") 
+          button.my-button(type="submit") 
             | timestamps
         .col-md-2.col-sm-3
-          button.btn.btn-outline-secondary(type="submit") 
+          button.my-button(type="submit")  
             | like counts
         .col-md-2.col-sm-3
-          button.btn.btn-outline-secondary(type="submit") 
+          button.my-button(type="submit")  
             | comment counts
-        .col-md-12.blank-row
-        .col-md-12.col-sm-12
-            h3
-              |Related Hashtag
-            .col-md-12.col-sm-12
-              - rank_list.top_3_tags.each do |tag|
-                .col-md-6.col-sm-6
-                  span.media.caption
-                    = tag
-        .col-md-12.col-sm-12
-            button.btn.btn-outline-secondary(type="submit") 
-            | Translate
+    .col-md-12.blank-row
+    hr
+    .col-md-12.blank-row
+
+.container  
+  .row 
+    .col-md-12.col-sm-12
+      h4
+        | Maybe you are interested in these hashtags...
+
+.container  
+  .row 
+    .col-md-1.col-sm-1
+      img(src="/images/hashtag.png" alt="filter" style="height: 40px; width: 40px;")
+    .col-md-11.col-sm-11
+      .row
+        / margin-left: -40px => 調整hashtags們與"#"圖案的距離
+        .tags-container(style="display: flex; flex-wrap: wrap;  margin-left: -40px;")
+          - rank_list.top_3_tags.each do |tag|
+
+            - hashtag_length = tag.length
+            - container_width = hashtag_length * 10 + 50
+            / 控制間距 為固定的 / margin-right: 10px => hashtags之間的間距
+            .outter(style="margin-right: 10px; margin-bottom: 20px;")
+              / padding: 7px => hashtag字樣與包裹hashtag外框的的上下間距
+              .hashtag-container(style="background-color: #e5e2e2; border-radius: 20px; padding: 8px; width: #{container_width}px; display: flex; align-items: center; justify-content: center; writing-mode: horizontal-tb; white-space: nowrap;")
+                span.media.caption
+                  | #
+                  = tag
+
+            // 最後一個外框不設置右邊距
+            - if tag == rank_list.top_3_tags.last
+            .outter(style="margin-right: 0; margin-bottom: 20px;")          
+    .col-md-12.blank-row
+
+.container  
+  .row 
+    .col-md-5.col-sm-5
+      h4
+        | Instagram Posts
+    .col-md-3.col-sm-3
+    form.form-inline.tags-form(action="/media/translate" method="post")
+      .col-md-2.col-sm-2
+        select.form-control(name='language')
+          option(value='zh-TW') Chinese
+          option(value='en') English
+          option(value='fr') French
+          option(value='ja') Japanese
+          option(value='ko') Korean
+      .col-md-2.col-sm-2.text-right
+        button.btn.btn-outline-secondary
+          | translate
   .row
   .col-md-12.blank-row
 
-.container
+.container(style="border-radius: 20px;")
   - post.posts_ca.each do |po|
-    .container
-      .row.vertical-align.query-bar
-
+    .container(style="border-radius: 20px;")
+      .row.vertical-align.query-bar(style="border-radius: 20px;")
         .row  
           .col
             strong caption:

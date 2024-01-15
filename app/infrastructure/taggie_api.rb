@@ -24,6 +24,11 @@ module FlyHii
         @request.add_posts(hashtag_name)
       end
 
+      def tranlate_all_posts(language)
+        puts "wilmaaaa #{language}"
+        @request.tranlate_all_posts(language)
+      end
+
       # Gets rank of hashtags from API
       # - req: PostRequestPath
       #        with #hashtag_name
@@ -51,6 +56,10 @@ module FlyHii
 
         def add_posts(hashtag_name)
           call_api('post', ['posts', hashtag_name])
+        end
+
+        def tranlate_all_posts(language)
+          call_api('post', ['posts/translate', language])
         end
 
         def get_rank(req)

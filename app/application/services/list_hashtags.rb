@@ -28,7 +28,7 @@ module FlyHii
 
       def reify_list(hashtags_json)
         puts "stage 1 success"
-        Representer::HashtagsList.new(OpenStruct.new)
+        Representer::HashtagsList.new(OpenStruct.new) # rubocop:disable Style/OpenStructUse
           .from_json(hashtags_json)
           .then { |hashtags| Success(hashtags) }
       rescue StandardError
