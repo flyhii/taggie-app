@@ -127,7 +127,7 @@ module FlyHii
             end
 
             view 'media', locals: { post:, rank_list: }
-          end
+          end 
         end
         routing.on 'translate' do
           routing.is do
