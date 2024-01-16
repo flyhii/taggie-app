@@ -56,6 +56,28 @@ module FlyHii
       end
 
       routing.on 'media' do
+        routing.post 'translate' do
+          puts 'here!'
+          puts session[:watching][0]
+          puts routing.params['language']
+          post_translated = Service::TranslateAllPosts.new.call(routing.params['language'])
+          ranking_made = Service::RankHashtags.new.call(session[:watching][0])
+          puts "translated post = #{post_translated}"
+
+          if post_translated.failure?
+            flash[:error] = post_translated.failure
+            routing.redirect '/'
+          end
+
+          post = Views::TranslatePostsList.new(post_translated.value!.posts)
+          rank_list = Views::RankedList.new(ranking_made.value!)
+
+          # routing.redirect '/media/translate'
+
+          puts "Translate handled - #{request.path_info}"
+          view 'translate', locals: { post:, rank_list: }
+        end
+
         routing.is do
           # POST /media/
           routing.post do
@@ -97,38 +119,17 @@ module FlyHii
             rank_list = Views::RankedList.new(ranking_made.value!)
             # binding.irb
             puts rank_list.top_3_tags
+
+            # Only use browser caching in production
+            App.configure :production do
+              response.expires 60, public: true
+            end
+            
             view 'media', locals: { post:, rank_list: }
           end
         end
-        routing.on 'translate' do
-          routing.is do
-            puts 'here!'
-            # POST /media/#{hashtag_name}/translate
-            routing.post do
-              puts session[:watching][0]
-              puts routing.params['language']
-              post_translated = Service::TranslateAllPosts.new.call(routing.params['language'])
-              ranking_made = Service::RankHashtags.new.call(session[:watching][0])
-              puts "translated post = #{post_translated}"
-
-              if post_translated.failure?
-                flash[:error] = post_translated.failure
-                routing.redirect '/'
-              end
-
-              puts post = Views::TranslatePostsList.new(post_translated.value!.posts)
-              puts rank_list = Views::RankedList.new(ranking_made.value!)
-
-              view 'media', locals: { post:, rank_list: }
-
-              # Only use browser caching in production
-              App.configure :production do
-                response.expires 60, public: true
-              end
-            end
-          end
-        end
       end
+
     end
   end
 end
