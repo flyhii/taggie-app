@@ -132,11 +132,11 @@ module FlyHii
 
       routing.on 'commentcounts' do
         routing.is do
-          #puts 'here!'
+          # puts 'here!'
           # POST /media/#{hashtag_name}/translate
           routing.post do
             hashtag_name = session[:watching][0]
-            #puts routing.params['language']
+            #puts routing.params['language'] # rubocop:disable Layout/LeadingCommentSpace
             commentcounts_sorted = Service::SortPostByCommentCounts.new.call(hashtag_name)
             ranking_made = Service::RankHashtags.new.call(hashtag_name)
             puts "Sorted CommentCounts = #{commentcounts_sorted}"
