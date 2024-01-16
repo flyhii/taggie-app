@@ -125,7 +125,6 @@ module FlyHii
             App.configure :production do
               response.expires 60, public: true
             end
-
             view 'media', locals: { post:, rank_list: }
           end
         end
