@@ -150,6 +150,7 @@
     .col-md-5.col-sm-5
       h4(style="color: #A5411E; font-weight: bold;") 
         | Instagram Posts
+<<<<<<< HEAD
     / 調整Imstagram Posts 與下拉式選單之間的間距的(目前測試3以上就會到下一行)
     .col-md-2.col-sm-2
     /.text-right 好像沒有用
@@ -166,6 +167,20 @@
         .col-md-2.col-sm-2(style="margin-left: 10px")
           button.btn.btn-outline-secondary(type="submit")
             | translate
+=======
+    .col-md-3.col-sm-3
+    form.form-inline.tags-form(action="/media/translate" method="post")
+      .col-md-2.col-sm-2
+        select.form-control(name='language')
+          option(value='zh-TW') Chinese
+          option(value='en') English
+          option(value='fr') French
+          option(value='ja') Japanese
+          option(value='ko') Korean
+      .col-md-2.col-sm-2.text-right
+        button.btn.btn-outline-secondary(type="submit")
+          | translate
+>>>>>>> a2442a4 (translation available!)
   .row
   .col-md-12.blank-row
 
