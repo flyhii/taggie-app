@@ -124,23 +124,28 @@
           .row
             .col
               strong media_url:
-              .media-url
-                  img(src=po.media_url style="max-width: 50%; max-height: 50%;")
-          .row  
-            .col
-              strong comments_count:
+              .media-url.d-flex.flex-column.align-items-center
+                  img(src=po.media_url style="max-width: 30%; max-height: 30%;")
+          / 讓comment like timestamp可以是偏右邊的
+          .col-md-5.col-sm-5
+          
+          / 調整給comment like timestamp該直col的整體寬度(ex: 若寬度不夠timestamp的值就會跑到下一行)
+          .col-md-1.col-sm-1
+            .media-url.d-flex.flex-column.align-items-center
+              img(src="/images/comment2.png" alt="filter" style="height: 40px; width: 40px;")
               .comments-count
                 = po.comments_count
-          .row
-            .col
-              strong like-count:
+          
+          .col-md-1.col-sm-1
+            .media-url.d-flex.flex-column.align-items-center
+              img(src="/images/heart.png" alt="filter" style="height: 40px; width: 40px;")
               .like-count
                 = po.like_count
-          .row
-            .col  
-              strong timestamp:
-              .timestamp
-                = po.timestamp
+          .col-md-12.blank-row
+          .col-md-9.col-sm-9
+          .col-md-3.col-sm-3
+            .timestamp
+              = po.timestamp
     .col-md-12.blank-row
 
 / .container
