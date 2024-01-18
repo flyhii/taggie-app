@@ -87,6 +87,9 @@ button.btn.btn-outline-secondary {
 }
 
 
+
+
+
 h1 {
   font-weight: bold;
 }
@@ -171,6 +174,11 @@ h1 {
   padding: 0;
   outline: none;
   cursor: pointer;
+}
+
+.tag-item span::before {
+  content: "#"; 
+  margin-right: 5px;
 }
 
 footer {
