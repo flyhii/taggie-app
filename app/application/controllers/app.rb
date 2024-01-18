@@ -75,7 +75,7 @@ module FlyHii
           # routing.redirect '/media/translate'
 
           puts "Translate handled - #{request.path_info}"
-          view 'translate', locals: { post:, rank_list: }
+          view 'media', locals: { post:, rank_list: }
         end
 
         routing.is do
