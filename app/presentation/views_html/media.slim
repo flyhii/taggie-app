@@ -107,6 +107,8 @@
   .row
   .col-md-12.blank-row
 
+
+                  
 .container(style="border-radius: 20px;")
   - post.posts_ca.each do |po|
     .container(style="border-radius: 20px;")
@@ -118,27 +120,30 @@
               = po.caption
           .row
             .col  
-              strong tags:
-              .tags
-                = po.tags
+              / strong tags:
+              .tags-container(style="display: flex; flex-wrap: wrap; margin-top: 20px;")
+                - po.tags.split.each do |tag|
+                  button(style="background-color: #ddd; border-radius: 20px; padding: 7px; border: none; margin-right: 10px; margin-bottom: 10px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#bbb'" onmouseout="this.style.backgroundColor='#ddd'")
+                    span ##{tag}
+
           .row
             .col
               strong media_url:
               .media-url.d-flex.flex-column.align-items-center
-                  img(src=po.media_url style="max-width: 30%; max-height: 30%;")
+                  img(src=po.media_url style="max-width: 30%; max-height: 30%; border-radius: 10px;")
           / 讓comment like timestamp可以是偏右邊的
+          .col-md-12.blank-row
           .col-md-5.col-sm-5
-          
           / 調整給comment like timestamp該直col的整體寬度(ex: 若寬度不夠timestamp的值就會跑到下一行)
           .col-md-1.col-sm-1
             .media-url.d-flex.flex-column.align-items-center
-              img(src="/images/comment2.png" alt="filter" style="height: 40px; width: 40px;")
+              img(src="/images/comment1.png" alt="filter" style="height: 40px; width: 40px;")
               .comments-count
                 = po.comments_count
           
           .col-md-1.col-sm-1
             .media-url.d-flex.flex-column.align-items-center
-              img(src="/images/heart.png" alt="filter" style="height: 40px; width: 40px;")
+              img(src="/images/heart2.png" alt="filter" style="height: 40px; width: 40px;")
               .like-count
                 = po.like_count
           .col-md-12.blank-row
