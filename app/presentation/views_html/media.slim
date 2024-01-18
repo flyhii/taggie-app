@@ -123,8 +123,10 @@
               / strong tags:
               .tags-container(style="display: flex; flex-wrap: wrap; margin-top: 20px;")
                 - po.tags.split.each do |tag|
-                  button(style="background-color: #ddd; border-radius: 20px; padding: 7px; border: none; margin-right: 10px; margin-bottom: 10px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#bbb'" onmouseout="this.style.backgroundColor='#ddd'")
-                    span ##{tag}
+                  form(action="/media" method="post")
+                    input(type="hidden" name="hashtag_name" value=tag)
+                    button(type="submit" style="background-color: #ddd; border-radius: 20px; padding: 7px; border: none; margin-right: 10px; margin-bottom: 10px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#bbb'" onmouseout="this.style.backgroundColor='#ddd'")
+                      span ##{tag}
 
           .row
             .col
