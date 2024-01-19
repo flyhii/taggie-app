@@ -1,5 +1,5 @@
 .container
-  
+
   form.form-inline.tags-form(action="/media" method="post")
 
     .input-group(style="height: 60px;")
@@ -19,7 +19,6 @@
   #progress-text(style="text-align: center; color: #888;") 
   .blank-row
 
-
 .container
   .row
     .col-lg-6.col-md-12.col-sm-12
@@ -27,6 +26,7 @@
         .col-md-1.col-sm-2
           img(src="/images/filter.png" alt="filter" style="height: 40px; width: 40px;")
         .col-md-2.col-sm-3
+
           / form對齊button 為了防止form影響button間距
           / 1. need to revise
           form.form-inline.tags-form(action="/media" method="post")
@@ -46,6 +46,7 @@
             | like counts
         .col-md-2.col-sm-3
           form.form-inline.tags-form(action="/media/commentcounts" method="post")  
+
           button.my-button(type="submit")  
             | comment counts
     .col-md-12.blank-row
@@ -102,7 +103,6 @@
 /             // 最後一個外框不設置右邊距
 /             - if tag == rank_list.top_3_tags.last
 /             .outter(style="margin-right: 0; margin-bottom: 20px;")  
-
 .container  
   .row 
     .col-md-5.col-sm-5
@@ -127,8 +127,6 @@
   .row
   .col-md-12.blank-row
 
-
-                  
 .container(style="border-radius: 20px;")
   - post.posts_ca.each do |po|
     .container(style="border-radius: 20px;")

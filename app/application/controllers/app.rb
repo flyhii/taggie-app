@@ -110,12 +110,11 @@ module FlyHii
               post_translated = Service::TranslateAllPosts.new.call(routing.params['language'])
               ranking_made = Service::RankHashtags.new.call(session[:watching][0])
               puts "translated post = #{post_translated}"
-    
               if post_translated.failure?
                 flash[:error] = post_translated.failure
                 routing.redirect '/'
               end
-    
+
               post = Views::TranslatePostsList.new(post_translated.value!.posts)
               rank_list = Views::RankedList.new(ranking_made.value!)
     
@@ -127,7 +126,7 @@ module FlyHii
               App.configure :production do
                 response.expires 60, public: true
               end
-              
+
               view 'media', locals: { post:, rank_list: }
     
               # puts "come on"
