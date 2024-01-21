@@ -194,7 +194,6 @@ module FlyHii
           end
         end
       end
-
       routing.on 'recentMedia' do
         routing.is do
           routing.post do
