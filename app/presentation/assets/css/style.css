@@ -48,7 +48,7 @@ button.btn.btn-outline-secondary {
   font-size: 12px; 
   /* 添加滑鼠移至button的顏色過渡效果 */
   transition: background-color 0.3s;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
   /* 修改按鈕的寬度和高度 */
   width: 100px;
   height: 50px;
