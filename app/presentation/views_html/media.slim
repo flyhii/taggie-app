@@ -75,7 +75,7 @@
               / 控制間距 為固定的 / margin-right: 10px => hashtags之間的間距
               .outter(style="margin-right: 10px; margin-bottom: 20px;")
                 / padding: 7px => hashtag字樣與包裹hashtag外框的的上下間距
-                button(type="submit" style="background-color: #e5e2e2; border-radius: 20px; padding: 8px; border: none; margin-right: 10px; margin-bottom: 10px; transition: background-color 0.3s; width: #{container_width}px; display: flex; align-items: center; justify-content: center; writing-mode: horizontal-tb; white-space: nowrap;" onmouseover="this.style.backgroundColor='#bbb'" onmouseout="this.style.backgroundColor='#ddd'")
+                button(type="submit" style="background-color: #ebbd80; border-radius: 20px; padding: 8px; border: none; margin-right: 10px; margin-bottom: 10px; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); transition: background-color 0.3s; width: #{container_width}px; display: flex; align-items: center; justify-content: center; writing-mode: horizontal-tb; white-space: nowrap;" onmouseover="this.style.backgroundColor='#f3e0cd'" onmouseout="this.style.backgroundColor='#ebbd80'")
                   span.media.caption
                     | #
                     = tag
@@ -85,7 +85,7 @@
               .outter(style="margin-right: 0; margin-bottom: 20px;")          
     .col-md-12.blank-row
 
-/ 原本不是按鈕 是包住hashtags的外框的時候長這樣:
+/ 原本不是按鈕 是包住hashtags的外框的時候的時候長這樣:
 / .tags-container(style="display: flex; flex-wrap: wrap;  margin-left: -40px;")
 /           - rank_list.top_3_tags.each do |tag|
 
@@ -135,8 +135,9 @@
       .row.vertical-align.query-bar(style="border-radius: 20px;")
         .row  
           .col
-            strong caption:
+            / strong caption:
             .caption 
+              br
               = po.caption
           .row
             .col  
@@ -147,11 +148,13 @@
                     input(type="hidden" name="hashtag_name" value=tag)
                     button(type="submit" style="background-color: #ddd; border-radius: 20px; padding: 7px; border: none; margin-right: 10px; margin-bottom: 10px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#bbb'" onmouseout="this.style.backgroundColor='#ddd'")
                       span ##{tag}
+              hr
 
           .row
             .col
-              strong media_url:
+              / strong media_url:
               .media-url.d-flex.flex-column.align-items-center
+                  br
                   img(src=po.media_url style="max-width: 30%; max-height: 30%; border-radius: 10px;")
           / 讓comment like timestamp可以是偏右邊的
           .col-md-12.blank-row
@@ -159,13 +162,13 @@
           / 調整給comment like timestamp該直col的整體寬度(ex: 若寬度不夠timestamp的值就會跑到下一行)
           .col-md-1.col-sm-1
             .media-url.d-flex.flex-column.align-items-center
-              img(src="/images/comment1.png" alt="filter" style="height: 40px; width: 40px;")
+              img(src="/images/comment3.png" alt="filter" style="height: 40px; width: 40px;")
               .comments-count
                 = po.comments_count
           
           .col-md-1.col-sm-1
             .media-url.d-flex.flex-column.align-items-center
-              img(src="/images/heart2.png" alt="filter" style="height: 40px; width: 40px;")
+              img(src="/images/heart3.png" alt="filter" style="height: 40px; width: 40px;")
               .like-count
                 = po.like_count
           .col-md-12.blank-row
