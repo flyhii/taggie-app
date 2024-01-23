@@ -131,6 +131,7 @@ module FlyHii
         end
       end
 
+<<<<<<< HEAD
       routing.on 'commentcounts' do
         routing.is do
           #puts 'here!'
@@ -170,6 +171,8 @@ module FlyHii
         end
       end
 
+=======
+>>>>>>> b39e60d (fixing recent post display)
       routing.on 'recentMedia' do
         routing.is do
           routing.post do
@@ -196,7 +199,6 @@ module FlyHii
           end
         end
       end
-
     end
   end
 end
