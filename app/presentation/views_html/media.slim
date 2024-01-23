@@ -70,24 +70,24 @@
           / form對齊button 為了防止form影響button間距
           / 1. need to revise
           form.form-inline.tags-form(action="/media" method="post")
-          button.my-button(type="submit") 
-            | Show Popular
+            button.my-button(type="submit") 
+              | Show Popular
         .col-md-2.col-sm-3
-          form.form-inline.tags-form(action="/media/recent" method="post")
-          button.my-button(type="submit") 
-            | Show Recent
+          form.form-inline.tags-form(action="/recentMedia" method="post")
+            button.my-button(type="submit") 
+              | Show Recent
         .col-md-2.col-sm-3
           form.form-inline.tags-form(action="/media/timestamps" method="post")
-          button.my-button(type="submit") 
-            | timestamps
+            button.my-button(type="submit") 
+              | timestamps
         .col-md-2.col-sm-3
           form.form-inline.tags-form(action="/media/likecounts" method="post")
-          button.my-button(type="submit")  
-            | like counts
+            button.my-button(type="submit")  
+              | like counts
         .col-md-2.col-sm-3
           form.form-inline.tags-form(action="/media/commentcounts" method="post")  
-          button.my-button(type="submit")  
-            | comment counts
+            button.my-button(type="submit")  
+              | comment counts
     .col-md-12.blank-row
     hr
     .col-md-12.blank-row

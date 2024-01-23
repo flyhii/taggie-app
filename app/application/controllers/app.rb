@@ -58,10 +58,11 @@ module FlyHii
       routing.on 'media' do
         routing.post 'translate' do
           puts 'here!'
-          puts session[:watching][0]
+
           puts routing.params['language']
           post_translated = Service::TranslateAllPosts.new.call(routing.params['language'])
-          ranking_made = Service::RankHashtags.new.call(session[:watching][0])
+          hashtag_name = session[:watching][0]
+          ranking_made = Service::RankHashtags.new.call(hashtag_name)
           puts "translated post = #{post_translated}"
 
           if post_translated.failure?
@@ -126,6 +127,33 @@ module FlyHii
             end
 
             view 'media', locals: { post:, rank_list: }
+          end
+        end
+      end
+
+      routing.on 'recentMedia' do
+        routing.is do
+          routing.post do
+            puts 'recentMedia'
+            puts hashtag_name = session[:watching][0]
+            recent_post_made = Service::AddRecentPost.new.call(hashtag_name)
+
+            if recent_post_made.failure?
+              flash[:error] = recent_post_made.failure
+              routing.redirect '/'
+            end
+
+            ranking_made = Service::RankHashtags.new.call(hashtag_name)
+
+            if ranking_made.failure?
+              flash[:error] = ranking_made.failure
+              routing.redirect '/'
+            end
+
+            recent_post = Views::PostsList.new(recent_post_made.value!.posts)
+            rank_list = Views::RankedList.new(ranking_made.value!)
+
+            view 'media', locals: { recent_post:, rank_list: }
           end
         end
       end
