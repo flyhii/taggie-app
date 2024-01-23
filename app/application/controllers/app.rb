@@ -165,14 +165,7 @@ module FlyHii
 
           end
         end
-<<<<<<< HEAD
       end
-<<<<<<< HEAD
-=======
-=======
->>>>>>> c433653 (fix: adding progress bar object)
-
->>>>>>> 2c0781d (fixing recent post display)
       routing.on 'recentMedia' do
         routing.is do
           routing.post do
