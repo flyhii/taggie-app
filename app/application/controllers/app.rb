@@ -181,6 +181,8 @@ module FlyHii
               routing.redirect '/'
             end
 
+            puts "recent_post_made = #{recent_post_made.value!}"
+
             ranking_made = Service::RankHashtags.new.call(hashtag_name)
 
             if ranking_made.failure?
@@ -188,10 +190,10 @@ module FlyHii
               routing.redirect '/'
             end
 
-            recent_post = Views::PostsList.new(recent_post_made.value!.posts)
+            post = Views::PostsList.new(recent_post_made.value!.recentposts)
             rank_list = Views::RankedList.new(ranking_made.value!)
 
-            view 'media', locals: { recent_post:, rank_list: }
+            view 'media', locals: { post:, rank_list: }
           end
         end
       end
