@@ -29,6 +29,8 @@ module FlyHii
         result = Gateway::Api.new(FlyHii::App.config)
           .get_recent_posts(input[:hashtag_name])
 
+        puts "result = #{result}"
+
         result.success? ? Success(result.payload) : Failure(result.message)
       rescue StandardError => e
         puts e.inspect
@@ -37,7 +39,7 @@ module FlyHii
       end
 
       def reify_post(post_json)
-        Representer::PostsList.new(OpenStruct.new) # rubocop:disable Style/OpenStructUse
+        Representer::RecentPostsList.new(OpenStruct.new) # rubocop:disable Style/OpenStructUse
           .from_json(post_json)
           .then { |post| Success(post) }
       rescue StandardError
