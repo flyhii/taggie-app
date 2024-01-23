@@ -140,6 +140,45 @@ module FlyHii
           end
         end
       end
+
+      routing.on 'commentcounts' do
+        routing.is do
+          #puts 'here!'
+          # POST /media/#{hashtag_name}/translate
+          routing.post do
+            hashtag_name = session[:watching][0]
+            #puts routing.params['language']
+            commentcounts_sorted = Service::SortPostByCommentCounts.new.call(hashtag_name)
+            ranking_made = Service::RankHashtags.new.call(hashtag_name)
+            puts "Sorted CommentCounts = #{commentcounts_sorted}"
+            puts "ranking_made = #{ranking_made}"
+
+            if commentcounts_sorted.failure?
+              flash[:error] = commentcounts_sorted.failure
+              routing.redirect '/'
+            end
+
+            post = Views::CommentCountsList.new(commentcounts_sorted.value!.posts)
+            rank_list = Views::RankedList.new(ranking_made.value!)
+
+            # routing.redirect '/commentcounts'
+
+            # Only use browser caching in production
+            App.configure :production do
+              response.expires 60, public: true
+            end
+
+            view 'media', locals: { post:, rank_list: }
+
+            # puts "come on"
+          end
+          # routing.get do
+          #   puts "I'm here"
+
+          #   view 'translate', locals: { post:, rank_list: }
+          # end
+        end
+      end
     end
   end
 end
