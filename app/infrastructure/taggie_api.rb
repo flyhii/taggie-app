@@ -29,12 +29,17 @@ module FlyHii
         @request.tranlate_all_posts(language)
       end
 
-      # Gets rank of hashtags from API
-      # - req: PostRequestPath
-      #        with #hashtag_name
       def rank(req)
         puts "req = #{req}"
         @request.get_rank(req)
+      end
+
+      def get_recent_posts(hashtag_name)
+        @request.get_recent_posts(hashtag_name)
+      end
+
+      def get_recent_rank(req)
+        @request.get_recent_rank(req)
       end
 
       # HTTP request transmitter
@@ -64,6 +69,14 @@ module FlyHii
 
         def get_rank(req)
           call_api('get', ['posts', req])
+        end
+
+        def get_recent_posts(hashtag_name)
+          call_api('get', ['recentposts', hashtag_name])
+        end
+
+        def get_recent_rank(req)
+          call_api('get', ['recentposts', req])
         end
 
         private

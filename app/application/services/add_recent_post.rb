@@ -15,9 +15,9 @@ module FlyHii
       private
 
       def validate_input(input)
-        puts '0'
-        if input.success?
-          hashtag_name = input[:hashtag_name]
+        puts '3.0'
+        if input
+          hashtag_name = input
           Success(hashtag_name:)
         else
           Failure('Please input a hashtag in the correct format')
@@ -25,9 +25,9 @@ module FlyHii
       end
 
       def request_post(input)
-        puts '1'
+        puts '3.1'
         result = Gateway::Api.new(FlyHii::App.config)
-          .add_posts(input[:hashtag_name])
+          .get_recent_posts(input[:hashtag_name])
 
         result.success? ? Success(result.payload) : Failure(result.message)
       rescue StandardError => e
