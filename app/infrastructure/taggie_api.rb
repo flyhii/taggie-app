@@ -42,6 +42,16 @@ module FlyHii
         @request.get_recent_rank(req)
       end
 
+      ############# new add 01/24 ########################
+      def sort_posts_by_comment_counts(hashtag_name)
+        @request.sort_posts_by_comment_counts(hashtag_name)
+      end
+
+      def get_comment_counts_rank(req)
+        @request.get_comment_counts_rank(req)
+      end
+      ####################################################
+
       # HTTP request transmitter
       class Request
         def initialize(config)
@@ -78,6 +88,16 @@ module FlyHii
         def get_recent_rank(req)
           call_api('get', ['recentposts', req])
         end
+
+        ############# new add 01/24 ########################
+        def sort_posts_by_comment_counts(hashtag_name)
+          call_api('get', ['commentcountsposts', hashtag_name])  #have different: commentcountsposts
+        end
+
+        def get_comment_counts_rank(req)
+          call_api('get', ['commentcountsposts', req])
+        end
+        ####################################################
 
         private
 

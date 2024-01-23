@@ -132,40 +132,38 @@ module FlyHii
 
       routing.on 'commentcounts' do
         routing.is do
-          # puts 'here!'
-          # POST /media/#{hashtag_name}/translate
           routing.post do
+            puts 'commentcountsMedia'
             hashtag_name = session[:watching][0]
-            #puts routing.params['language'] # rubocop:disable Layout/LeadingCommentSpace
             commentcounts_sorted = Service::SortPostByCommentCounts.new.call(hashtag_name)
-            ranking_made = Service::RankHashtags.new.call(hashtag_name)
-            puts "Sorted CommentCounts = #{commentcounts_sorted}"
-            puts "ranking_made = #{ranking_made}"
 
             if commentcounts_sorted.failure?
               flash[:error] = commentcounts_sorted.failure
               routing.redirect '/'
             end
 
-            post = Views::CommentCountsList.new(commentcounts_sorted.value!.posts)
+            ranking_made = Service::RankHashtags.new.call(hashtag_name)
+            # puts "Sorted CommentCounts = #{commentcounts_sorted}"
+            # puts "ranking_made = #{ranking_made}"
+
+            if ranking_made.failure?
+              flash[:error] = ranking_made.failure
+              routing.redirect '/'
+            end
+
+            commentcounts_post = Views::CommentCountsList.new(commentcounts_sorted.value!.posts)
             rank_list = Views::RankedList.new(ranking_made.value!)
 
             # routing.redirect '/commentcounts'
 
             # Only use browser caching in production
-            App.configure :production do
-              response.expires 60, public: true
-            end
+            # App.configure :production do
+            #   response.expires 60, public: true
+            # end
 
-            view 'media', locals: { post:, rank_list: }
+            view 'media', locals: { commentcounts_post:, rank_list: }
 
-            # puts "come on"
           end
-          # routing.get do
-          #   puts "I'm here"
-
-          #   view 'translate', locals: { post:, rank_list: }
-          # end
         end
       end
       routing.on 'recentMedia' do
