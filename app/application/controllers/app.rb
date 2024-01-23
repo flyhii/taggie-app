@@ -194,6 +194,33 @@ module FlyHii
           end
         end
       end
+
+      routing.on 'recentMedia' do
+        routing.is do
+          routing.post do
+            puts 'recentMedia'
+            puts hashtag_name = session[:watching][0]
+            recent_post_made = Service::AddRecentPost.new.call(hashtag_name)
+
+            if recent_post_made.failure?
+              flash[:error] = recent_post_made.failure
+              routing.redirect '/'
+            end
+
+            ranking_made = Service::RankHashtags.new.call(hashtag_name)
+
+            if ranking_made.failure?
+              flash[:error] = ranking_made.failure
+              routing.redirect '/'
+            end
+
+            recent_post = Views::PostsList.new(recent_post_made.value!.posts)
+            rank_list = Views::RankedList.new(ranking_made.value!)
+
+            view 'media', locals: { recent_post:, rank_list: }
+          end
+        end
+      end
     end
   end
 end
