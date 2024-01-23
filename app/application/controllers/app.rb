@@ -168,6 +168,7 @@ module FlyHii
           #   view 'translate', locals: { post:, rank_list: }
           # end
         end
+      end
 
       routing.on 'recentMedia' do
         routing.is do
