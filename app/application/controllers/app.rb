@@ -166,6 +166,10 @@ module FlyHii
           end
         end
       end
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2c0781d (fixing recent post display)
       routing.on 'recentMedia' do
         routing.is do
           routing.post do
