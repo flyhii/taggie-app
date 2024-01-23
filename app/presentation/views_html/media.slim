@@ -72,6 +72,7 @@
           / form對齊button 為了防止form影響button間距
           / 1. need to revise
           form.form-inline.tags-form(action="/media" method="post")
+<<<<<<< HEAD
             button.my-button(type="submit") 
               | Show Popular
         .col-md-2.col-sm-3
@@ -89,6 +90,25 @@
         .col-md-2.col-sm-3
           form.form-inline.tags-form(action="/media/commentcounts" method="post")  
             button.my-button(type="submit")  
+=======
+            button.my-button(type="submit")
+              | Show Popular
+        .col-md-2.col-sm-3
+          form.form-inline.tags-form(action="/media/recent" method="post")
+            button.my-button(type="submit")
+              | Show Recent
+        .col-md-2.col-sm-3
+          form.form-inline.tags-form(action="/media/timestamps" method="post")
+            button.my-button(type="submit")
+              | timestamps
+        .col-md-2.col-sm-3
+          form.form-inline.tags-form(action="/media/likecounts" method="post")
+            button.my-button(type="submit")
+              | like counts
+        .col-md-2.col-sm-3
+          form.form-inline.tags-form(action="/media/commentcounts" method="post")  
+            button.my-button(type="submit")
+>>>>>>> 7a12e9a (revise media.slim 0123)
               | comment counts
     .col-md-12.blank-row
     hr
