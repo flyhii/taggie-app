@@ -125,12 +125,12 @@ module FlyHii
             App.configure :production do
               response.expires 60, public: true
             end
+
             view 'media', locals: { post:, rank_list: }
           end
         end
       end
 
-<<<<<<< HEAD
       routing.on 'commentcounts' do
         routing.is do
           #puts 'here!'
@@ -170,8 +170,6 @@ module FlyHii
         end
       end
 
-=======
->>>>>>> b39e60d (fixing recent post display)
       routing.on 'recentMedia' do
         routing.is do
           routing.post do
