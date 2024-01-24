@@ -8,28 +8,24 @@ module FlyHii
     class TranslateAllPosts
       include Dry::Transaction
 
-    #   step :validate_input
       step :request_post
       step :reify_post
 
       private
 
-    #   def validate_input(input)
-    #     puts '0'
-    #     if input.success?
-    #       hashtag_name = input[:hashtag_name]
-    #       Success(hashtag_name:)
-    #     else
-    #       Failure('Please input a hashtag in the correct format')
-    #     end
-    #   end
-
       def request_post(input)
         puts '1'
+        # input_hash = { language: input }
         result = Gateway::Api.new(FlyHii::App.config)
-          .tranlate_all_posts(input)
+          .translate_all_posts(input)
 
         result.success? ? Success(result.payload) : Failure(result.message)
+        # input_hash[:response] = Gateway::Api.new(FlyHii::App.config)
+        #   .translate_all_posts(input)
+        # http_presenter = Representer::HttpResponse.new(OpenStruct.new).from_json(input_hash[:response].payload)
+        # http_presenter.status == 'processing' ? Success(input) : Failure(http_presenter.message)
+
+        # input[:response].success? ? Success(input.payload) : Failure(input[:response].message)
       rescue StandardError => e
         puts e.inspect
         puts e.backtrace
@@ -37,9 +33,12 @@ module FlyHii
       end
 
       def reify_post(post_json)
-        Representer::PostsList.new(OpenStruct.new) # rubocop:disable Style/OpenStructUse
-          .from_json(post_json)
-          .then { |post| Success(post) }
+        # unless post_json[:response].processing?
+        unless post_json.processing?
+          Representer::PostsList.new(OpenStruct.new) # rubocop:disable Style/OpenStructUse
+            .from_json(post_json)
+            .then { |post| Success(post) }
+        end
       rescue StandardError
         Failure('Error in the post -- please try again')
       end
