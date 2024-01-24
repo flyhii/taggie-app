@@ -56,6 +56,50 @@ module FlyHii
       end
 
       routing.on 'media' do
+        routing.post 'translate' do
+          puts 'here!'
+
+          puts routing.params['language']
+          post_translated = Service::TranslateAllPosts.new.call(routing.params['language'])
+          hashtag_name = session[:watching][0]
+          ranking_made = Service::RankHashtags.new.call(hashtag_name)
+          puts "translated post = #{post_translated}"
+
+          if post_translated.failure?
+            flash[:error] = post_translated.failure
+            routing.redirect '/'
+          end
+
+          translation = OpenStruct.new(post_translated.value!)
+          http_rep = Representer::HttpResponse.new(OpenStruct.new).from_json(translation.response.payload)
+          processing = Views::TranslateProcessing.new(App.config, http_rep)
+
+          # flash.now[:notice] = 'Still looking for your vets, please wait a moment' if http_rep.status == 'processing'
+
+          if http_rep.status == 'processing'
+            flash.now[:notice] = 'The posts are being translated'
+          else
+            post = Views::TranslatePostsList.new(post_translated.value!.posts)
+
+            # Only use browser caching in production
+            App.configure :production do
+              response.expires 60, public: true
+            end
+          end
+
+          # post = Views::TranslatePostsList.new(post_translated.value!.posts)
+          rank_list = Views::RankedList.new(ranking_made.value!)
+
+          # processing = Views::TranslateProcessingProcessing.new(
+          #   App.config, translation.response
+          # )
+
+          # routing.redirect '/media/translate'
+
+          puts "Translate handled - #{request.path_info}"
+          view 'translate', locals: { post:, rank_list:, processing: }
+        end
+
         routing.is do
           # POST /media/
           routing.post do
@@ -69,7 +113,8 @@ module FlyHii
               routing.redirect '/'
             end
 
-            puts "post_made = #{post_made.value!}"
+            # puts "post_made = #{post_made.value!}"
+            puts 'post_made = post_made.value!'
             session[:watching].insert(0, hashtag_name['hashtag_name']).uniq!
             flash[:notice] = MSG_POST_ADDED
 
@@ -97,45 +142,79 @@ module FlyHii
             rank_list = Views::RankedList.new(ranking_made.value!)
             # binding.irb
             puts rank_list.top_3_tags
+
+            # Only use browser caching in production
+            App.configure :production do
+              response.expires 60, public: true
+            end
             view 'media', locals: { post:, rank_list: }
-          end 
+          end
         end
-        routing.on 'translate' do
-          routing.is do
-            puts 'here!'
-            # POST /media/#{hashtag_name}/translate
-            routing.post do
-              puts session[:watching][0]
-              puts routing.params['language']
-              post_translated = Service::TranslateAllPosts.new.call(routing.params['language'])
-              ranking_made = Service::RankHashtags.new.call(session[:watching][0])
-              puts "translated post = #{post_translated}"
-              if post_translated.failure?
-                flash[:error] = post_translated.failure
-                routing.redirect '/'
-              end
+      end
 
-              post = Views::TranslatePostsList.new(post_translated.value!.posts)
-              rank_list = Views::RankedList.new(ranking_made.value!)
-    
-              # routing.redirect '/media/translate'
+      routing.on 'commentcounts' do
+        routing.is do
+          # puts 'here!'
+          # POST /media/#{hashtag_name}/translate
+          routing.post do
+            hashtag_name = session[:watching][0]
+            #puts routing.params['language'] # rubocop:disable Layout/LeadingCommentSpace
+            commentcounts_sorted = Service::SortPostByCommentCounts.new.call(hashtag_name)
+            ranking_made = Service::RankHashtags.new.call(hashtag_name)
+            puts "Sorted CommentCounts = #{commentcounts_sorted}"
+            puts "ranking_made = #{ranking_made}"
 
-              puts "Translate handled - #{request.path_info}"
-
-              # Only use browser caching in production
-              App.configure :production do
-                response.expires 60, public: true
-              end
-
-              view 'media', locals: { post:, rank_list: }
-    
-              # puts "come on"
+            if commentcounts_sorted.failure?
+              flash[:error] = commentcounts_sorted.failure
+              routing.redirect '/'
             end
-            routing.get do
-              puts "I'm here"
 
-              view 'translate', locals: { post:, rank_list: }
+            post = Views::CommentCountsList.new(commentcounts_sorted.value!.posts)
+            rank_list = Views::RankedList.new(ranking_made.value!)
+
+            # routing.redirect '/commentcounts'
+
+            # Only use browser caching in production
+            App.configure :production do
+              response.expires 60, public: true
             end
+
+            view 'media', locals: { post:, rank_list: }
+
+            # puts "come on"
+          end
+          # routing.get do
+          #   puts "I'm here"
+
+          #   view 'translate', locals: { post:, rank_list: }
+          # end
+        end
+      end
+      routing.on 'recentMedia' do
+        routing.is do
+          routing.post do
+            puts 'recentMedia'
+            puts hashtag_name = session[:watching][0]
+            recent_post_made = Service::AddRecentPost.new.call(hashtag_name)
+
+            if recent_post_made.failure?
+              flash[:error] = recent_post_made.failure
+              routing.redirect '/'
+            end
+
+            puts "recent_post_made = #{recent_post_made.value!}"
+
+            ranking_made = Service::RankHashtags.new.call(hashtag_name)
+
+            if ranking_made.failure?
+              flash[:error] = ranking_made.failure
+              routing.redirect '/'
+            end
+
+            post = Views::PostsList.new(recent_post_made.value!.recentposts)
+            rank_list = Views::RankedList.new(ranking_made.value!)
+
+            view 'media', locals: { post:, rank_list: }
           end
         end
       end
