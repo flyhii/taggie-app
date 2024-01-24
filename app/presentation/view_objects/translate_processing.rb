@@ -13,6 +13,7 @@ module Views
     end
 
     def ws_channel_id
+      puts "processing: #{@response.message['request_id']}"
       @response.message['request_id'] if in_progress?
     end
 

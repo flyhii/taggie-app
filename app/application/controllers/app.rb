@@ -70,13 +70,34 @@ module FlyHii
             routing.redirect '/'
           end
 
-          post = Views::TranslatePostsList.new(post_translated.value!.posts)
+          translation = OpenStruct.new(post_translated.value!)
+          http_rep = Representer::HttpResponse.new(OpenStruct.new).from_json(translation.response.payload)
+          processing = Views::TranslateProcessing.new(App.config, http_rep)
+
+          # flash.now[:notice] = 'Still looking for your vets, please wait a moment' if http_rep.status == 'processing'
+
+          if http_rep.status == 'processing'
+            flash.now[:notice] = 'The posts are being translated'
+          else
+            post = Views::TranslatePostsList.new(post_translated.value!.posts)
+
+            # Only use browser caching in production
+            App.configure :production do
+              response.expires 60, public: true
+            end
+          end
+
+          # post = Views::TranslatePostsList.new(post_translated.value!.posts)
           rank_list = Views::RankedList.new(ranking_made.value!)
+
+          # processing = Views::TranslateProcessingProcessing.new(
+          #   App.config, translation.response
+          # )
 
           # routing.redirect '/media/translate'
 
           puts "Translate handled - #{request.path_info}"
-          view 'media', locals: { post:, rank_list: }
+          view 'translate', locals: { post:, rank_list:, processing: }
         end
 
         routing.is do
@@ -92,7 +113,8 @@ module FlyHii
               routing.redirect '/'
             end
 
-            puts "post_made = #{post_made.value!}"
+            # puts "post_made = #{post_made.value!}"
+            puts 'post_made = post_made.value!'
             session[:watching].insert(0, hashtag_name['hashtag_name']).uniq!
             flash[:notice] = MSG_POST_ADDED
 

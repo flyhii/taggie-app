@@ -24,9 +24,9 @@ module FlyHii
         @request.add_posts(hashtag_name)
       end
 
-      def tranlate_all_posts(language)
+      def translate_all_posts(language)
         puts "wilmaaaa #{language}"
-        @request.tranlate_all_posts(language)
+        @request.translate_all_posts(language)
       end
 
       def rank(req)
@@ -63,7 +63,7 @@ module FlyHii
           call_api('post', ['posts', hashtag_name])
         end
 
-        def tranlate_all_posts(language)
+        def translate_all_posts(language)
           call_api('post', ['posts/translate', language])
         end
 
